@@ -1,0 +1,61 @@
+# ── Secrets ─────────────────────────────────────────────────────────
+.env
+
+# ── Python ───────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+*.so
+
+# ── Virtual envs ─────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+ENV/
+
+# ── Data & models (tracked via DVC) ──────────────────────────────────
+data/raw/
+data/processed/
+models/*.keras
+models/*.h5
+models/*.pb
+# keep DVC pointer files (.dvc) in git
+
+# ── Notebooks checkpoints ────────────────────────────────────────────
+.ipynb_checkpoints/
+
+# ── OS ───────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ──────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+
+# ── MLflow local artifacts ───────────────────────────────────────────
+mlruns/
+mlartifacts/
+
+# ── Docker ───────────────────────────────────────────────────────────
+*.tar
+
+# ── Pytest / coverage ────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── Logs ─────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Kaggle ───────────────────────────────────────────────────────────
+kaggle.json
+

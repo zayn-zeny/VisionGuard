@@ -1,0 +1,97 @@
+# ── VisionGuard docker-compose.yml ──────────────────────────────────────────
+#
+# Architecture (Task 6.3):
+#   Two services: web (Flask/Gunicorn) and db (PostgreSQL).
+#
+# Key design choices:
+#
+# 1. Service-name DNS:
+#    'web' connects to Postgres at host 'db' (the service name). Docker's
+#    embedded DNS resolves service names on the internal 'visionguard_net'
+#    network. No IP addresses or host.docker.internal hacks needed.
+#
+# 2. Named volume for db:
+#    'pgdata' is a named Docker volume (not a bind mount). Data survives
+#    'docker compose stop' and 'docker compose restart' but can be wiped
+#    intentionally with 'docker compose down -v'. Named volumes are managed
+#    by Docker and have correct ownership for the postgres user.
+#
+# 3. db health check + depends_on condition:service_healthy:
+#    'pg_isready' tests whether Postgres is accepting connections, not just
+#    that the container process is running. web won't start until db is truly
+#    ready, eliminating the race condition where web tries to connect before
+#    Postgres has finished initialising.
+#
+# 4. db publishes no host port:
+#    The 'db' service has no 'ports:' entry. Postgres is reachable from 'web'
+#    on the internal network but not from the host OS or external networks.
+#    This reduces attack surface: an attacker on the same machine cannot
+#    reach the DB even if they know the password.
+#
+# 5. Secrets from .env only:
+#    All passwords and keys are referenced via ${VAR} which Docker Compose
+#    reads from the .env file (git-ignored). They are never literals here.
+#    See .env.example for the full key list.
+#
+# 6. Model file in image:
+#    The champion model (models/champion.keras) is COPY'd into the image at
+#    build time (see Dockerfile). This means:
+#    - No runtime dependency on DagsHub being reachable per request
+#    - The model version is pinned to the image tag (reproducible deployments)
+#    - Tradeoff: rebuilding the image is required to update the model,
+#      which is acceptable for a weekly or on-demand champion rotation cycle.
+#    Alternative (mount): a bind mount or named volume could be used instead,
+#    allowing hot-swap without rebuild, but adds ops complexity and a risk of
+#    the mount being missing at startup.
+
+services:
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB:       visionguard
+      POSTGRES_USER:     ${POSTGRES_USER:-visionguard}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - visionguard_net
+    # NO 'ports:' — DB is not reachable from the host
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-visionguard} -d visionguard"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  web:
+    build: .
+    environment:
+      FLASK_SECRET_KEY:      ${FLASK_SECRET_KEY:?required}
+      DATABASE_URL:          postgresql://${POSTGRES_USER:-visionguard}:${POSTGRES_PASSWORD}@db:5432/visionguard
+      INFERENCE_MODE:        ${INFERENCE_MODE:-local}
+      MODEL_PATH:            ${MODEL_PATH:-models/champion.keras}
+      THRESHOLD:             ${THRESHOLD:-0.5}
+      REMOTE_API_URL:        ${REMOTE_API_URL:-}
+      REMOTE_API_KEY:        ${REMOTE_API_KEY:-}
+      MODEL_NAME:            ${MODEL_NAME:-MobileNetV2_VisionGuard}
+      MODEL_VERSION:         ${MODEL_VERSION:-champion}
+      MAX_CONTENT_LENGTH_MB: ${MAX_CONTENT_LENGTH_MB:-10}
+    ports:
+      - "5000:5000"
+    networks:
+      - visionguard_net
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+networks:
+  visionguard_net:
+    driver: bridge
+
+volumes:
+  pgdata:
+    name: 23l0578_visionguard_pgdata
+

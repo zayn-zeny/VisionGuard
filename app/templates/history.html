@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}History{% endblock %}
+
+{% block content %}
+<div class="card history-card">
+  <h1>Prediction History</h1>
+  <p class="subtitle">All predictions, newest first. Total: <strong>{{ pagination.total }}</strong></p>
+
+  {% if pagination.items %}
+  <div class="table-responsive">
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Timestamp (UTC)</th>
+          <th>File</th>
+          <th>Label</th>
+          <th>Confidence</th>
+          <th>Threshold</th>
+          <th>Model</th>
+          <th>Version</th>
+          <th>Mode</th>
+          <th>Latency (ms)</th>
+          <th>SHA-256 (prefix)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in pagination.items %}
+        <tr class="{{ 'ai-row' if row.label == 'AI-generated' else 'real-row' }}">
+          <td>{{ row.id }}</td>
+          <td>{{ row.timestamp_utc.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+          <td class="filename">{{ row.filename_sanitized }}</td>
+          <td>
+            <span class="badge badge-{{ 'ai' if row.label == 'AI-generated' else 'real' }}">
+              {{ row.label }}
+            </span>
+          </td>
+          <td>{{ (row.confidence * 100) | round(1) }}%</td>
+          <td>{{ row.threshold }}</td>
+          <td>{{ row.model_name }}</td>
+          <td>{{ row.model_version }}</td>
+          <td>{{ row.inference_mode }}</td>
+          <td>{{ row.request_latency_ms }}</td>
+          <td class="sha">{{ row.image_sha256[:12] }}…</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="pagination">
+    {% if pagination.has_prev %}
+      <a href="{{ url_for('main.history', page=pagination.prev_num) }}" class="btn btn-outline">← Prev</a>
+    {% endif %}
+    <span>Page {{ pagination.page }} of {{ pagination.pages }}</span>
+    {% if pagination.has_next %}
+      <a href="{{ url_for('main.history', page=pagination.next_num) }}" class="btn btn-outline">Next →</a>
+    {% endif %}
+  </div>
+
+  {% else %}
+  <p class="empty">No predictions yet. <a href="{{ url_for('main.index') }}">Upload an image.</a></p>
+  {% endif %}
+</div>
+{% endblock %}
+

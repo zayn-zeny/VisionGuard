@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Result{% endblock %}
+
+{% block content %}
+<div class="card result-card">
+  <h1>Classification Result</h1>
+
+  <div class="verdict verdict-{{ 'ai' if pred.label == 'AI-generated' else 'real' }}">
+    <span class="verdict-icon">{{ '🤖' if pred.label == 'AI-generated' else '📷' }}</span>
+    <span class="verdict-label">{{ pred.label }}</span>
+  </div>
+
+  <div class="confidence-bar-wrap">
+    <div class="confidence-bar" style="width: {{ (pred.confidence * 100) | round(1) }}%"></div>
+  </div>
+  <p class="confidence-text">
+    Model confidence: <strong>{{ (pred.confidence * 100) | round(1) }}%</strong>
+    (threshold: {{ pred.threshold }})
+  </p>
+
+  <table class="meta-table">
+    <tr><th>File</th><td>{{ pred.filename_sanitized }}</td></tr>
+    <tr><th>Size</th><td>{{ pred.image_size_bytes | filesizeformat }}</td></tr>
+    <tr><th>Dimensions</th><td>{{ pred.image_width }}×{{ pred.image_height }} px</td></tr>
+    <tr><th>Latency</th><td>{{ pred.request_latency_ms }} ms</td></tr>
+    <tr><th>Mode</th><td>{{ pred.inference_mode }}</td></tr>
+    <tr><th>Model</th><td>{{ pred.model_name }} ({{ pred.model_version }})</td></tr>
+    <tr><th>Timestamp (UTC)</th><td>{{ pred.timestamp_utc.strftime('%Y-%m-%d %H:%M:%S') }}</td></tr>
+  </table>
+
+  <div class="caveat">
+    <strong>⚠️ Model limitations:</strong> VisionGuard is a research prototype trained on a
+    limited dataset. It may misclassify heavily compressed, stylised, or low-resolution images.
+    Do not rely on this result for consequential decisions without independent verification.
+  </div>
+
+  <div class="actions">
+    <a href="{{ url_for('main.index') }}" class="btn btn-secondary">Upload Another</a>
+    <a href="{{ url_for('main.history') }}" class="btn btn-outline">View History</a>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Error {{ error_code }}{% endblock %}
+
+{% block content %}
+<div class="card error-card">
+  <div class="error-code">{{ error_code }}</div>
+  <h1 class="error-title">
+    {% if error_code == 400 %}Bad Request
+    {% elif error_code == 413 %}File Too Large
+    {% elif error_code == 415 %}Unsupported File Type
+    {% elif error_code == 422 %}Invalid Image
+    {% elif error_code == 502 %}Inference Error
+    {% elif error_code == 500 %}Internal Server Error
+    {% else %}Error{% endif %}
+  </h1>
+  <p class="error-message">{{ message }}</p>
+  <a href="{{ url_for('main.index') }}" class="btn btn-primary">← Try Again</a>
+</div>
+{% endblock %}
+

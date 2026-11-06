@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Upload Image{% endblock %}
+
+{% block content %}
+<div class="card upload-card">
+  <h1>Is this image AI-generated?</h1>
+  <p class="subtitle">Upload a JPEG, PNG or WebP image (max 10 MB). VisionGuard will classify it as <strong>AI-generated</strong> or <strong>Real</strong>.</p>
+
+  <form action="{{ url_for('main.predict') }}" method="POST" enctype="multipart/form-data" class="upload-form">
+    <div class="drop-zone" id="dropZone">
+      <label for="imageInput">
+        <span class="drop-icon">📁</span>
+        <span class="drop-text">Click to browse or drag &amp; drop</span>
+        <input type="file" id="imageInput" name="image" accept=".jpg,.jpeg,.png,.webp" required>
+      </label>
+      <p id="fileName" class="file-name"></p>
+    </div>
+    <button type="submit" class="btn btn-primary">Analyse Image</button>
+  </form>
+</div>
+
+<script>
+  const input = document.getElementById('imageInput');
+  const label = document.getElementById('fileName');
+  input.addEventListener('change', () => {
+    label.textContent = input.files[0] ? input.files[0].name : '';
+  });
+</script>
+{% endblock %}
+

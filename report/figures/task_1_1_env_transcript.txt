@@ -1,0 +1,9 @@
+PS D:\Zayn\mlops_Assignment\A2> .\venv\Scripts\python.exe -c "import sys, tensorflow as tf, numpy as np, PIL, mlflow, dvc, flask; print('Python:', sys.version); print('TF:', tf.__version__); print('NumPy:', np.__version__); print('PIL:', PIL.__version__); print('MLflow:', mlflow.__version__); print('DVC:', dvc.__version__); print('Flask:', flask.__version__); print('GPUs:', tf.config.list_physical_devices('GPU'))"
+Python: 3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]
+TF: 2.17.0
+NumPy: 1.26.4
+PIL: 10.4.0
+MLflow: 2.17.0
+DVC: 3.55.2
+Flask: 3.0.3
+GPUs: []

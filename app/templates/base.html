@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}VisionGuard{% endblock %} — 23L-0578</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <span class="brand">🛡️ VisionGuard</span>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('main.index') }}">Upload</a></li>
+        <li><a href="{{ url_for('main.history') }}">History</a></li>
+        <li><a href="{{ url_for('main.health') }}">Health</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="flash flash-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>VisionGuard · 23L-0578_A2_Ops · MLOps Assignment 2 · 2026</p>
+  </footer>
+</body>
+</html>
+

@@ -1,0 +1,47 @@
+# Docker ignore — keep build context small and secure
+# Task 6.2: .dockerignore prevents secrets and large files from entering the image layer
+
+# ── Secrets ──────────────────────────────────────────────────────────
+.env
+*.env
+kaggle.json
+
+# ── Virtual envs (use the image's pip install instead) ───────────────
+venv/
+.venv/
+env/
+
+# ── Data and models (large; model is COPY'd explicitly) ──────────────
+data/
+models/*.h5
+mlruns/
+mlartifacts/
+
+# ── Dev / test tooling ───────────────────────────────────────────────
+tests/
+notebooks/
+.pytest_cache/
+.coverage
+htmlcov/
+*.log
+
+# ── Version control ───────────────────────────────────────────────────
+.git/
+.gitignore
+.dvc/
+*.dvc
+
+# ── Report source (not needed at runtime) ────────────────────────────
+report/
+Assignment\ 2.pdf
+
+# ── OS ────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE ───────────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+
