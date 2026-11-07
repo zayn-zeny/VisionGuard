@@ -117,10 +117,13 @@ def live(url: str, png: str, height: str = "1000", wait_ms: str = "20000") -> No
     """Screenshot a live (JavaScript) page such as the DagsHub MLflow UI."""
     tmpdir = Path(tempfile.mkdtemp(dir=str(ROOT / "logs")))
     shot = tmpdir / "shot.png"
+    budget = [f"--virtual-time-budget={wait_ms}"] if wait_ms != "0" else []
     subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--hide-scrollbars",
-                    f"--user-data-dir={tmpdir / 'profile'}", f"--virtual-time-budget={wait_ms}",
+                    f"--user-data-dir={tmpdir / 'profile'}", *budget,
                     f"--window-size=1500,{height}", f"--screenshot={shot}", url],
-                   check=True, capture_output=True, timeout=180)
+                   check=False, capture_output=True, timeout=180)
+    if not shot.exists():
+        raise SystemExit(f"Edge produced no screenshot for {url}")
     when = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     img = _header(Image.open(shot).convert("RGB"),
                   f"GET {url}  |  {when}  |  {STAMP_USER}  |  23L-0578_A2_Ops")

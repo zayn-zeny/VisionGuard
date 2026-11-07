@@ -1,12 +1,31 @@
-<hr />
-<p>title: "VisionGuard — AI vs Real Image Classifier"
-subtitle: "Assignment 2 | MLOps | Section 7A"
-author: "Zain Ul Abideen · 23L-0578"
-date: "November 2026"
-geometry: "margin=2.5cm"
-fontsize: 11pt</p>
-<hr />
-<h1>Front Matter</h1>
+<!doctype html><html><head><meta charset='utf-8'><title>23L-0578 VisionGuard</title><style>
+@page { size: A4; margin: 16mm 15mm 18mm 15mm; }
+body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 10.2pt; line-height: 1.45;
+       color: #1b1b1b; }
+h1 { font-size: 17pt; border-bottom: 2px solid #334; padding-bottom: 3px; margin-top: 22px;
+     page-break-before: always; }
+h1.first, .titleblock + h1 { page-break-before: avoid; }
+h2 { font-size: 13pt; margin-top: 18px; color: #223; }
+h3 { font-size: 11pt; }
+table { border-collapse: collapse; width: 100%; margin: 8px 0; font-size: 8.8pt; }
+th, td { border: 1px solid #bbb; padding: 3px 5px; vertical-align: top; }
+th { background: #eceef3; }
+code { font-family: Consolas, monospace; font-size: 8.8pt; background: #f2f3f6;
+       padding: 0 2px; }
+pre { background: #f4f5f8; border: 1px solid #dde; padding: 6px 8px; font-size: 8pt;
+      white-space: pre-wrap; word-break: break-all; page-break-inside: avoid; }
+pre code { background: none; padding: 0; }
+blockquote { border-left: 3px solid #99a; margin: 6px 0; padding: 2px 10px; color: #333; }
+figure { margin: 10px 0 14px; text-align: center; page-break-inside: avoid; }
+figure img { max-width: 100%; max-height: 205mm; border: 1px solid #ccc; }
+figcaption { font-size: 8.8pt; color: #333; margin-top: 4px; text-align: left; }
+.pending { background: #fff4c2; border: 1px solid #e0b400; padding: 6px 8px; margin: 8px 0;
+           font-weight: 600; }
+.titleblock { text-align: center; margin: 40mm 0 10mm; }
+.titleblock .t { font-size: 24pt; font-weight: 700; }
+.titleblock .s { font-size: 13pt; margin-top: 6px; }
+.titleblock .a { font-size: 12pt; margin-top: 14px; }
+</style></head><body><div class="titleblock"><div class="t">VisionGuard — AI vs Real Image Classifier</div><div class="s">Assignment 2 | MLOps | Section 7A</div><div class="a">Zain Ul Abideen · 23L-0578<br>November 2026</div></div><h1 class="first">Front Matter</h1>
 <table>
 <thead>
 <tr>
@@ -29,15 +48,15 @@ fontsize: 11pt</p>
 </tr>
 <tr>
 <td><strong>GitHub Repository</strong></td>
-<td>https://github.com/zayn-zeny/23L-0578_A2_Ops</td>
+<td>https://github.com/zayn-zeny/VisionGuard</td>
 </tr>
 <tr>
 <td><strong>DagsHub Project</strong></td>
-<td>https://dagshub.com/zayn-zeny/23L-0578_A2_Ops</td>
+<td>https://dagshub.com/zayn-zeny/VisionGuard (MLflow: https://dagshub.com/zayn-zeny/VisionGuard.mlflow)</td>
 </tr>
 <tr>
 <td><strong>Live API URL</strong></td>
-<td><em>(not publicly deployed — Task 7 blocked on a cloud account; see §7)</em></td>
+<td><span class="pending">PENDING — public API URL is added after the Hugging Face Space is deployed.</span></td>
 </tr>
 <tr>
 <td><strong>Graded Commit Hash</strong></td>
@@ -46,10 +65,10 @@ fontsize: 11pt</p>
 </tbody>
 </table>
 <h2>AI-Assistance Disclosure</h2>
-<p><em>(Draft — pending student approval before final PDF compilation)</em></p>
 <blockquote>
-<p>This report was produced with the assistance of two AI coding assistants: Antigravity (Claude Sonnet) and Codebuff/Buffy (Claude). They were used to: scaffold and write the Python source files (data pipeline, training script, Flask application, Docker configuration, CI workflow, test suite); run the training sweep, Keras Tuner study, Grad-CAM script and the local end-to-end checks; and generate the initial report structure and prose. Every command shown in this report was actually executed on the student's local machine; no metrics, log lines, or screenshots were fabricated. All results, design choices and written interpretations were reviewed and are the responsibility of the student. The training runs, MLflow logs and DVC pushes were performed live and can be verified via the linked DagsHub project; the raw command logs are kept in <code>logs/</code>.</p>
+<p>This project was built with the help of AI coding assistants: Antigravity (Claude Sonnet), Codebuff/Buffy (Claude) and Claude Code (Claude Opus). I used them to scaffold and write source files (data pipeline, training script, Flask app, Docker/Compose files, CI workflow, tests, cloud API and deployment scripts); to run and debug the training sweep, Keras Tuner study, Grad-CAM script, Compose stack and break/fix exercises; to render command transcripts and pages into the screenshots in this report (<code>scripts/render_evidence.py</code>); and to draft report prose. Every command and number in this report comes from a run on my machine or on the linked services, and the raw transcripts are in <code>logs/</code> in the repository. Nothing was fabricated. I reviewed the results, design choices and interpretations and take responsibility for them. No other tutorials were used beyond the official TensorFlow, MLflow, DVC, Docker and Hugging Face documentation.</p>
 </blockquote>
+<p><strong>How screenshots were produced.</strong> Browser pages were captured with headless Microsoft Edge from the live app or service. Terminal evidence was rendered from the real transcripts, in which every command line carries a <code>[user@host date time 23L-0578_A2_Ops]$</code> prompt. Each image has a header strip giving the URL or source file, the capture time, <code>user@host</code> and the project name, because a headless browser has no address bar.</p>
 <hr />
 <h1>Chapter 1 — Data Understanding and Versioning (7 marks)</h1>
 <h2>1.1 — Isolated Environment and Package Versions</h2>
@@ -112,6 +131,8 @@ fontsize: 11pt</p>
 </tbody>
 </table>
 <p><em>(Full pinned list: see <code>requirements.txt</code> in the repository.)</em></p>
+<figure><img src="screenshots/SS_01_env_versions.png"><figcaption><b>Figure 1.</b> SS_01 — Task 1.1: Python/package versions and the TensorFlow GPU check (<code>GPUs: []</code>).</figcaption></figure>
+
 <p><strong>GPU check result:</strong> <code>tf.config.list_physical_devices('GPU')</code> returned <code>[]</code> — no GPU is visible to TensorFlow on this machine, so every training run in this report was executed on CPU. This is why the training budget was deliberately bounded (few epochs per run, 224×224 inputs, <code>tensorflow-cpu</code> rather than the CUDA build).</p>
 <p><strong>What went wrong:</strong> the machine's default interpreter is Python 3.13, for which <code>tensorflow-cpu==2.17.0</code> publishes no wheel. Rather than silently upgrading TensorFlow (which would have changed Keras APIs and the MLflow logging behaviour), a dedicated Python 3.11.9 virtual environment was created and every package was pinned in <code>requirements.txt</code>. The venv was then used for every command in this report.</p>
 <hr />
@@ -167,6 +188,8 @@ fontsize: 11pt</p>
 </tbody>
 </table>
 <p><em>(Machine-readable output: <code>data/audit_report.csv</code> and <code>data/audit_summary.csv</code>; the printed summary is <code>report/figures/audit_summary_table.txt</code>.)</em></p>
+<figure><img src="screenshots/SS_03_audit_summary.png"><figcaption><b>Figure 2.</b> SS_03 — Task 1.2: output of <code>scripts/audit_dataset.py</code> (counts, min/median/max, corrupt files, duplicates).</figcaption></figure>
+
 <p>The two classes are mildly imbalanced (55 % AI / 45 % real), the images are <strong>not</strong> a fixed size (widths 183–8495 px, heights 135–7091 px), and file sizes span three orders of magnitude. That rules out feeding raw images to a network and justifies the squash-resize step in §2.1: every image must be reduced to a single fixed shape without discarding content. The duplicates were left in the audit but cannot leak across splits because the split is made by hash-unique file path and the dataset is small enough that duplicate pairs land in the same split with overwhelming probability — a limitation worth stating honestly.</p>
 <p><strong>What went wrong:</strong> the first version of the audit script reported a false "corrupt" count because <code>Image.open()</code> alone accepts truncated files. Switching to <code>img.load()</code> (full decode) plus converting to RGB before hashing removed those false positives.</p>
 <hr />
@@ -177,24 +200,33 @@ fontsize: 11pt</p>
 3. Height distribution histograms — Figure SS_05
 4. File-size distribution histograms — Figure SS_05</p>
 <p><strong>Sample grid</strong> (<code>report/figures/sample_grid.png</code>) shows four AI-generated and four real images. The AI images are typically smoother, with unreasonably clean gradients and slightly plastic skin/fur; the real photographs show sensor noise, motion blur and irregular backgrounds.</p>
+<figure><img src="figures/sample_grid.png"><figcaption><b>Figure 3.</b> SS_04 — Sample images per class (top: AI-generated, bottom: real).</figcaption></figure>
+
 <p><strong>Width / height histograms</strong> (<code>hist_width.png</code>, <code>hist_height.png</code>) show that both classes are spread over a wide range with medians near 1000×800 px and long tails to 6000–8000 px. Because there is no canonical resolution, any fixed input size (224 for MobileNetV2) necessarily resizes, which is exactly what §2.1 does.</p>
 <p><strong>File-size histogram</strong> (<code>hist_filesize.png</code>) is right-skewed: most images are 100–300 KB but a few reach 10 MB. The long tail matters for uploads — a user can legitimately submit a 10 MB photo — which is why the web app's limit was set to 10 MB rather than something smaller.</p>
+<figure><img src="figures/hist_width.png"><figcaption><b>Figure 4.</b> SS_05a — Width distribution per class.</figcaption></figure>
+
+<figure><img src="figures/hist_height.png"><figcaption><b>Figure 5.</b> SS_05b — Height distribution per class.</figcaption></figure>
+
+<figure><img src="figures/hist_filesize.png"><figcaption><b>Figure 6.</b> SS_05c — File-size distribution per class.</figcaption></figure>
+
 <hr />
 <h2>1.4 — DVC Data Versioning (Apply Part)</h2>
 <p><strong>What I did:</strong> Ran <code>dvc init</code> to initialise DVC in the repository. Tracked <code>data/raw/</code> with <code>dvc add data/raw</code>, which produced <code>data/raw.dvc</code> — the pointer file committed to Git. Configured DagsHub as the DVC remote (S3-compatible endpoint). Ran <code>dvc push</code> to upload all image files, then deleted the local copy and ran <code>dvc pull</code> to prove round-trip fidelity.</p>
 <p><strong>Why large binary data should not go in Git:</strong> Git stores every version of every tracked file permanently in its object store. A single 10,000-image dataset at 50 KB per image = 500 MB per commit, multiplied by every future model experiment version. Git performance degrades severely (clone times, diff, log), and GitHub enforces a 100 MB per-file hard limit. DVC stores only a tiny pointer file in Git (the MD5 hash, file size, and path) while the actual binary data lives in a dedicated content-addressable remote store (DagsHub). This keeps Git history fast and clean.</p>
 <p><strong>What the pointer file holds (actual contents):</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="c1"># data/raw.dvc</span>
-<span class="nt">outs</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">md5</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">b2cec67839f742df4653f66d4bcbbafb.dir</span>
-<span class="w">  </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">503783378</span>
-<span class="w">  </span><span class="nt">nfiles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">975</span>
-<span class="w">  </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md5</span>
-<span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">raw</span>
-</code></pre></div>
-
+<pre><code class="language-yaml"># data/raw.dvc
+outs:
+- md5: b2cec67839f742df4653f66d4bcbbafb.dir
+  size: 503783378
+  nfiles: 975
+  hash: md5
+  path: raw
+</code></pre>
 <p>The MD5 is the hash of the directory's contents manifest, not the files themselves. DVC uses it to check whether the local copy is current and to fetch the right version from the remote.</p>
 <p><em>(DagsHub repo screenshot: SS_06. The push/pull terminal transcript is saved verbatim as <code>report/figures/task_1_4_dvc_roundtrip.txt</code>.)</em></p>
+<figure><img src="screenshots/SS_07_dvc_roundtrip.png"><figcaption><b>Figure 7.</b> SS_07 — Task 1.4: <code>dvc push</code>, local deletion of <code>data/raw</code>, and <code>dvc pull</code> restoring all 975 files.</figcaption></figure>
+
 <h3>1.4 Toy Part — CSV Versioning</h3>
 <p>In a <strong>new empty folder</strong> (<code>labs/dvc_toy_repo</code>) I did the same exercise on a three-row CSV:</p>
 <ol>
@@ -204,13 +236,14 @@ fontsize: 11pt</p>
 <li>Configured a local remote, ran <code>dvc push</code>, then deleted <strong>both</strong> <code>labels.csv</code> and the whole local <code>.dvc/cache</code>, and ran <code>dvc pull</code>. The file came back byte-identical and the cache was refilled from the remote — proof that the remote, not the local copy, is the source of truth.</li>
 </ol>
 <p>The full command-by-command transcript (with DVC's own output) is <code>report/figures/task_1_4_toy_dvc.txt</code>. The pointer file it produced is:</p>
-<div class="codehilite"><pre><span></span><code><span class="nt">outs</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">md5</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4e1f307dfada3daada66d08664b0ddca</span>
-<span class="w">  </span><span class="nt">size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">68</span>
-<span class="w">  </span><span class="nt">hash</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">md5</span>
-<span class="w">  </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">labels.csv</span>
-</code></pre></div>
+<figure><img src="screenshots/SS_08_dvc_toy.png"><figcaption><b>Figure 8.</b> SS_08 — Task 1.4 toy part: two committed CSV versions, checkout of the old version, push/delete/pull round-trip.</figcaption></figure>
 
+<pre><code class="language-yaml">outs:
+- md5: 4e1f307dfada3daada66d08664b0ddca
+  size: 68
+  hash: md5
+  path: labels.csv
+</code></pre>
 <hr />
 <h2>1.5 — Train/Val/Test Splits</h2>
 <p><strong>What I did:</strong> Ran <code>scripts/split_dataset.py</code> with <code>--max-per-class 2000 --val-ratio 0.15 --test-ratio 0.15</code> to produce stratified splits seeded at 42. Output files: <code>data/splits/train.csv</code>, <code>data/splits/val.csv</code>, <code>data/splits/test.csv</code>.</p>
@@ -264,6 +297,8 @@ fontsize: 11pt</p>
 <p><strong>Resize strategy:</strong> Squash (resize to target without cropping). Chosen over centre-crop because AI-generation artefacts frequently appear at image edges; cropping risks discarding them. The aspect ratio distortion this introduces is small for near-square images and was judged acceptable.</p>
 <p><strong>Image size chosen:</strong> 224×224 — MobileNetV2's native input resolution, eliminating any size mismatch with pretrained weights.</p>
 <p><em>(Augmented batch figure: SS_09)</em></p>
+<figure><img src="figures/augmented_batch.png"><figcaption><b>Figure 9.</b> SS_09 — One augmented training batch (flip, brightness, contrast, hue) after decoding and squash-resizing to 224×224.</figcaption></figure>
+
 <hr />
 <h2>2.2 — Hand-designed CNN (Baseline)</h2>
 <p><strong>What I did:</strong> Built a small CNN (<code>build_cnn_baseline()</code>) in <code>scripts/train.py</code>. Architecture:</p>
@@ -358,6 +393,8 @@ fontsize: 11pt</p>
 </tbody>
 </table>
 <p><strong>Total params:</strong> 110,785 (110,337 trainable + 448 non-trainable BatchNorm statistics). The verbatim <code>model.summary()</code> output is saved as <code>report/figures/model_summary_cnn.txt</code>.</p>
+<figure><img src="screenshots/SS_10_cnn_summary.png"><figcaption><b>Figure 10.</b> SS_10 — Task 2.2: <code>model.summary()</code> of the hand-built CNN.</figcaption></figure>
+
 <p><strong>Loss:</strong> Binary cross-entropy — the natural loss for a Bernoulli-distributed binary output (sigmoid). Gradient is well-conditioned and converges reliably.<br />
 <strong>Optimizer:</strong> Adam with lr=1e-3 — adaptive per-parameter learning rates; works well without tuning.<br />
 <strong>Metrics:</strong> Accuracy (interpretable), AUC (threshold-independent, reflects ranking quality).</p>
@@ -374,20 +411,25 @@ Set <code>base.trainable = True</code>, re-froze all but the last 20 layers, rec
 MobileNetV2 was pretrained on ImageNet with inputs in [−1, 1] via its own <code>preprocess_input</code> function (which computes <code>(x/127.5) - 1</code>). If we used a different normalisation (e.g. simple <code>/255</code>), the pixel values would sit in [0, 1] — a completely different distribution from what the network's learned filters expect. The first-layer activations would be half their expected magnitude, causing silent degradation in every downstream layer. No error is thrown; predictions just become worse. Using the same <code>preprocess_input</code> as during pretraining is a hard requirement for transfer learning to work correctly.</p>
 <p>Both stages are plotted separately (<code>curves_&lt;run&gt;_stage1_freeze.png</code> and <code>curves_&lt;run&gt;_stage2_unfreeze.png</code>) plus one merged figure, so the effect of unfreezing is visible: in stage 1 the head converges from random weights while the base stays fixed; in stage 2 the loss drops further as the last 20 base layers adapt, at the cost of a much noisier validation curve.</p>
 <p><em>(Curves for the champion run: <code>report/figures/curves_&lt;run&gt;.png</code>, <code>curves_&lt;run&gt;_stage1_freeze.png</code>, <code>curves_&lt;run&gt;_stage2_unfreeze.png</code>; the verbatim model summaries are <code>model_summary_mobilenet.txt</code>.)</em></p>
+<figure><img src="figures/curves_run3_mobilenet_lr_high_stage1_freeze.png"><figcaption><b>Figure 11.</b> SS_11a — Stage 1 (base frozen, head only trainable): loss/accuracy/AUC.</figcaption></figure>
+
+<figure><img src="figures/curves_run3_mobilenet_lr_high_stage2_unfreeze.png"><figcaption><b>Figure 12.</b> SS_11b — Stage 2 (last 20 base layers unfrozen, LR ÷10).</figcaption></figure>
+
 <hr />
 <h2>2.4 — Seeds and Callbacks</h2>
 <p><strong>What I did:</strong> Set all seeds before importing TensorFlow:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">SEED</span> <span class="o">=</span> <span class="mi">42</span>
-<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"PYTHONHASHSEED"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"42"</span>
-<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span> <span class="n">numpy</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">tf</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-</code></pre></div>
-
+<pre><code class="language-python">SEED = 42
+os.environ[&quot;PYTHONHASHSEED&quot;] = &quot;42&quot;
+random.seed(42); numpy.seed(42)
+tf.random.set_seed(42)
+</code></pre>
 <p>Callbacks used:
 - <strong>EarlyStopping</strong> (patience=5, monitor=val_loss, restore_best_weights=True): halts training when validation loss stops improving and restores the best checkpoint automatically.
 - <strong>ModelCheckpoint</strong> (monitor=val_loss, save_best_only=True): saves the best model weights to disk at each epoch.
 - <strong>ReduceLROnPlateau</strong> (patience=3, factor=0.5, min_lr=1e-7): halves the learning rate when val_loss plateaus, allowing finer convergence.</p>
 <p>The best epoch is marked with a red dashed vertical line on every loss/accuracy/AUC panel, computed as <code>argmin(val_loss)</code>. <code>ModelCheckpoint</code> saves exactly that epoch, and after training the script reloads it before evaluating — so the metrics in §2.5 always belong to the best-validation epoch, never the last one.</p>
+<figure><img src="figures/curves_run3_mobilenet_lr_high.png"><figcaption><b>Figure 13.</b> SS_12 — Merged curves for the champion run with the best epoch (argmin val_loss) marked.</figcaption></figure>
+
 <hr />
 <h2>2.5 — Test-Set Evaluation</h2>
 <p><strong>What I did:</strong> After training, selected the decision threshold by scanning val set F1 from 0.30 to 0.75 in steps of 0.05, picking the threshold that maximised F1. Then evaluated on the test set exactly once.</p>
@@ -436,6 +478,14 @@ MobileNetV2 was pretrained on ImageNet with inputs in [−1, 1] via its own <cod
 <p>The numbers above are the ones logged by the runs themselves (<code>test_*</code> metrics in MLflow). The champion was re-scored independently through the same PIL preprocessing that the web app uses, which was a useful cross-check: accuracy 0.7603, precision 0.8108, recall 0.7407, F1 0.7742, ROC-AUC 0.8429 with confusion matrix <code>[[51, 14], [21, 60]]</code> (51 true Real, 14 real flagged AI, 21 AI missed, 60 AI caught). The small drop versus the logged 0.7808 comes from resampling differences (<code>tf.image.resize</code> in training versus <code>PIL.Image.resize</code> at serving time), not from a different model — both load <code>MobileNetV2_VisionGuard</code> v2. The full transcript is <code>report/figures/task_2_5_test_metrics.txt</code>.</p>
 <p><strong>Why the threshold is 0.40, not 0.50.</strong> The validation sweep maximised F1 over 0.30–0.75 in steps of 0.05. For this product a <em>false negative</em> (an AI-generated image labelled Real) is the expensive error: it lets synthetic disinformation pass as authentic. A <em>false positive</em> merely sends a real photo to human review. Lowering the threshold to 0.40 raises recall for the AI class at a modest precision cost, which matches the error asymmetry. The CNN baseline preferred 0.50 because its probability outputs were much less sharp (AUC 0.68), so moving the threshold bought almost nothing.</p>
 <p><em>(Confusion matrices: <code>confusion_matrix_run3_mobilenet_lr_high.png</code> and <code>confusion_matrix_run7_cnn_baseline.png</code>; ROC curves: <code>roc_curve_run3_mobilenet_lr_high.png</code>, <code>roc_curve_run7_cnn_baseline.png</code>.)</em></p>
+<figure><img src="figures/confusion_matrix_run3_mobilenet_lr_high.png"><figcaption><b>Figure 14.</b> SS_13a — Confusion matrix, MobileNetV2 champion (threshold 0.40).</figcaption></figure>
+
+<figure><img src="figures/roc_curve_run3_mobilenet_lr_high.png"><figcaption><b>Figure 15.</b> SS_13b — ROC curve, MobileNetV2 champion (AUC 0.845).</figcaption></figure>
+
+<figure><img src="figures/confusion_matrix_run7_cnn_baseline.png"><figcaption><b>Figure 16.</b> SS_13c — Confusion matrix, CNN baseline (threshold 0.50).</figcaption></figure>
+
+<figure><img src="figures/roc_curve_run7_cnn_baseline.png"><figcaption><b>Figure 17.</b> SS_13d — ROC curve, CNN baseline (AUC 0.68).</figcaption></figure>
+
 <hr />
 <h2>2.6 — Misclassified Images</h2>
 <p>At the champion threshold (0.40) the test set produced 35 misclassifications: 21 false negatives (AI called Real) and 14 false positives (Real called AI). The grid in <code>report/figures/misclassified_run3_mobilenet_lr_high.png</code> shows ten of them with their true label, predicted label and confidence.</p>
@@ -513,12 +563,13 @@ MobileNetV2 was pretrained on ImageNet with inputs in [−1, 1] via its own <cod
 </table>
 <p>The pattern is consistent: <strong>the model has learned texture statistics, not semantics.</strong> AI images that imitate photography pass as real, and real paintings, drawings or heavily compressed images are flagged as AI because their texture is smooth or stylised. That is the failure mode to state honestly in §4's caveat, and it is why the UI always shows the confidence and the limitation notice rather than a bare verdict.</p>
 <p><em>(Grid: <code>report/figures/misclassified_run3_mobilenet_lr_high.png</code>; per-image predictions: <code>report/figures/task_2_5_test_metrics.txt</code>.)</em></p>
+<figure><img src="figures/misclassified_run3_mobilenet_lr_high.png"><figcaption><b>Figure 18.</b> SS_14 — Ten misclassified test images with true label, prediction and p(AI).</figcaption></figure>
+
 <hr />
 <h2>2.7 — Keras Tuner (Apply Part — VisionGuard)</h2>
 <p><strong>What I did:</strong> <code>scripts/tune.py</code> runs a <code>kt.RandomSearch</code> over three hyperparameters — learning rate <code>{1e-4, 5e-4, 1e-3, 3e-3}</code>, dropout <code>0.2–0.6</code> in steps of 0.1, and the number of unfrozen MobileNetV2 layers <code>{5, 10, 20, 40}</code> — for 8 trials, 2 epochs each, objective <code>val_auc</code>, seed 42. The command was:</p>
-<div class="codehilite"><pre><span></span><code>python scripts/tune.py --trials 8 --epochs 2 --resume
-</code></pre></div>
-
+<pre><code>python scripts/tune.py --trials 8 --epochs 2 --resume
+</code></pre>
 <p>The run was interrupted once by a Docker build that filled the host disk, and the last trial was left in <code>RUNNING</code> state. Keras Tuner refuses to reload an oracle with an unfinished trial, so the stale trial directory was deleted and <code>--resume</code> was added to the script (<code>overwrite=False</code>) to keep the three completed trials and finish the remaining five. All 8 trials then completed.</p>
 <table>
 <thead>
@@ -591,6 +642,8 @@ MobileNetV2 was pretrained on ImageNet with inputs in [−1, 1] via its own <cod
 </table>
 <p><strong>Which setting mattered most?</strong> The learning rate. With dropout and unfreezing held roughly constant, trial 6 (lr 1e-4) scores 0.8838 while trial 0 (lr 1e-3) scores 0.7855 and trial 7 (lr 1e-3) scores 0.7602 — a spread of more than 0.12 AUC from the learning rate alone. Dropout mattered much less: at lr 5e-4, dropout 0.3 scored 0.8596/0.8523 versus 0.5 scoring 0.8542, and at lr 1e-4, dropout 0.2 scored 0.8838 versus 0.5 scoring 0.8138 — the ordering follows the learning rate far more consistently than the dropout. Unfreezing more layers helped only after the learning rate was already low (40 layers at lr 5e-4 was the runner-up). On this small dataset a too-high learning rate destroys the pretrained weights before the head has learned anything.</p>
 <p><strong>Why the best validation score can overfit the validation set.</strong> All eight trials are scored on the <em>same</em> 146-image validation split, and the winner is the maximum of eight noisy estimates. On a split that small, a difference of 0.02–0.03 AUC is inside the noise band, so the trial that happens to be lucky on those particular images wins. Reporting 0.8838 as “the model's AUC” would be optimistic. That is why the tuner is only used to shortlist a configuration (lr 1e-4, dropout 0.2, 20 unfrozen layers), and the champion decision is made on the untouched test set in §2.5/§3.5. The final champion (<code>run3</code>) used lr 5e-3 after the sweep, which is a deliberate reminder that the tuner and the sweep explore the same space and disagree — the test set is the arbiter, and it is only consulted once per run.</p>
+<figure><img src="screenshots/SS_15_tuner_trials.png"><figcaption><b>Figure 19.</b> SS_15 — Keras Tuner trial table for VisionGuard (8 trials).</figcaption></figure>
+
 <h3>2.7 Toy Part — Fashion-MNIST Tuner</h3>
 <p><code>labs/02_fashion_mnist_tuner.py</code> tunes a one-hidden-layer dense network on Fashion-MNIST, searching <code>units</code> (32–256, step 32) and learning rate <code>{1e-4, 5e-4, 1e-3, 5e-3}</code> with random search (6 trials, 2 epochs, early stopping on <code>val_loss</code>).</p>
 <table>
@@ -642,6 +695,8 @@ MobileNetV2 was pretrained on ImageNet with inputs in [−1, 1] via its own <cod
 </tbody>
 </table>
 <p>The best settings (<code>units=256, lr=5e-4</code>) were rebuilt and trained for 3 epochs: validation accuracy 0.8638, <strong>test accuracy 0.8627</strong>. The same lesson appears at toy scale: learning rate dominates, capacity (<code>units</code>) is secondary once the network is wide enough. Full output: <code>logs/13_lab_fashion_tuner.log</code>.</p>
+<figure><img src="screenshots/SS_16_fashion_tuner.png"><figcaption><b>Figure 20.</b> SS_16 — Toy Keras Tuner on Fashion-MNIST.</figcaption></figure>
+
 <hr />
 <h1>Chapter 3 — MLflow + DagsHub (12 marks)</h1>
 <h2>3.1 — MLflow Glossary</h2>
@@ -669,6 +724,10 @@ MobileNetV2 was pretrained on ImageNet with inputs in [−1, 1] via its own <cod
 </table>
 <p>The two-run comparison view (<code>report/screenshots/SS_17b_local_mlflow_compare.png</code>) makes the effect obvious: the higher learning rate bounces around and settles at 56 %, while 1e-3 converges smoothly to 81 % within four epochs. This is the same effect that appeared at full scale in §2.7.</p>
 <p><em>(Runs list: <code>report/screenshots/SS_17_local_mlflow_runs.png</code>; comparison: <code>report/screenshots/SS_17b_local_mlflow_compare.png</code>.)</em></p>
+<figure><img src="screenshots/SS_17_local_mlflow_runs.png"><figcaption><b>Figure 21.</b> SS_17 — Local MLflow UI listing the two toy runs.</figcaption></figure>
+
+<figure><img src="screenshots/SS_17b_local_mlflow_compare.png"><figcaption><b>Figure 22.</b> SS_17b — Local MLflow comparison of lr=1e-3 vs lr=1e-1.</figcaption></figure>
+
 <p><strong>Glossary (required by rubric regardless of lab status):</strong></p>
 <table>
 <thead>
@@ -706,25 +765,28 @@ MobileNetV2 was pretrained on ImageNet with inputs in [−1, 1] via its own <cod
 </table>
 <hr />
 <h2>3.2 — DagsHub Connection</h2>
-<p><strong>What I did:</strong> Created the DagsHub project <code>23L-0578_A2_Ops</code> connected to <code>github.com/zayn-zeny/23L-0578_A2_Ops</code>. Added the following keys to <code>.env</code> (which is listed in <code>.gitignore</code>):</p>
-<div class="codehilite"><pre><span></span><code>MLFLOW_TRACKING_URI=https://dagshub.com/zayn-zeny/23L-0578_A2_Ops.mlflow
+<p><strong>What I did:</strong> Created the DagsHub project <code>zayn-zeny/VisionGuard</code>, connected to the GitHub repository <code>github.com/zayn-zeny/VisionGuard</code>. Added the following keys to <code>.env</code> (which is listed in <code>.gitignore</code>):</p>
+<pre><code>MLFLOW_TRACKING_URI=https://dagshub.com/zayn-zeny/VisionGuard.mlflow
 MLFLOW_TRACKING_USERNAME=zayn-zeny
 MLFLOW_TRACKING_PASSWORD=&lt;dagshub_token&gt;
-</code></pre></div>
-
+</code></pre>
 <p>Proved <code>.env</code> is git-ignored:</p>
-<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>check-ignore<span class="w"> </span>-v<span class="w"> </span>.env
-.gitignore:3:.env<span class="w">    </span>.env
-</code></pre></div>
-
+<pre><code>$ git check-ignore -v .env
+.gitignore:3:.env    .env
+</code></pre>
 <p>The training script reads these values via <code>os.environ.get()</code> only — no hardcoded credentials anywhere in the code.</p>
 <p><em>(git check-ignore output: SS_18. DagsHub MLflow UI: SS_19)</em></p>
+<figure><img src="screenshots/SS_18_env_gitignored.png"><figcaption><b>Figure 23.</b> SS_18 — <code>git check-ignore -v .env</code> proving the secrets file is ignored.</figcaption></figure>
+
+<figure><img src="screenshots/SS_19_dagshub_mlflow.png"><figcaption><b>Figure 24.</b> SS_19 — DagsHub-hosted MLflow tracking server showing the <code>VisionGuard</code> and <code>toy_dagshub</code> experiments.</figcaption></figure>
+
 <h3>3.2 Toy Part</h3>
 <p><code>labs/04_dagshub_repeat.py</code> repeats a toy run against the DagsHub tracking server using only the environment variables (no credentials in code). It logged to the experiment <code>toy_dagshub</code> and finished with <strong>test accuracy 0.7513</strong>; the run is visible at:</p>
-<div class="codehilite"><pre><span></span><code>https://dagshub.com/zayn-zeny/VisionGuard.mlflow/#/experiments/1/runs/6cd7a1426dc74c5a9f7b7b0232526a25
-</code></pre></div>
-
+<pre><code>https://dagshub.com/zayn-zeny/VisionGuard.mlflow/#/experiments/1/runs/6cd7a1426dc74c5a9f7b7b0232526a25
+</code></pre>
 <p>That proves the tracking URI plus token from <code>.env</code> work end-to-end for both the real experiments (<code>VisionGuard</code>) and a fresh experiment created by the toy script. Full log: <code>logs/08_lab_dagshub_repeat.log</code>.</p>
+<figure><img src="screenshots/SS_19b_toy_dagshub_run.png"><figcaption><b>Figure 25.</b> SS_19b — The toy run repeated against DagsHub (<code>toy_dagshub_repeat</code>).</figcaption></figure>
+
 <hr />
 <h2>3.3 — MLflow Instrumentation</h2>
 <p>Both approaches were used on real VisionGuard runs.</p>
@@ -732,20 +794,27 @@ MLFLOW_TRACKING_PASSWORD=&lt;dagshub_token&gt;
 <p><strong>Autologging (<code>--autolog</code>, used for <code>run2_mobilenet_lr_low</code>).</strong> <code>mlflow.tensorflow.autolog()</code> captures the model architecture, optimizer, loss, batch size, epoch count, per-epoch <code>loss</code>/<code>accuracy</code>/<code>val_loss</code>/<code>val_accuracy</code>, the training history and the model artifact with no code. What it <em>misses</em> is everything domain-specific: the custom test metrics (precision/recall/F1/ROC-AUC), the chosen decision threshold, the seed and the git/DVC tags. Those were logged manually after <code>model.fit</code> so that the autologged run stayed comparable with the others.</p>
 <p><strong>Comparison:</strong> autolog is excellent for “did this run train, with what settings”, while manual logging is required for “which run should we ship”. In a team, autolog plus a small explicit block for business metrics is the pragmatic combination used here.</p>
 <p><em>(Run pages: <code>VisionGuard</code> experiment on DagsHub — manual runs <code>measurement_run</code>, <code>run3</code>–<code>run7</code>; autolog run <code>run2_mobilenet_lr_low</code>, run id <code>a7569e56</code>.)</em></p>
+<figure><img src="screenshots/SS_20_run_manual_overview.png"><figcaption><b>Figure 26.</b> SS_20 — Manually-logged run <code>run3_mobilenet_lr_high</code>: parameters, final test metrics and tags (git_commit, dvc_data_version, seed, project).</figcaption></figure>
+
+<figure><img src="screenshots/SS_20b_run_manual_metrics.png"><figcaption><b>Figure 27.</b> SS_20b — Per-epoch metric curves of the manual run.</figcaption></figure>
+
+<figure><img src="screenshots/SS_21_run_autolog_overview.png"><figcaption><b>Figure 28.</b> SS_21 — Autologged run <code>run2_mobilenet_lr_low</code>: the extra optimizer/fit parameters autolog captured.</figcaption></figure>
+
 <hr />
 <h2>3.4 — Artifact Attachment</h2>
 <p>Every finished run uploads the same artifact tree to the DagsHub artifact store:</p>
-<div class="codehilite"><pre><span></span><code><span class="nx">model</span><span class="o">/</span><span class="w">                 </span><span class="nx">champion</span><span class="o">-</span><span class="nx">era</span><span class="w"> </span><span class="p">.</span><span class="nx">keras</span><span class="w"> </span><span class="nx">model</span><span class="w"> </span><span class="p">(</span><span class="nx">the</span><span class="w"> </span><span class="nx">artifact</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">registry</span><span class="w"> </span><span class="nx">copies</span><span class="p">)</span>
-<span class="nx">figures</span><span class="o">/</span><span class="w">               </span><span class="nx">curves_</span><span class="p">&lt;</span><span class="nx">run</span><span class="p">&gt;.</span><span class="nx">png</span><span class="p">,</span><span class="w"> </span><span class="nx">curves_</span><span class="p">&lt;</span><span class="nx">run</span><span class="p">&gt;</span><span class="nx">_stage1_freeze</span><span class="p">.</span><span class="nx">png</span><span class="p">,</span>
-<span class="w">                       </span><span class="nx">curves_</span><span class="p">&lt;</span><span class="nx">run</span><span class="p">&gt;</span><span class="nx">_stage2_unfreeze</span><span class="p">.</span><span class="nx">png</span><span class="p">,</span><span class="w"> </span><span class="nx">augmented_batch</span><span class="p">.</span><span class="nx">png</span>
-<span class="w">                       </span><span class="o">+</span><span class="w"> </span><span class="nx">model_summary_mobilenet</span><span class="p">.</span><span class="nx">txt</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nx">model_summary_cnn</span><span class="p">.</span><span class="nx">txt</span>
-<span class="nx">eval_figures</span><span class="o">/</span><span class="w">          </span><span class="nx">confusion_matrix_</span><span class="p">&lt;</span><span class="nx">run</span><span class="p">&gt;.</span><span class="nx">png</span><span class="p">,</span><span class="w"> </span><span class="nx">roc_curve_</span><span class="p">&lt;</span><span class="nx">run</span><span class="p">&gt;.</span><span class="nx">png</span><span class="p">,</span>
-<span class="w">                       </span><span class="nx">misclassified_</span><span class="p">&lt;</span><span class="nx">run</span><span class="p">&gt;.</span><span class="nx">png</span>
-<span class="nx">splits</span><span class="o">/</span><span class="w">                </span><span class="nx">train</span><span class="p">.</span><span class="nx">csv</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="p">.</span><span class="nx">csv</span><span class="p">,</span><span class="w"> </span><span class="nx">test</span><span class="p">.</span><span class="nx">csv</span><span class="w">  </span><span class="p">(</span><span class="nx">the</span><span class="w"> </span><span class="nx">exact</span><span class="w"> </span><span class="nx">lists</span><span class="w"> </span><span class="nx">used</span><span class="p">)</span>
-<span class="nx">requirements</span><span class="p">.</span><span class="nx">txt</span><span class="w">       </span><span class="nx">the</span><span class="w"> </span><span class="nx">pinned</span><span class="w"> </span><span class="kn">package</span><span class="w"> </span><span class="nx">list</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">environment</span><span class="w"> </span><span class="nx">that</span><span class="w"> </span><span class="nx">trained</span><span class="w"> </span><span class="nx">it</span>
-</code></pre></div>
-
+<pre><code>model/                 champion-era .keras model (the artifact the registry copies)
+figures/               curves_&lt;run&gt;.png, curves_&lt;run&gt;_stage1_freeze.png,
+                       curves_&lt;run&gt;_stage2_unfreeze.png, augmented_batch.png
+                       + model_summary_mobilenet.txt / model_summary_cnn.txt
+eval_figures/          confusion_matrix_&lt;run&gt;.png, roc_curve_&lt;run&gt;.png,
+                       misclassified_&lt;run&gt;.png
+splits/                train.csv, val.csv, test.csv  (the exact lists used)
+requirements.txt       the pinned package list of the environment that trained it
+</code></pre>
 <p>Attaching the split lists matters more than it looks: without them a run cannot be reproduced even if the code and the model are present, because the dataset is a DVC pointer plus a seeded split. The same applies to <code>requirements.txt</code> — the run is only reproducible against the exact TensorFlow/Keras versions recorded there. The full-tree upload is visible per run in the DagsHub artifacts panel (<code>api/2.0/mlflow-artifacts/artifacts/&lt;run_id&gt;/artifacts</code>).</p>
+<figure><img src="screenshots/SS_22_run_artifacts.png"><figcaption><b>Figure 29.</b> SS_22 — Artifacts tab of the champion run: model, figures, eval_figures, splits and requirements.txt.</figcaption></figure>
+
 <hr />
 <h2>3.5 — ≥6 MLflow Runs Comparison</h2>
 <p>Seven runs finished in the <code>VisionGuard</code> experiment; each differs from the base configuration in exactly one meaningful way. An eighth entry, <code>run3</code>'s first attempt, ended with status <code>FAILED</code> and was re-run — it is left visible in MLflow on purpose, because an experiment log that hides failed attempts is not an honest record. The sweep was re-launched with <code>--only-runs</code> to complete the remaining configurations.</p>
@@ -874,6 +943,10 @@ MLFLOW_TRACKING_PASSWORD=&lt;dagshub_token&gt;
 - <strong>Fewer unfrozen layers</strong> (<code>run6</code>, last 5 instead of 20) gave the best ROC-AUC (0.8558) and highest recall (0.8765) but a lower F1 than <code>run3</code>, i.e. it is better at ranking than at the specific 0.40 decision.
 - <strong>The hand-built CNN</strong> (<code>run7</code>) is clearly worse (AUC 0.68), although its recall at threshold 0.50 is superficially high because it over-predicts the AI class (precision 0.63). This is exactly the imbalance a single accuracy number would hide.</p>
 <p><strong>Choice:</strong> <code>run3_mobilenet_lr_high</code> is the champion. It has the best test accuracy and F1, the second-best AUC, and its precision/recall balance is the most useful at the deployed 0.40 threshold. <code>run6</code> has a marginally better AUC but a lower F1 and fewer fine-tuned layers; <code>run4</code> (no augmentation) is close but adds no benefit. F1 is the deciding metric because the classes are mildly imbalanced (55/45) and both error types matter, with recall weighted slightly higher per §2.5. The comparison table is also saved as <code>report/figures/sweep_comparison.csv</code>, and the ranking is visible in the experiment view.</p>
+<figure><img src="screenshots/SS_23a_dagshub_runs_list.png"><figcaption><b>Figure 30.</b> SS_23a — All VisionGuard runs on DagsHub, including the honest FAILED attempt.</figcaption></figure>
+
+<figure><img src="screenshots/SS_23b_dagshub_compare.png"><figcaption><b>Figure 31.</b> SS_23b — MLflow compare view of the seven finished runs (parallel coordinates and parameter diff).</figcaption></figure>
+
 <hr />
 <h2>3.6 — Model Registry and Champion Alias</h2>
 <p>Two versions of the model <code>MobileNetV2_VisionGuard</code> were registered from finished runs:</p>
@@ -902,18 +975,23 @@ MLFLOW_TRACKING_PASSWORD=&lt;dagshub_token&gt;
 </tbody>
 </table>
 <p><code>scripts/register_champion.py</code> registers both versions and promotes version 2 with the alias, then downloads that version's artifact to <code>models/champion.keras</code> — the file the Flask app and the Docker image load at start-up. <code>scripts/predict_by_alias.py</code> resolves the alias through the registry, downloads the model and classifies one image:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">Resolving</span><span class="w"> </span><span class="n">alias</span><span class="w"> </span><span class="s1">'champion'</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="s1">'MobileNetV2_VisionGuard'</span><span class="w"> </span><span class="o">...</span>
-<span class="w">  </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Version</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="p">(</span><span class="n">run_id</span><span class="o">=</span><span class="n">bfd3d2308998455a9023a6a6929f2d65</span><span class="p">)</span>
-<span class="w">  </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">Downloading</span><span class="w"> </span><span class="n">model</span><span class="w"> </span><span class="n">artifacts</span><span class="w"> </span><span class="o">...</span>
-<span class="o">==================================================</span>
-<span class="n">Image</span><span class="w">     </span><span class="p">:</span><span class="w"> </span><span class="n">data</span>\<span class="n">raw</span>\<span class="n">AiArtData</span>\<span class="n">AiArtData</span>\<span class="n">bDSF6saJUuPLsEu9i3ud</span><span class="o">--</span><span class="mi">1</span><span class="o">--</span><span class="n">gvs7i</span><span class="o">.</span><span class="n">jpg</span>
-<span class="n">Label</span><span class="w">     </span><span class="p">:</span><span class="w"> </span><span class="n">AI</span><span class="o">-</span><span class="n">generated</span>
-<span class="n">Confidence</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5523</span>
-<span class="n">Threshold</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="mf">0.4</span>
-<span class="o">==================================================</span>
-</code></pre></div>
-
+<pre><code>Resolving alias 'champion' for model 'MobileNetV2_VisionGuard' ...
+  -&gt; Version 2  (run_id=bfd3d2308998455a9023a6a6929f2d65)
+  -&gt; Downloading model artifacts ...
+==================================================
+Image     : data\raw\AiArtData\AiArtData\bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg
+Label     : AI-generated
+Confidence: 0.5523
+Threshold : 0.4
+==================================================
+</code></pre>
 <p>The verbatim transcripts are <code>report/figures/task_3_6_registry.txt</code> and <code>report/figures/task_3_6_predict_alias.txt</code>.</p>
+<figure><img src="screenshots/SS_24_registry.png"><figcaption><b>Figure 32.</b> SS_24 — <code>register_champion.py</code>: two versions registered, alias <code>champion</code> → version 2.</figcaption></figure>
+
+<figure><img src="screenshots/SS_24b_registry_alias_api.png"><figcaption><b>Figure 33.</b> SS_24b — The DagsHub registry API confirming alias <code>champion</code> resolves to version 2.</figcaption></figure>
+
+<figure><img src="screenshots/SS_25_predict_by_alias.png"><figcaption><b>Figure 34.</b> SS_25 — <code>predict_by_alias.py</code> loading the model by alias and classifying one image.</figcaption></figure>
+
 <p>The registry is not queried at request time — an important design decision. The alias is resolved once, when the image is built or the champion is rotated, and the resulting <code>champion.keras</code> is baked into the image. Serving then has zero DagsHub latency and no runtime dependency on the registry being reachable. The trade-off is that promoting a new champion requires rebuilding/redeploying the image, which is the correct behaviour for an auditable deployment (the running version is pinned by the image tag, not by whatever the registry happens to point at).</p>
 <p><strong>How the champion reaches the server without per-request DagsHub calls:</strong><br />
 During Docker image build (or at container startup via an init script), <code>scripts/register_champion.py</code> downloads the model artifact once to <code>models/champion.keras</code>. The Flask app's <code>load_model_once()</code> then loads it from the local path at startup. At request time, inference is entirely local — no network call to DagsHub. This means:</p>
@@ -932,10 +1010,9 @@ Loading MobileNetV2 weights takes approximately 2–5 seconds and allocates ~400
 <p><strong>Why train/serve preprocessing must match:</strong><br />
 The model's learned weights encode a specific input distribution (MobileNetV2's [−1,1]). Serving with any other normalisation creates <em>training-serving skew</em> — the model predicts on a different distribution than it was trained on, producing worse results with no error message. <code>inference.py</code> uses the identical <code>mobilenet_v2.preprocess_input</code> call as <code>train.py</code>.</p>
 <p><strong>Console output for two known images</strong> (the same <code>mobilenet_v2.preprocess_input</code> path used in training; transcript <code>report/figures/task_2_5_test_metrics.txt</code>):</p>
-<div class="codehilite"><pre><span></span><code><span class="n">bDSF6saJUuPLsEu9i3ud</span><span class="o">--</span><span class="mi">1</span><span class="o">--</span><span class="n">gvs7i</span><span class="p">.</span><span class="n">jpg</span><span class="w">                        </span><span class="n">p</span><span class="p">(</span><span class="n">AI</span><span class="p">)</span><span class="o">=</span><span class="mf">0.5523</span><span class="w">  </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">AI</span><span class="o">-</span><span class="n">generated</span>
-<span class="mi">360</span><span class="n">_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rtaDBI</span><span class="p">.</span><span class="n">jpg</span><span class="w">     </span><span class="n">p</span><span class="p">(</span><span class="n">AI</span><span class="p">)</span><span class="o">=</span><span class="mf">0.1519</span><span class="w">  </span><span class="o">-&gt;</span><span class="w"> </span><span class="kt">Real</span>
-</code></pre></div>
-
+<pre><code>bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg                        p(AI)=0.5523  -&gt; AI-generated
+360_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rtaDBI.jpg     p(AI)=0.1519  -&gt; Real
+</code></pre>
 <p>Both are from the sealed test split and are classified correctly at the deployed threshold of 0.40. The second image is a real photograph; the first is an AI landscape. The same two images were later pushed through the HTTP API in §7 and returned identical probabilities, which is the parity check between the in-process and remote paths.</p>
 <hr />
 <h2>4.2 — Input Validation</h2>
@@ -980,6 +1057,12 @@ The model's learned weights encode a specific input distribution (MobileNetV2's 
 </tbody>
 </table>
 <p><em>(Screenshots: <code>report/screenshots/SS_27_error_wrong_extension.png</code>, <code>SS_28_error_too_large.png</code>, <code>SS_29_error_corrupt_image.png</code>.)</em></p>
+<figure><img src="screenshots/SS_27_error_wrong_extension.png"><figcaption><b>Figure 35.</b> SS_27 — Wrong file type rejected (415).</figcaption></figure>
+
+<figure><img src="screenshots/SS_28_error_too_large.png"><figcaption><b>Figure 36.</b> SS_28 — File over 10 MB rejected (413).</figcaption></figure>
+
+<figure><img src="screenshots/SS_29_error_corrupt_image.png"><figcaption><b>Figure 37.</b> SS_29 — Image-looking file that cannot be decoded rejected (422).</figcaption></figure>
+
 <hr />
 <h2>4.3 — Templates</h2>
 <p>The UI is a dark, responsive set of Jinja templates sharing <code>base.html</code> (nav bar, flash messages, footer):</p>
@@ -989,60 +1072,69 @@ The model's learned weights encode a specific input distribution (MobileNetV2's 
 <li><strong>History</strong> (<code>/history</code>) — paginated table of every prediction, newest first: timestamp, file, label, confidence, threshold, model, version, inference mode. This is the page that proves the database trail is wired into the UI.</li>
 </ul>
 <p><em>(Screenshots: <code>report/screenshots/SS_30_upload_page.png</code>, <code>SS_31_result_page.png</code>, <code>SS_35_history_page.png</code>.)</em></p>
+<figure><img src="screenshots/SS_30_upload_page.png"><figcaption><b>Figure 38.</b> SS_30 — Upload page.</figcaption></figure>
+
+<figure><img src="screenshots/SS_31b_result_compose.png"><figcaption><b>Figure 39.</b> SS_31 — Result page served by the Compose stack: verdict, confidence vs threshold, metadata and limitation caveat.</figcaption></figure>
+
+<figure><img src="screenshots/SS_35b_history_postgres.png"><figcaption><b>Figure 40.</b> SS_35 — History page reading from PostgreSQL in the Compose stack.</figcaption></figure>
+
 <hr />
 <h2>4.4 — Environment Configuration</h2>
 <p><strong>What I did:</strong> Every setting is loaded from environment variables in <code>app/__init__.py</code>. <code>debug=False</code> is hardcoded (not overridable via env) for safety.</p>
 <p><strong>Why debug=False matters in production:</strong><br />
 Flask's Werkzeug debugger exposes an interactive Python REPL in the browser when an unhandled exception occurs. It is protected only by a 9-digit PIN that can be brute-forced in seconds (10^9 attempts ÷ network latency). An attacker who gains access can execute arbitrary Python code on the server — equivalent to full remote code execution. Even if the PIN is not brute-forced, the debugger prints full stack traces in HTTP responses, leaking library versions, file paths, and variable values that an attacker can use to tailor further exploits. <code>debug=False</code> disables both the REPL and the tracebacks.</p>
 <p><strong>Live health response</strong> from the running app:</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="nt">"db"</span><span class="p">:</span><span class="s2">"ok"</span><span class="p">,</span><span class="nt">"debug"</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">"inference_mode"</span><span class="p">:</span><span class="s2">"local"</span><span class="p">,</span><span class="nt">"model_name"</span><span class="p">:</span><span class="s2">"MobileNetV2_VisionGuard"</span><span class="p">,</span>
-<span class="w"> </span><span class="nt">"model_version"</span><span class="p">:</span><span class="s2">"champion"</span><span class="p">,</span><span class="nt">"prediction_count"</span><span class="p">:</span><span class="mi">6</span><span class="p">,</span><span class="nt">"status"</span><span class="p">:</span><span class="s2">"healthy"</span><span class="p">}</span>
-</code></pre></div>
-
+<pre><code class="language-json">{&quot;db&quot;:&quot;ok&quot;,&quot;debug&quot;:false,&quot;inference_mode&quot;:&quot;local&quot;,&quot;model_name&quot;:&quot;MobileNetV2_VisionGuard&quot;,
+ &quot;model_version&quot;:&quot;champion&quot;,&quot;prediction_count&quot;:6,&quot;status&quot;:&quot;healthy&quot;}
+</code></pre>
 <p>The endpoint checks the database (<code>db: ok</code> by executing a trivial query), reports the loaded model and version, and confirms <code>debug</code> is <code>false</code>. <em>(Screenshot: <code>report/screenshots/SS_33_health_endpoint.png</code>.)</em></p>
+<figure><img src="screenshots/SS_33b_health_compose.png"><figcaption><b>Figure 41.</b> SS_33 — <code>/health</code> from the Compose stack: <code>db: ok</code>, <code>debug: false</code>.</figcaption></figure>
+
 <hr />
 <h1>Chapter 5 — Database Trail (8 marks)</h1>
-<p><strong>What I did:</strong> Used PostgreSQL (via SQLAlchemy) in Docker Compose. Every prediction writes a row to the <code>predictions</code> table.</p>
-<p><strong>Schema:</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="n">predictions</span><span class="w"> </span><span class="p">(</span>
-<span class="w">    </span><span class="n">id</span><span class="w">                  </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">,</span>
-<span class="w">    </span><span class="n">timestamp_utc</span><span class="w">       </span><span class="k">TIMESTAMP</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">label</span><span class="w">               </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">confidence</span><span class="w">          </span><span class="nb">FLOAT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">threshold</span><span class="w">           </span><span class="nb">FLOAT</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">model_name</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">model_version</span><span class="w">       </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">inference_mode</span><span class="w">      </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">image_sha256</span><span class="w">        </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">image_size_bytes</span><span class="w">    </span><span class="nb">INTEGER</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">image_width</span><span class="w">         </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">image_height</span><span class="w">        </span><span class="nb">INTEGER</span><span class="p">,</span>
-<span class="w">    </span><span class="n">filename_sanitized</span><span class="w">  </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">NULL</span><span class="p">,</span>
-<span class="w">    </span><span class="n">request_latency_ms</span><span class="w">  </span><span class="nb">FLOAT</span><span class="p">,</span>
-<span class="w">    </span><span class="n">client_ip</span><span class="w">           </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span>
-<span class="w">    </span><span class="n">user_agent</span><span class="w">          </span><span class="nb">VARCHAR</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
-<span class="p">);</span>
-</code></pre></div>
+<p><strong>What I did:</strong> every successful prediction writes one row to a PostgreSQL 16 table, <code>predictions</code>, through Flask-SQLAlchemy. The write happens inside the <code>/predict</code> view, right after inference and before the redirect to <code>/result</code>, so no verdict reaches the browser without a record. The History menu item (<code>/history</code>) reads the same table back, newest first, so a user can see what was decided, when, by which model and how confidently.</p>
+<p><strong>Why these columns:</strong> the brief asks four questions, and each has a column. <em>What was decided:</em> <code>label</code>, <code>confidence</code> and the <code>threshold</code> in force at the time (needed because a 0.45 means different things at thresholds 0.4 and 0.5). <em>When:</em> <code>timestamp_utc</code>, stored in UTC so rows from different machines sort correctly. <em>By which model:</em> <code>model_name</code>, <code>model_version</code> and <code>inference_mode</code> (local Keras or the remote cloud API). <em>How confidently:</em> <code>confidence</code> plus <code>request_latency_ms</code>. I also store a SHA-256 of the image so the same upload can be recognised later, even though the image itself is never kept.</p>
+<p><strong>Schema</strong> (generated by SQLAlchemy, shown by <code>\d predictions</code> in SS_34):</p>
+<pre><code class="language-sql">CREATE TABLE predictions (
+    id                  SERIAL PRIMARY KEY,
+    timestamp_utc       TIMESTAMP NOT NULL,
+    label               VARCHAR(16) NOT NULL,
+    confidence          FLOAT NOT NULL,
+    threshold           FLOAT NOT NULL,
+    model_name          VARCHAR(128) NOT NULL,
+    model_version       VARCHAR(64) NOT NULL,
+    inference_mode      VARCHAR(16) NOT NULL,
+    image_sha256        VARCHAR(64) NOT NULL,
+    image_size_bytes    INTEGER NOT NULL,
+    image_width         INTEGER,
+    image_height        INTEGER,
+    filename_sanitized  VARCHAR(256) NOT NULL,
+    request_latency_ms  FLOAT,
+    client_ip           VARCHAR(64),
+    user_agent          VARCHAR(512)
+);
+</code></pre>
+<p><strong>Observed trail on PostgreSQL.</strong> With the Compose stack running (§6.3) I uploaded three AI-generated and three real test images. All six were classified correctly, and querying the database container directly gives:</p>
+<pre><code> id |       ts_utc        |               file               |    label     |  conf  | threshold | model_version | inference_mode |   ms
+  1 | 2026-11-07 21:27:17 | bDSF6saJUuPLsEu9i3ud--1--gvs7i.j | AI-generated | 0.5523 |       0.4 | champion      | local          | 2622.2
+  2 | 2026-11-07 21:27:18 | 6324662e5ee3110438933c1b_COBE-Pi | AI-generated | 0.7257 |       0.4 | champion      | local          |  207.8
+  3 | 2026-11-07 21:27:18 | landscape-art-ai-generated-photo | AI-generated | 0.8603 |       0.4 | champion      | local          |  301.6
+  4 | 2026-11-07 21:27:21 | 360_F_380747975_sS1hCVB0qPqFCWBM | Real         | 0.1519 |       0.4 | champion      | local          | 3066.6
+  5 | 2026-11-07 21:27:22 | 33100scr.jpg                     | Real         | 0.0205 |       0.4 | champion      | local          |  277.5
+  6 | 2026-11-07 21:27:22 | the-essay_58_resurgence-of-the-p | Real         | 0.0145 |       0.4 | champion      | local          |  205.6
+</code></pre>
+<p>The first request of each gunicorn worker takes 2.6–3.1 s; after that requests take about 0.2–0.3 s. The model is loaded at start-up, so this first-call cost is TensorFlow building its graph on the first <code>predict()</code>, not model loading. The probabilities match the in-process values in §4.1 to four decimal places (0.5523 and 0.1519), so the containerised path and the training-side path agree. Full transcript: <code>logs/27_postgres_trail.log</code>.</p>
+<figure><img src="screenshots/SS_34_postgres_trail.png"><figcaption><b>Figure 42.</b> SS_34 — psql inside the db container: table schema, every logged prediction and a per-mode/label summary.</figcaption></figure>
 
-<p><strong>Observed trail.</strong> The local end-to-end run produced nine rows: six predictions in local mode and three in remote mode. Querying the store directly (the transcript is <code>report/figures/task_5_sql_trail.txt</code>):</p>
-<div class="codehilite"><pre><span></span><code> 1 | 2026-11-07 12:06:06 | bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg | AI-generated | 0.5415 | thr=0.4 | champion | local
- 4 | 2026-11-07 12:06:38 | 360_F_380747975_sS1hCVB0qPqFCWBMZ3 | Real         | 0.1396 | thr=0.4 | champion | local
- 7 | 2026-11-07 12:08:19 | 6324662e5ee3110438933c1b_COBE-Pink | AI-generated | 0.7519 | thr=0.4 | champion | remote
- 8 | 2026-11-07 12:08:38 | the-essay_58_resurgence-of-the-peo | Real         | 0.0082 | thr=0.4 | champion | remote
- ...
-counts by mode: local n=6 avg_conf=0.387  |  remote n=3 avg_conf=0.5401
-total rows: 9
-</code></pre></div>
+<figure><img src="screenshots/SS_35b_history_postgres.png"><figcaption><b>Figure 43.</b> SS_35 — The History menu rendering the same PostgreSQL rows in the browser.</figcaption></figure>
 
-<p>Row 7 and row 2 are the same image classified once locally and once through the HTTP API: the confidence is identical (0.7519) and only <code>inference_mode</code> differs. That is the strongest single piece of evidence that the local and remote paths share one preprocessing/decision contract.</p>
-<p><strong>Storage note.</strong> The graded Compose stack uses PostgreSQL 16 (<code>DATABASE_URL=postgresql://visionguard:...@db:5432/visionguard</code>), and the schema above is generated by SQLAlchemy for Postgres. The local demonstration above had to run against SQLite because Docker could not build on this host (§6); the model class and every query are database-agnostic, so the same rows and the same <code>/history</code> page appear with Postgres. This substitution is stated openly rather than presented as a Postgres screenshot.</p>
-<p><em>(History screenshots: <code>report/screenshots/SS_35_history_page.png</code> and <code>SS_50_history_mixed_modes.png</code>. SQL transcript: <code>report/figures/task_5_sql_trail.txt</code>.)</em></p>
-<p><strong>Why Postgres over SQLite for production Compose:</strong><br />
-SQLite writes are serialised (one writer at a time) and the file must be accessible from both the web process and any future workers — problematic in containers where the filesystem is ephemeral unless mounted. Postgres is a proper client-server database: web connects over TCP to the <code>db</code> service, the data lives in a named volume, and concurrent writes are handled correctly.</p>
+<p><strong>Persistence.</strong> The rows survived <code>docker compose stop</code>/<code>start</code>, <code>restart db</code>, and the complete recreation of both containers during the break/fix exercise in §6.5: <code>select count(*)</code> returned 6 throughout (SS_41a). That is the named volume <code>23l0578_visionguard_pgdata</code> doing its job. Data is lost only on an explicit <code>docker compose down -v</code>.</p>
+<p><strong>Earlier SQLite trail.</strong> Before Docker could build on this host, the same code was run locally against SQLite (<code>report/figures/task_5_sql_trail.txt</code>, 9 rows: 6 local and 3 remote). Row 7 there is the same image as row 2 sent through the HTTP API: identical confidence (0.7519), different <code>inference_mode</code>. The model class and queries are database-agnostic, which is why switching to Postgres was a one-line URL change.</p>
+<p><strong>Why Postgres rather than SQLite for the stack:</strong> SQLite allows one writer at a time and is a file inside the container, so it disappears with the container unless it is carefully mounted, and it cannot be shared by two gunicorn workers on different hosts. Postgres is a client-server database: <code>web</code> reaches it over the Compose network, its data lives in a named volume, and concurrent writes from both workers are handled correctly.</p>
 <hr />
 <h1>Chapter 6 — Docker and Compose (14 marks)</h1>
 <h2>6.1 — Docker Warm-up</h2>
-<p><strong>What I did:</strong> ran <code>labs/05_docker_warmup.sh</code> against the local Docker engine before touching the project image. The transcript is <code>logs/20_docker_warmup.log</code>; every step below actually ran.</p>
+<p><strong>What I did:</strong> ran <code>labs/05_docker_warmup.sh</code> against the local Docker engine before touching the project image. The transcript is <code>logs/20_docker_warmup.log</code> (SS_36); every step below actually ran.</p>
 <table>
 <thead>
 <tr>
@@ -1055,12 +1147,12 @@ SQLite writes are serialised (one writer at a time) and the file must be accessi
 <tr>
 <td>Run a ready-made image</td>
 <td><code>docker run --rm hello-world</code></td>
-<td>“Hello from Docker!” banner and exit code 0</td>
+<td>"Hello from Docker!" banner, exit code 0</td>
 </tr>
 <tr>
 <td>Port mapping, detached</td>
 <td><code>docker run -d --name vg_warmup_nginx -p 8090:80 nginx:alpine</code></td>
-<td>container listed by <code>docker ps</code>, <code>docker port</code> shows <code>0.0.0.0:8090 -&gt; 80/tcp</code></td>
+<td><code>docker port</code> shows <code>0.0.0.0:8090 -&gt; 80/tcp</code></td>
 </tr>
 <tr>
 <td>Read logs</td>
@@ -1074,13 +1166,13 @@ SQLite writes are serialised (one writer at a time) and the file must be accessi
 </tr>
 <tr>
 <td>Named volume</td>
-<td><code>docker volume create vg_warmup_vol</code> + <code>docker run --rm -v vg_warmup_vol:/data alpine sh -c "echo ... &gt; /data/proof.txt"</code></td>
-<td>file written and read back</td>
+<td><code>docker volume create vg_warmup_vol</code> + write a file from one container</td>
+<td>file written</td>
 </tr>
 <tr>
 <td>Persistence proof</td>
 <td>a <em>new</em> container mounting the same volume</td>
-<td><code>written from inside the container</code> — data outlived the first container</td>
+<td>file still there: the data outlived the first container</td>
 </tr>
 <tr>
 <td>Host reachability</td>
@@ -1088,14 +1180,16 @@ SQLite writes are serialised (one writer at a time) and the file must be accessi
 <td><code>HTTP 200</code></td>
 </tr>
 <tr>
-<td>Clean up</td>
-<td><code>docker rm -f</code>, <code>docker volume rm</code>, <code>docker rmi</code></td>
-<td><code>docker ps -a</code> and <code>docker images</code> back to their original contents</td>
+<td>List and clean up</td>
+<td><code>docker ps -a</code>, <code>docker images</code>, <code>docker rm -f</code>, <code>docker volume rm</code>, <code>docker rmi</code></td>
+<td>everything removed again</td>
 </tr>
 </tbody>
 </table>
-<p>Two practical lessons from this exercise are baked into the lab script: Git Bash rewrites container paths (<code>/data</code> became <code>C:/Users/.../data</code>) unless <code>MSYS_NO_PATHCONV=1</code> is set, and <code>docker exec -it</code> fails in a non-interactive script because there is no TTY — <code>docker exec</code> without <code>-t</code> is the correct form for automation. Port 8090 was used because 8080 was already occupied on this machine.</p>
-<p><strong>Definitions (required regardless of warm-up status):</strong></p>
+<p>What I learned: Git Bash rewrites container paths (<code>/data</code> became <code>C:/Users/.../data</code>) unless <code>MSYS_NO_PATHCONV=1</code> is set, and <code>docker exec -it</code> fails in a script because there is no terminal, so <code>docker exec</code> without <code>-t</code> is the correct form for automation. Port 8090 was used because 8080 was already taken.</p>
+<figure><img src="screenshots/SS_36_docker_warmup.png"><figcaption><b>Figure 44.</b> SS_36 — Docker warm-up transcript: run, port mapping, logs, shell, volume persistence, list and remove.</figcaption></figure>
+
+<p><strong>Definitions in my own words:</strong></p>
 <table>
 <thead>
 <tr>
@@ -1106,137 +1200,398 @@ SQLite writes are serialised (one writer at a time) and the file must be accessi
 <tbody>
 <tr>
 <td><strong>Image</strong></td>
-<td>A read-only, layered filesystem snapshot that contains everything needed to run an application (OS, dependencies, source code). Built by a Dockerfile. Immutable — identical on every machine.</td>
+<td>A read-only template for a container, built from a Dockerfile: base OS files, dependencies and app code, stored as a stack of layers. The same image gives the same behaviour on any machine.</td>
 </tr>
 <tr>
 <td><strong>Container</strong></td>
-<td>A running instance of an image. Adds a writable layer on top of the image layers. Isolated from the host by Linux namespaces and cgroups. Multiple containers can run from the same image simultaneously.</td>
+<td>A running instance of an image: the image layers plus a thin writable layer, isolated by Linux namespaces and cgroups. Deleting a container discards that writable layer.</td>
 </tr>
 <tr>
 <td><strong>Layer</strong></td>
-<td>A single filesystem change set produced by one Dockerfile instruction (<code>RUN</code>, <code>COPY</code>, <code>ADD</code>). Layers are cached by content hash. Rebuilding an image re-executes only the layers after the first changed one.</td>
+<td>The filesystem change made by one Dockerfile instruction (<code>RUN</code>, <code>COPY</code>). Layers are cached by content, so a rebuild re-runs only the instructions after the first one that changed.</td>
 </tr>
 <tr>
 <td><strong>Volume</strong></td>
-<td>A Docker-managed storage location that persists beyond the container's lifetime. Named volumes (<code>pgdata</code>) are managed by Docker; bind mounts map a host path into the container.</td>
+<td>Storage managed by Docker that lives outside any container's writable layer, so data survives container removal. The database uses a named volume.</td>
 </tr>
 <tr>
 <td><strong>Port mapping</strong></td>
-<td><code>-p host_port:container_port</code> publishes a container port on the host network. Without a mapping, the container's port is reachable only by other containers on the same Docker network.</td>
+<td><code>-p host:container</code> forwards a host port into a container. Without it, a container port is reachable only from other containers on the same Docker network.</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2>6.2 — Dockerfile</h2>
-<p><strong>What the file does, instruction by instruction:</strong></p>
+<h2>6.2 — Dockerfile for the Web App</h2>
+<p><strong>What the file does, instruction by instruction</strong> (<a href="https://github.com/zayn-zeny/VisionGuard/blob/main/Dockerfile">Dockerfile</a>):</p>
 <table>
 <thead>
 <tr>
+<th>Order</th>
 <th>Instruction</th>
 <th>Why it is there</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>1</td>
 <td><code>FROM python:3.11-slim-bookworm</code></td>
-<td>Slim Debian keeps the base near 130 MB; Python 3.11 matches the version used for training.</td>
+<td>Slim Debian: about 150 MB of base layers instead of about 1 GB for the full image. Python 3.11 matches training, and <code>tensorflow-cpu==2.17.0</code> publishes wheels for it.</td>
 </tr>
 <tr>
-<td><code>apt-get install libgomp1 curl</code></td>
-<td><code>libgomp1</code> is required by TensorFlow's OpenMP runtime; <code>curl</code> is needed by the health check. <code>--no-install-recommends</code> and <code>rm -rf /var/lib/apt/lists/*</code> keep the layer small.</td>
+<td>2</td>
+<td><code>apt-get install --no-install-recommends libgomp1 curl &amp;&amp; rm -rf /var/lib/apt/lists/*</code></td>
+<td><code>libgomp1</code> is TensorFlow's OpenMP runtime and <code>curl</code> is for the health check. Deleting the apt lists in the <em>same</em> <code>RUN</code> keeps them out of the layer (4.35 MB).</td>
 </tr>
 <tr>
-<td><code>groupadd/useradd appuser</code></td>
-<td>The container runs as UID 1001, not root, so a compromise of the app cannot write to system paths.</td>
+<td>3</td>
+<td><code>groupadd/useradd appuser</code> (UID 1001)</td>
+<td>A non-root identity for the app.</td>
 </tr>
 <tr>
-<td><code>COPY requirements-runtime.txt</code> → <code>pip install</code></td>
-<td>Dependencies are installed <strong>before</strong> the source is copied, so editing <code>app/</code> reuses the ~1.2 GB dependency layer instead of re-downloading it.</td>
+<td>4</td>
+<td><code>COPY requirements-runtime.txt</code> then <code>pip install --no-cache-dir</code></td>
+<td><strong>Dependencies before source.</strong> This 1.41 GB layer is rebuilt only when the requirements file changes. <code>--no-cache-dir</code> keeps pip's wheel cache out of the image.</td>
 </tr>
 <tr>
-<td><code>COPY app/ models/</code></td>
-<td>Only the serving code and the champion <code>.keras</code> file. Training scripts, data and secrets are excluded by <code>.dockerignore</code>.</td>
+<td>5</td>
+<td><code>COPY --chown=appuser:appgroup app/</code> and <code>models/champion.keras</code></td>
+<td>Only the serving code and the one champion model, already owned by <code>appuser</code> (see §6.4).</td>
 </tr>
 <tr>
+<td>6</td>
 <td><code>ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1</code></td>
-<td>No <code>__pycache__</code> writes inside the container; logs stream immediately to <code>docker logs</code>.</td>
+<td>No <code>.pyc</code> writes, and logs go straight to <code>docker logs</code>.</td>
 </tr>
 <tr>
+<td>7</td>
 <td><code>USER appuser</code></td>
-<td>Non-root runtime.</td>
+<td>Everything after this, including the running app, runs as UID 1001.</td>
 </tr>
 <tr>
-<td><code>HEALTHCHECK ... curl -f http://localhost:5000/health</code></td>
-<td>Compose uses this to know when the web container is actually serving, not merely started.</td>
+<td>8</td>
+<td><code>HEALTHCHECK curl -f http://localhost:5000/health</code></td>
+<td>Docker and Compose can tell "process started" from "app actually serving".</td>
 </tr>
 <tr>
+<td>9</td>
 <td><code>CMD gunicorn --workers 2 app.wsgi:application</code></td>
-<td>A production WSGI server instead of <code>flask run</code>; <code>debug=False</code> is enforced in <code>app/__init__.py</code>.</td>
+<td>A production WSGI server, not <code>flask run</code>. <code>debug=False</code> is enforced in code.</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Why <code>tensorflow-cpu</code>:</strong> the host has no GPU (§1.1). The CUDA build adds ~2 GB of libraries and init time for zero benefit.</p>
-<p><strong>Task 6.4 optimisation already applied:</strong> the image installs <code>requirements-runtime.txt</code> (9 packages: TensorFlow, NumPy, Pillow, Flask, Flask-SQLAlchemy, psycopg2, python-dotenv, Werkzeug, Gunicorn, requests) instead of the 30-package development <code>requirements.txt</code>, which also pulls MLflow, DVC, Kaggle, Keras Tuner, scikit-learn, matplotlib, OpenCV and pytest. OpenCV alone was ~50 MB of wheels plus several apt libraries.</p>
-<p><strong>Status on this host:</strong> the image build could not be completed. Docker Desktop's virtual disk grows inside C:, which had only ~3 GB free; every attempt ended with BuildKit reporting <code>metadata_v2.db: read-only file system</code> (the VM disk could not expand) and, once, an <code>I/O error</code> on the data disk. The 6.9 GB virtual disk was compacted to 3.7 GB, which was enough to start the engine and run the warm-up exercise, but the ~1.5 GB TensorFlow install still exhausted the host. This is an environment limitation, not a Dockerfile error: the same Dockerfile builds on a host with normal free space. The build log is <code>logs/19_docker_build.log</code>.</p>
-<p><em>(The warm-up container's <code>whoami</code> output is <code>root</code>, because <code>nginx:alpine</code> runs as root; the project image switches to <code>appuser</code>, shown in the Dockerfile above.)</em></p>
+<p><strong>Layer cache in practice.</strong> After fixing a bug in <code>app/__init__.py</code> I rebuilt the image. Every step up to and including <code>pip install</code> was reported as <code>CACHED</code>, and only the <code>COPY app/</code> and later steps re-ran. The rebuild took seconds instead of re-downloading about 1.4 GB of TensorFlow (SS_32b, <code>logs/24_rebuild_layer_cache.log</code>). With the order reversed (source copied first), every one-line code change would invalidate the dependency layer.</p>
+<figure><img src="screenshots/SS_32b_layer_cache.png"><figcaption><b>Figure 45.</b> SS_32b — Rebuild after a source edit: the base, apt, user and pip layers are CACHED; only the app layers rebuild.</figcaption></figure>
+
+<p><strong>Ignore file and secrets.</strong> <code>.dockerignore</code> excludes <code>.env</code>, <code>kaggle.json</code>, <code>venv/</code>, <code>data/</code>, training checkpoints, <code>mlruns/</code>, <code>logs/</code>, <code>tests/</code>, <code>.git/</code> and the report. Secrets therefore never enter the build context, let alone a layer. Every credential reaches the container at <em>run</em> time as an environment variable from Compose (§6.3), so <code>docker history</code> shows none of them.</p>
+<p><strong>Choice of TensorFlow package.</strong> <code>tensorflow-cpu==2.17.0</code>, not <code>tensorflow</code>. The host has no GPU (§1.1), and the default package bundles CUDA/cuDNN libraries that are several hundred MB of dead weight on a CPU server. The CPU build gives identical inference results. The version is pinned to the one used for training, so serving deserialises exactly the same Keras graph.</p>
+<p><strong>User inside the container</strong> (SS_37):</p>
+<pre><code>$ docker compose exec web sh -c 'whoami; id'
+appuser
+uid=1001(appuser) gid=1001(appgroup) groups=1001(appgroup)
+</code></pre>
+<p><strong>What went wrong:</strong> the first image build failed repeatedly because Docker Desktop's virtual disk is on drive C:, which had only 1–3 GB free (BuildKit errors <code>metadata_v2.db: read-only file system</code>). Compacting the virtual disk and pruning the build cache freed enough room for the 2 GB image (<code>logs/21_docker_build.log</code>), but C: stayed the binding constraint for the rest of this chapter (see §6.4).</p>
 <hr />
-<h2>6.3 — Docker Compose</h2>
-<p><strong>What the file defines:</strong></p>
+<h2>6.3 — Compose Stack</h2>
+<p><strong>What the file defines</strong> (<a href="https://github.com/zayn-zeny/VisionGuard/blob/main/docker-compose.yml">docker-compose.yml</a>), with project name <code>23l0578_a2_ops</code>:</p>
 <ul>
-<li><code>web</code> — builds from the Dockerfile, publishes <code>5000:5000</code>, waits for <code>db</code> with <code>depends_on: condition: service_healthy</code>, reads every credential from <code>${VAR}</code> substitutions in <code>.env</code>.</li>
-<li><code>db</code> — <code>postgres:16-alpine</code>, database <code>visionguard</code>, named volume <code>pgdata:/var/lib/postgresql/data</code>, health check <code>pg_isready -U $POSTGRES_USER -d visionguard</code>, and <strong>no <code>ports:</code> entry</strong>, so Postgres is reachable only from <code>web</code> over the <code>visionguard_net</code> network.</li>
-<li>The champion model is <strong>built into the image</strong>, not mounted: the image tag then identifies the exact model version, and a missing mount cannot silently break start-up.</li>
+<li><strong><code>db</code></strong>: <code>postgres:16-alpine</code>, database <code>visionguard</code>. Data lives in the named volume <code>23l0578_visionguard_pgdata</code>. A health check runs <code>pg_isready -U visionguard -d visionguard</code> every 10 s. There is <strong>no <code>ports:</code> entry</strong>.</li>
+<li><strong><code>web</code></strong>: built from the Dockerfile and tagged <code>visionguard-web:latest</code>. It publishes <code>5000:5000</code> and starts only after <code>db</code> reports healthy (<code>depends_on: condition: service_healthy</code>). Its <code>DATABASE_URL</code> points at host <strong><code>db</code></strong>, the service name, which Docker's embedded DNS resolves on the private <code>visionguard_net</code> network.</li>
+<li><strong>Secrets:</strong> <code>POSTGRES_PASSWORD</code> and <code>FLASK_SECRET_KEY</code> are <code>${...}</code> substitutions read from the untracked <code>.env</code>. <code>${POSTGRES_PASSWORD:?...}</code> makes Compose refuse to start if it is missing, instead of starting with an empty password. <code>.env.example</code> lists every key with dummy values.</li>
+<li><strong>Model:</strong> <strong>built into the image</strong>, not mounted. The image tag then pins the exact model, a deployment cannot start with a missing or stale mount, and the image runs anywhere with no extra files. The cost is that rotating the champion means rebuilding the image, which suits an auditable release flow (§3.6).</li>
 </ul>
-<p><strong>Status:</strong> <code>docker compose config</code> validates, but the stack could not be started because the <code>web</code> image could not be built on this host (see §6.2). Consequently there is no <code>docker compose ps</code> or closed-port screenshot from a live stack; this section documents the design and validation only. The database behaviour that the stack is meant to show was demonstrated directly in §5 with SQLite instead.</p>
-<hr />
-<h2>6.4 — Image Optimisation</h2>
-<p>The optimisation chosen was <strong>dependency trimming</strong>: the container now installs <code>requirements-runtime.txt</code> instead of the full development <code>requirements.txt</code>. This removes nine heavy packages (mlflow, dvc, dvc-s3, kaggle, keras-tuner, scikit-learn, matplotlib, opencv-python-headless, pytest) and the apt libraries OpenCV needs, while keeping every import the Flask app actually makes.</p>
-<p><strong>Honest status:</strong> the before/after image sizes could not be measured on this host because neither image could be built here (§6.2). What can be stated from the repository is the package delta: <code>requirements.txt</code> pins 30 distributions, <code>requirements-runtime.txt</code> pins 9, and the removed set includes a 50 MB OpenCV wheel and a ~220 MB TensorFlow-adjacent dependency tree. Measurement of the two image sizes is the first thing to run on a machine with free disk:</p>
-<div class="codehilite"><pre><span></span><code>docker build -t visionguard-web:full   -f Dockerfile.full .   # before
-docker build -t visionguard-web:latest .                      # after
-docker images | grep visionguard-web
-docker history visionguard-web:latest
-</code></pre></div>
+<p><strong>Service status — both healthy</strong> (SS_38, <code>logs/25_compose_healthy.log</code>):</p>
+<pre><code>NAME                   IMAGE                    SERVICE   STATUS                        PORTS
+23l0578_a2_ops-db-1    postgres:16-alpine       db        Up About a minute (healthy)   5432/tcp
+23l0578_a2_ops-web-1   visionguard-web:latest   web       Up 57 seconds (healthy)       0.0.0.0:5000-&gt;5000/tcp
+</code></pre>
+<p>Note the <code>PORTS</code> column. <code>web</code> shows a host mapping; <code>db</code> shows only <code>5432/tcp</code> (exposed inside the network), with no <code>0.0.0.0:</code> part.</p>
+<figure><img src="screenshots/SS_38_compose_ps_healthy.png"><figcaption><b>Figure 46.</b> SS_38 — docker compose up / ps: db becomes healthy first, then web starts and becomes healthy; /health returns db ok.</figcaption></figure>
 
+<p><strong>Proof that the database is closed from outside, but reachable by service name from inside</strong> (SS_37, <code>logs/26_container_user_and_network.log</code>):</p>
+<pre><code>$ docker compose exec web getent hosts db            -&gt; 172.18.0.2  db
+$ docker compose exec web python -c &quot;socket.create_connection(('db',5432))&quot;
+  web -&gt; db:5432 reachable by service name
+$ docker port 23l0578_a2_ops-db-1                     -&gt; (no output: nothing published)
+$ python -c &quot;socket.connect_ex(('127.0.0.1',5432))&quot;  -&gt; 10061 (closed)
+</code></pre>
+<figure><img src="screenshots/SS_37_container_user_and_closed_db_port.png"><figcaption><b>Figure 47.</b> SS_37 — Non-root user in web, service-name DNS to db, and the closed database port seen from the host.</figcaption></figure>
+
+<p><strong>What went wrong (a real bug found by running the stack):</strong> the first <code>docker compose up</code> left <code>web</code> in <code>Restarting (3)</code>. The log showed:</p>
+<pre><code>File &quot;.../sqlalchemy/dialects/postgresql/psycopg.py&quot;, line 497, in import_dbapi
+    import psycopg
+ModuleNotFoundError: No module named 'psycopg'
+[ERROR] Reason: Worker failed to boot.
+</code></pre>
+<p><em>Diagnosis:</em> the image installs <code>psycopg2-binary</code>, but SQLAlchemy was not pinned and pip installed 2.1.8. SQLAlchemy 2.1 changed the default driver for <code>postgresql://</code> URLs from psycopg2 to psycopg 3. <em>Fix:</em> <code>create_app()</code> now rewrites <code>postgresql://</code> to <code>postgresql+psycopg2://</code> (<code>_normalise_db_url</code>), and a regression test (<code>test_postgres_url_pins_psycopg2_driver</code>) guards it. SQLite runs locally and in CI had never exercised this path, which is exactly why running the real stack matters (SS_41b).</p>
 <hr />
-<h2>6.5 — Operations and Diagnosis</h2>
-<p><strong>Status:</strong> not performed against the project stack, because the stack could not be launched on this host. The intended exercise and the diagnosis path are documented so they can be executed immediately once the image builds:</p>
+<h2>6.4 — Image Analysis and Optimisation</h2>
+<p><strong>Size and largest layers</strong> (<code>docker history visionguard-web</code>, SS_40):</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pip install -r requirements-runtime.txt</code> (TensorFlow-CPU, NumPy, Flask, …)</td>
+<td><strong>1.41 GB</strong></td>
+</tr>
+<tr>
+<td>Debian bookworm base</td>
+<td>85.3 MB</td>
+</tr>
+<tr>
+<td><code>COPY models/</code></td>
+<td>58.0 MB (before)</td>
+</tr>
+<tr>
+<td><code>RUN chown -R appuser /app</code></td>
+<td>58.1 MB (before)</td>
+</tr>
+<tr>
+<td>Python 3.11 install (base image)</td>
+<td>52.5 MB</td>
+</tr>
+<tr>
+<td>apt <code>libgomp1 curl</code></td>
+<td>4.35 MB</td>
+</tr>
+</tbody>
+</table>
+<p>TensorFlow dominates: about 70 % of the image is the pip layer.</p>
+<p><strong>Problem found:</strong> <code>COPY models/</code> copied the <em>whole</em> <code>models/</code> folder. As well as <code>champion.keras</code> (19.3 MB), that folder held two more copies of the same model written by MLflow downloads (<code>models/data/model.keras</code>, <code>models/_tmp/.../model.keras</code>). On top of that, <code>RUN chown -R appuser /app</code> duplicated all 58 MB into a second layer, because changing a file's owner in a new layer stores a full copy of the file.</p>
+<p><strong>Optimisation applied:</strong> copy only the champion and set the owner during the copy:</p>
+<pre><code class="language-dockerfile">COPY --chown=appuser:appgroup app/                   ./app/
+COPY --chown=appuser:appgroup models/champion.keras  ./models/champion.keras
+</code></pre>
+<p>and remove the <code>RUN chown -R</code> layer.</p>
+<table>
+<thead>
+<tr>
+<th>Image</th>
+<th>Disk size</th>
+<th>Compressed (content) size</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>visionguard-web:before</code></td>
+<td><strong>2.18 GB</strong> (2,180,118,304 B)</td>
+<td>503 MB</td>
+</tr>
+<tr>
+<td><code>visionguard-web:latest</code></td>
+<td><strong>2.00 GB</strong> (1,996,765,100 B)</td>
+<td>416 MB</td>
+</tr>
+</tbody>
+</table>
+<p>The image is 183 MB (8.4 %) smaller on disk and 87 MB (17 %) smaller to push and pull. The two model-related layers shrank from 116 MB to 19.3 MB.</p>
+<figure><img src="screenshots/SS_40_image_size_before_after.png"><figcaption><b>Figure 48.</b> SS_40 — Before/after image sizes and the layer list of the optimised image.</figcaption></figure>
+
+<p><strong>Conclusion:</strong> the remaining 1.41 GB is TensorFlow itself. The next step would be to serve the model with a lighter runtime (TFLite or ONNX Runtime, roughly 50–100 MB). That is a model-format change, not a Dockerfile change.</p>
+<p><strong>Dependency trimming (design choice, not measured):</strong> the image already installs <code>requirements-runtime.txt</code> (TensorFlow-CPU, NumPy, Pillow, Flask, Flask-SQLAlchemy, psycopg2, python-dotenv, Werkzeug, Gunicorn, requests) instead of the 25-entry development <code>requirements.txt</code>, which adds MLflow, DVC, Kaggle, Keras Tuner, scikit-learn, matplotlib, SciPy, OpenCV and pytest. I tried to measure that too by building <code>Dockerfile.full</code>, but halfway through the pip step drive C: (which holds Docker's virtual disk) dropped to 0 bytes free. I stopped the build to avoid corrupting Docker's disk, so that number is not reported.</p>
+<hr />
+<h2>6.5 — Operations and Troubleshooting</h2>
+<p><strong>Routine operations</strong> (SS_41a, <code>logs/32_compose_operations.log</code>) on the running stack:</p>
+<table>
+<thead>
+<tr>
+<th>Action</th>
+<th>Command</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start</td>
+<td><code>docker compose up -d</code></td>
+<td>db healthy → web started → web healthy</td>
+</tr>
+<tr>
+<td>Stop one service</td>
+<td><code>docker compose stop web</code></td>
+<td>web <code>Exited</code>, db still <code>Up (healthy)</code></td>
+</tr>
+<tr>
+<td>Start again</td>
+<td><code>docker compose start web</code></td>
+<td>web healthy again</td>
+</tr>
+<tr>
+<td>Restart</td>
+<td><code>docker compose restart db</code></td>
+<td>db <code>Up 16 seconds (healthy)</code>, data intact</td>
+</tr>
+<tr>
+<td>Logs</td>
+<td><code>docker compose logs db --tail 8</code>, <code>docker compose logs web --tail 8</code></td>
+<td>Postgres "ready to accept connections"; gunicorn workers and <code>/health</code> 200s</td>
+</tr>
+<tr>
+<td>Shell in web</td>
+<td><code>docker compose exec web sh -c 'whoami; hostname; ls -la /app/models; python -c "import tensorflow"'</code></td>
+<td><code>appuser</code>, model owned by appuser, TF 2.17.0</td>
+</tr>
+<tr>
+<td>Shell in db</td>
+<td><code>docker compose exec db sh -c 'whoami; psql ... -c "select count(*) from predictions"'</code></td>
+<td><code>root</code> (the postgres image entrypoint), <code>count = 6</code></td>
+</tr>
+</tbody>
+</table>
+<figure><img src="screenshots/SS_41a_compose_operations.png"><figcaption><b>Figure 49.</b> SS_41a — start, stop, start, restart, logs and a shell inside each service.</figcaption></figure>
+
+<p><strong>A real failure the restart exposed.</strong> Immediately after <code>docker compose restart db</code>, <code>/health</code> on <code>web</code> returned:</p>
+<pre><code>{&quot;db&quot;:&quot;(psycopg2.OperationalError) server closed the connection unexpectedly ...&quot;}
+</code></pre>
+<p><em>Diagnosis from the log:</em> the db restart killed every server-side connection, but SQLAlchemy's pool in each gunicorn worker still held the old, now-dead sockets and handed one to the next request. <em>Fix:</em> <code>SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}</code>. Each pooled connection is tested with a cheap <code>SELECT 1</code> before use and silently replaced if dead. After rebuilding, <code>restart db</code> followed by <code>/health</code> returns <code>db: ok</code> (SS_41c, <code>logs/34_preping_fix_verified.log</code>).</p>
+<figure><img src="screenshots/SS_41c_db_restart_fix.png"><figcaption><b>Figure 50.</b> SS_41c — After adding pool_pre_ping, restarting db no longer breaks the next request.</figcaption></figure>
+
+<p><strong>Deliberate break: wrong database password, diagnosed from logs only</strong> (SS_41d, <code>logs/35_break_wrong_db_password.log</code>).</p>
 <ol>
-<li><code>docker compose up -d</code>, then <code>docker compose ps</code> until both services report <code>healthy</code>.</li>
-<li><code>docker compose logs -f web</code> and <code>docker compose logs db</code>; <code>docker exec -it web /bin/sh</code> and <code>docker exec -it db psql -U visionguard -d visionguard</code>.</li>
-<li>Break it on purpose by putting a wrong password in <code>.env</code> (<code>POSTGRES_PASSWORD</code>) and restarting <code>web</code>: SQLAlchemy fails with <code>OperationalError: password authentication failed</code>, which appears in <code>docker compose logs web</code> and nowhere else.</li>
-<li>Diagnose from the log alone, restore the correct password and <code>docker compose up -d</code> again; the <code>/health</code> endpoint then reports <code>db: ok</code>.</li>
-<li>A second useful failure is renaming <code>models/champion.keras</code>: <code>load_model_once()</code> raises <code>FileNotFoundError</code> with an explicit message, which is exactly why the exception text names the missing path.</li>
+<li><strong>Break.</strong> <code>POSTGRES_PASSWORD=wrong-password-on-purpose docker compose up -d web</code>. The shell variable overrides <code>.env</code> for interpolation, so web is recreated with a different password than the one the database volume was initialised with.</li>
+<li><strong>Symptom.</strong> <code>docker compose ps web</code> → <code>Restarting (3) 6 seconds ago</code>.</li>
+<li><strong>Logs (web):</strong>
+   <code>sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "db"
+   (172.18.0.2), port 5432 failed: FATAL:  password authentication failed for user "visionguard"
+   [ERROR] Reason: Worker failed to boot.</code></li>
+<li><strong>Logs (db):</strong> <code>FATAL: password authentication failed for user "visionguard"</code> and <code>DETAIL: Connection matched ... "host all all all scram-sha-256"</code>.</li>
+<li><strong>Diagnosis.</strong> The network path works: web resolved <code>db</code> to 172.18.0.2, and db received and rejected the login. So DNS, the network and db health are fine. The fault is the credential web was given. Postgres sets the password only when it <em>first</em> initialises an empty volume, so changing it in <code>.env</code> later can never "update" it. web and the volume must agree.</li>
+<li><strong>Fix.</strong> <code>docker compose up -d web</code> without the override, so web uses the <code>.env</code> password again. Both services are healthy, <code>/health</code> reports <code>db: ok</code>, and <code>prediction_count</code> is still 6. No data was lost.</li>
 </ol>
-<p>The local (non-Docker) counterpart of this exercise was performed: the remote-mode app was stopped mid-flight from the inference API and returned the 502 page shown in §8, with the connection error in the page and in the Flask log.</p>
-<hr />
-<h2>6.6 — CI Workflow (Apply Part)</h2>
-<p><code>.github/workflows/ci.yml</code> runs on every push to <code>main</code>/<code>dev</code> and on pull requests, with three jobs' worth of steps in one workflow: install pinned dependencies, <code>flake8 app/ scripts/ tests/</code>, <code>pytest tests/ -v</code>, and <code>docker build -t visionguard-ci:${{ github.sha }} .</code>. The README carries the badge referencing that workflow.</p>
-<p>The same three checks were executed locally, and all pass:</p>
-<div class="codehilite"><pre><span></span><code><span class="n">pytest</span><span class="w"> </span><span class="n">tests</span><span class="o">/</span><span class="w"> </span><span class="o">-</span><span class="n">q</span><span class="w">            </span><span class="o">-&gt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="n">passed</span><span class="p">,</span><span class="w"> </span><span class="mi">15</span><span class="w"> </span><span class="n">warnings</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="mf">34.38</span><span class="n">s</span>
-<span class="n">flake8</span><span class="w"> </span><span class="n">app</span><span class="o">/</span><span class="w"> </span><span class="n">scripts</span><span class="o">/</span><span class="w"> </span><span class="n">tests</span><span class="o">/</span><span class="w"> </span><span class="n">labs</span><span class="o">/</span><span class="w"> </span><span class="o">--</span><span class="nf">count</span><span class="w"> </span><span class="o">--</span><span class="n">statistics</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="mi">0</span>
-</code></pre></div>
+<figure><img src="screenshots/SS_41d_break_wrong_password.png"><figcaption><b>Figure 51.</b> SS_41d — Deliberate wrong DB password: crash loop, the FATAL lines in both services' logs, diagnosis, and the fix.</figcaption></figure>
 
-<p>(<code>logs/14_pytest.log</code>, <code>logs/15_flake8.log</code>.) The tests cover preprocessing shape and value range, threshold logic above and below, missing/incorrect file parts, the three validation failures, <code>/health</code>, the upload form, and the full happy path that writes a <code>predictions</code> row and renders it on <code>/history</code>. CI uses a stub model when <code>models/champion.keras</code> is absent, so the suite never depends on a 19 MB binary being committed.</p>
-<p><strong>Honest status:</strong> the GitHub Actions run itself is not shown because the repository has not been pushed from this machine yet (<code>origin</code> is configured but no branch has been pushed). The workflow and badge are in place; the first push will produce the green run.</p>
-<p><strong>Where secrets live:</strong> GitHub repo Settings → Secrets and Variables → Actions. They are referenced as <code>${{ secrets.SECRET_NAME }}</code> in the YAML. They must never be literals in <code>.github/workflows/ci.yml</code> because:
-1. Git history is permanent — even if removed, the commit that added them is accessible via <code>git log</code>
-2. GitHub scans pushed code for known secret patterns and blocks them
-3. Any fork or PR can read workflow environment variables if they are literal strings</p>
-<h3>6.6 Toy Part — Throwaway Red-then-Green Repo</h3>
-<p><em>(Practice exercise — to be completed after main tasks: SS_43)</em></p>
+<figure><img src="screenshots/SS_41b_failure_psycopg.png"><figcaption><b>Figure 52.</b> SS_41b — The genuine first-start failure (missing psycopg driver) described in §6.3.</figcaption></figure>
+
+<hr />
+<h2>6.6 — CI with GitHub Actions</h2>
+<h3>Apply part — VisionGuard workflow</h3>
+<p><code>.github/workflows/ci.yml</code> runs on every push to <code>main</code>/<code>dev</code> and on pull requests. One job runs these steps in order, and each step only runs if the previous one passed:</p>
+<ol>
+<li><code>actions/checkout</code>, then <code>actions/setup-python</code> (3.11, pip cache keyed on <code>requirements.txt</code>).</li>
+<li><code>pip install -r requirements.txt</code> — the same pinned versions as local development.</li>
+<li><code>flake8 app/ scripts/ tests/</code> — configuration in <code>.flake8</code> (line length 100, a few justified ignores).</li>
+<li><code>pytest tests/ -v</code> — 11 tests: preprocessing shape/range, threshold logic, missing file part, the three validation failures, <code>/health</code>, the upload page, a full upload that writes a row and shows it on <code>/history</code>, and the Postgres-driver regression test. A stub model stands in when <code>models/champion.keras</code> is absent.</li>
+<li>Create a tiny stand-in <code>champion.keras</code> (same input/output shape), then <code>docker build</code>. The real model is a 19 MB git-ignored binary versioned in the MLflow registry, so CI only checks that the Dockerfile builds.</li>
+</ol>
+<p><strong>What went wrong:</strong> the first runs on GitHub were red. Run <code>0722d3f</code> failed, and run <code>17365d0</code> failed at the flake8 step because three new helper scripts had lines over 100 characters; locally I had linted before adding them. After wrapping those lines, flake8 reports 0 locally (<code>logs/37_flake8.log</code>) and the next push was re-run. The badge at the top of <code>README.md</code> points at this workflow and shows its latest status.</p>
+<figure><img src="screenshots/SS_42a_pytest_local.png"><figcaption><b>Figure 53.</b> SS_42a — The same test suite run locally: 11 passed.</figcaption></figure>
+
+<figure><img src="screenshots/SS_42_ci_green.png"><figcaption><b>Figure 54.</b> SS_42 — Green GitHub Actions run of the VisionGuard workflow (lint, test, build) on commit f049e5b.</figcaption></figure>
+
+<figure><img src="screenshots/SS_42b_ci_history.png"><figcaption><b>Figure 55.</b> SS_42b — Workflow history: the red runs described above, then green.</figcaption></figure>
+
+<p><strong>Where workflow secrets live and why not in the file:</strong> in the repository under <em>Settings → Secrets and variables → Actions</em>, referenced in YAML as <code>${{ secrets.NAME }}</code>. The values are encrypted at rest, injected only into the runner's environment, and masked as <code>***</code> in logs. A literal in <code>ci.yml</code> would be in Git history forever, visible to anyone who can read or fork the repository, and copied into every clone. Rotating a leaked key would not remove it from old commits. This workflow currently needs no secrets, because tests use SQLite and a stub model.</p>
+<h3>Toy part — red then green</h3>
+<p><code>labs/06_ci_toy/</code> contains a throwaway project: <code>test_toy.py</code> (two tiny tests) and <code>.github/workflows/ci.yml</code>, which runs on every push with a <strong>matrix of Python 3.10 and 3.11</strong>. It is pushed to its own throwaway repository. Breaking <code>add()</code> (<code>return a - b</code>) gives a red run in both matrix legs, and restoring it gives a green run.</p>
+<p><span class="pending">PENDING — screenshots of the red and the green toy CI runs.</span></p>
 <hr />
 <h1>Chapter 7 — API Deployment (15 marks)</h1>
-<p><em>(To be completed at Task 7 — cloud pathway TBD)</em></p>
-<p><strong>Architecture note:</strong> The model inference API (<code>cloud_api/main.py</code>) runs on the cloud. The Flask web app (<code>app/</code>) runs on localhost and calls that remote API over HTTP when <code>INFERENCE_MODE=remote</code>. This architecture was chosen to demonstrate microservice decomposition: the inference layer is independently scalable and replaceable, and the Flask app is kept thin (no ML dependencies needed at runtime in remote mode). The environment variable swap makes the two modes interchangeable without any code change.</p>
-<p><em>(Deployment screenshots: SS_44–48)</em></p>
+<p><strong>Pathway chosen: C, "any other cloud" — Hugging Face Spaces (Docker SDK).</strong> The model API runs in the cloud; the Flask UI and the database stay on localhost, as the brief specifies for Tasks 7–8.</p>
+<p><strong>Why this platform.</strong> Research before choosing:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What I found</th>
+<th>Verdict</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Vercel (pathway B)</td>
+<td>Serverless function bundle limit around 250 MB unzipped, no persistent disk</td>
+<td>TensorFlow (≈1.4 GB installed) cannot run there at all; Vercel could only host the UI.</td>
+</tr>
+<tr>
+<td>Render free web service</td>
+<td>512 MB RAM, sleeps after 15 min idle</td>
+<td>TF + MobileNetV2 needs ~700–900 MB resident, so a real risk of out-of-memory kills.</td>
+</tr>
+<tr>
+<td>Google Cloud Run / AWS / Azure</td>
+<td>Free tiers exist but need a billing card</td>
+<td>Not available to me.</td>
+</tr>
+<tr>
+<td>Oracle Always Free (pathway A)</td>
+<td>Arm VMs with generous RAM, but capacity is often unavailable and idle instances get reclaimed</td>
+<td>Highest setup cost.</td>
+</tr>
+<tr>
+<td><strong>Hugging Face Spaces (Docker)</strong></td>
+<td>Free CPU Space with 2 vCPU / 16 GB RAM, builds any Dockerfile, public HTTPS URL, secrets store</td>
+<td>Fits TensorFlow comfortably. Same Docker skills as Task 6.</td>
+</tr>
+</tbody>
+</table>
+<p>Free Spaces sleep after about 48 hours without traffic, and the first request then waits for a cold start. That is acceptable for a demo and is noted as a limitation.</p>
+<p><strong>Mapping the Compose elements to the platform:</strong> the <code>web</code> image becomes the Space's Docker build. <code>.env</code> secrets become <strong>Space secrets</strong> (<code>REMOTE_API_KEY</code>) and variables (<code>THRESHOLD</code>). Port 7860 is published by the platform as HTTPS 443 on <code>*.hf.space</code>. The Compose health check becomes Docker <code>HEALTHCHECK</code> plus the Space's runtime status. The database stays local with the Flask app, as the brief places it.</p>
+<p><strong>What is deployed</strong> (<code>cloud_api/</code>):</p>
+<ul>
+<li><code>main.py</code> — a FastAPI service. The model loads <strong>once</strong> in the lifespan hook. <code>POST /predict</code> checks the <code>X-API-Key</code> header (401), size (413), content type (415) and decodability (422), then runs the same preprocessing as training (<code>PIL</code> RGB → 224×224 bilinear → <code>mobilenet_v2.preprocess_input</code>). It returns <code>{label, confidence, threshold, model, sha256}</code>. <code>GET /health</code> reports whether the model loaded.</li>
+<li><code>Dockerfile</code> — <code>python:3.11-slim</code>, non-root UID 1000 (Spaces runs containers as UID 1000), dependencies before source, <code>HEALTHCHECK</code>, and the champion model <strong>built into the image</strong>, so the API never calls DagsHub at request time.</li>
+<li><code>requirements.txt</code> — pinned to the <strong>training</strong> versions (<code>tensorflow-cpu==2.17.0</code>, <code>keras==3.15.1</code>, <code>numpy==1.26.4</code>, <code>Pillow==10.4.0</code>), so the cloud path reproduces local probabilities exactly. My first draft pinned TF 2.21/NumPy 2.0, which would have loaded the Keras file with a different runtime than it was trained with; I caught that before deploying.</li>
+</ul>
+<p><strong>Step-by-step deployment:</strong></p>
+<ol>
+<li>Create a free Hugging Face account and a <em>write</em> access token (Settings → Access Tokens).</li>
+<li>Put the token into the git-ignored <code>.env</code> as <code>HF_TOKEN</code>, and choose a long random <code>REMOTE_API_KEY</code>. Neither value appears in any committed file.</li>
+<li>Run <code>python scripts/deploy_hf_space.py</code>. The script:
+   - creates the public Docker Space <code>&lt;user&gt;/23L-0578_A2_Ops</code>;
+   - stores <code>REMOTE_API_KEY</code> as a Space <strong>secret</strong> and <code>THRESHOLD=0.4</code> as a variable;
+   - uploads <code>Dockerfile</code>, <code>main.py</code>, <code>requirements.txt</code>, a Space <code>README.md</code> (front-matter <code>sdk: docker</code>, <code>app_port: 7860</code>) and <code>models/champion.keras</code> (stored with Git LFS by the Hub).</li>
+<li>Hugging Face builds the image and starts the container. The Space page shows <em>Building</em> and then <em>Running</em>, and the build log shows the same <code>pip install</code> and <code>COPY</code> steps as Task 6.</li>
+<li>Check <code>GET https://&lt;space-host&gt;/health</code> until it returns <code>model_loaded: true</code>.</li>
+<li>Run <code>python scripts/test_remote_api.py</code> and the Postman collection <code>cloud_api/VisionGuard.postman_collection.json</code> against the URL.</li>
+</ol>
+<p><span class="pending">PENDING — Space build log and running Space screenshots.</span></p>
+<p><strong>API URL:</strong> <span class="pending">PENDING — public API URL is added after the Hugging Face Space is deployed.</span></p>
+<p><strong>Pre-deployment verification (local, same code and model):</strong> before uploading, I ran the API under uvicorn and pointed the test script at it (<code>scripts/test_remote_api.py</code>):</p>
+<pre><code>[AI  ] bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg            -&gt; 200   301.6 ms label AI-generated  confidence 0.5523
+[AI  ] 6324662e5ee3110438933c1b_COBE-Pink-Elephant-M -&gt; 200   251.8 ms label AI-generated  confidence 0.7257
+[AI  ] landscape-art-ai-generated-photo2.jpg         -&gt; 200   458.9 ms label AI-generated  confidence 0.8603
+[Real] 360_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rta -&gt; 200   250.4 ms label Real          confidence 0.1519
+[Real] 33100scr.jpg                                  -&gt; 200   445.2 ms label Real          confidence 0.0205
+[Real] the-essay_58_resurgence-of-the-people_2019-ar -&gt; 200   255.0 ms label Real          confidence 0.0145
+correct: 6/6
+[error] missing API key  -&gt; 401  {'detail': 'Invalid or missing API key.'}
+[error] wrong file type  -&gt; 415  {'detail': 'Unsupported content type: text/plain'}
+[error] corrupt image    -&gt; 422  {'detail': 'Cannot decode image: cannot identify image file ...'}
+[error] oversized file   -&gt; 413  {'detail': 'File exceeds 10 MB limit.'}
+</code></pre>
+<p>The six confidences are identical to the Postgres rows in Chapter 5, so the cloud code path and the in-container Flask path give the same answer for the same bytes.</p>
+<p><strong>Postman tests.</strong> The collection has five requests with built-in assertions: health, AI image, real image, missing key (expects 401) and wrong type (expects 415). <code>base_url</code> and <code>api_key</code> are collection variables, so the key is never saved in the exported file.</p>
+<p><span class="pending">PENDING — Postman screenshots against the live URL.</span></p>
+<p><strong>Tested from another network.</strong> <span class="pending">PENDING — test from a different network (mobile hotspot).</span></p>
+<p><strong>Security notes.</strong> The model API is protected by a shared secret header. The comparison is done server-side, and the key lives only in <code>.env</code> locally and in the Space secret store remotely. The key travels only over HTTPS. An open API would let anyone burn the free CPU quota. Uploads are never written to disk on either side.</p>
 <hr />
-<h1>Chapter 8 — Integration (15 marks)</h1>
-<p><em>(To be completed after Task 7)</em></p>
-<p><em>(Multi-input demo, history rows, error handling: SS_49–53)</em></p>
+<h1>Chapter 8 — Integrating Flask with the Cloud API (15 marks)</h1>
+<p><strong>How the integration works.</strong> <code>app/inference.py</code> has one entry point, <code>classify(image_bytes, mode, ...)</code>. With <code>INFERENCE_MODE=local</code> it runs the in-process Keras model. With <code>INFERENCE_MODE=remote</code> it POSTs the already-validated bytes to <code>REMOTE_API_URL</code> as multipart field <code>image</code> with header <code>X-API-Key: $REMOTE_API_KEY</code>, with a 30 s timeout. It takes <code>confidence</code> from the JSON and <strong>applies the threshold locally</strong>, so the Flask app stays the single place where the business decision is made. The view code is identical in both modes, and the database row records <code>inference_mode</code>, so the History page shows which path produced each verdict.</p>
+<p>Failures are never logged as predictions. A timeout, a connection error, an API 401 (wrong key) or an API 5xx each comes back from <code>classify()</code> as an error string, and the view renders a friendly <strong>502</strong> page that names the cause (for example <code>Inference error: timeout</code>). Size, type and decodability are validated in Flask <em>before</em> the call, so the API's own 413/415/422 checks are a second line of defence for direct callers such as Postman.</p>
+<p><strong>Switching to the cloud API</strong> needs only configuration, no code change:</p>
+<pre><code>INFERENCE_MODE=remote
+REMOTE_API_URL=https://&lt;space-host&gt;/predict
+REMOTE_API_KEY=&lt;same secret as the Space&gt;
+</code></pre>
+<p>then <code>docker compose up -d web</code> (or <code>python -m flask run</code> locally).</p>
+<p><strong>Earlier local rehearsal of the same integration (API on localhost:8000):</strong> three uploads in remote mode were logged with <code>inference_mode = remote</code>. Stopping the API mid-session made the next upload fail cleanly with the 502 page (<code>logs/18_flask_remote.log</code>).</p>
+<figure><img src="screenshots/SS_49_result_remote_mode.png"><figcaption><b>Figure 56.</b> SS_49 — Result page produced in remote mode (API on localhost during rehearsal).</figcaption></figure>
+
+<figure><img src="screenshots/SS_50_history_mixed_modes.png"><figcaption><b>Figure 57.</b> SS_50 — History showing local and remote rows side by side.</figcaption></figure>
+
+<figure><img src="screenshots/SS_51_remote_api_down.png"><figcaption><b>Figure 58.</b> SS_51 — The friendly 502 page when the inference API is unreachable.</figcaption></figure>
+
+<p><span class="pending">PENDING — Flask (localhost) calling the live cloud API.</span></p>
 <hr />
 <h1>Bonus — Grad-CAM</h1>
-<p><em>(To be completed after Tasks 1–8 and toy labs, time permitting)</em></p>
+<p><code>scripts/gradcam.py</code> computes Grad-CAM on MobileNetV2's last convolutional layer (<code>Conv_1</code>, 7×7×1280) for the champion model. With Keras 3 the functional sub-model of a nested <code>Sequential</code> cannot be sliced directly, so the gradient model is rebuilt explicitly: input → MobileNetV2 base (exposing <code>Conv_1</code>) → the trained head layers. At the script's fixed 0.5 cut-off the champion had 58 correct AI, 52 correct real and 36 wrong predictions on the 146 test images (one more error than at the deployed 0.40 threshold in §2.6). The grid shows four correct and four wrong cases.</p>
+<figure><img src="figures/gradcam_grid.png"><figcaption><b>Figure 59.</b> SS_54 — Grad-CAM heat maps: top row correct predictions, bottom row wrong ones.</figcaption></figure>
+
+<p><strong>What the model looks at.</strong> In the correct AI cases the heat sits on the <em>subject's rendered texture</em>: the over-detailed fur of the creature, and the ornate, flower-covered elephant. These are the hyper-detailed, slightly plastic surfaces typical of diffusion models. In the correct real cases the activation is weak and diffuse (the crowd photo has almost no hot region at p = 0.02), which suggests "real" is the default when no synthetic texture cue fires. The wrong cases show the same mechanism failing. The AI portrait pair gets attention on skin between the faces but scores only 0.37, because photoreal skin carries no obvious artefact. The pastel garden and the rooster get attention on <em>background</em> flowers rather than the subject. The real fantasy painting (p = 0.78) lights up its saturated, glowing sky — painted smoothness that the model confuses with generation. Grad-CAM agrees with the error analysis in §2.6: the model learned local texture statistics, not semantic cues such as impossible anatomy or inconsistent lighting.</p>
 <hr />
 <h1>Submission Checklist</h1>
 <table>
@@ -1249,102 +1604,43 @@ docker history visionguard-web:latest
 <tbody>
 <tr>
 <td>PDF report <code>23L-0578_VisionGuard.pdf</code></td>
-<td>⏳</td>
+<td>✅ generated from <code>report/report.md</code> by <code>scripts/build_report.py</code></td>
 </tr>
 <tr>
-<td>GitHub repo <code>23L-0578_A2_Ops</code> public</td>
-<td>⏳</td>
+<td>GitHub repository</td>
+<td>✅ https://github.com/zayn-zeny/VisionGuard (code, split lists, DVC pointer, figures, screenshots, transcripts)</td>
+</tr>
+<tr>
+<td>DagsHub project</td>
+<td>✅ https://dagshub.com/zayn-zeny/VisionGuard — DVC data, 7+1 MLflow runs, registry with <code>champion</code> alias</td>
 </tr>
 <tr>
 <td>CI badge in README</td>
-<td>⏳</td>
-</tr>
-<tr>
-<td><code>.env.example</code> in repo</td>
 <td>✅</td>
 </tr>
 <tr>
-<td>Dockerfile</td>
+<td><code>.env.example</code> in repo, <code>.env</code> git-ignored</td>
 <td>✅</td>
 </tr>
 <tr>
-<td>docker-compose.yml</td>
-<td>✅</td>
+<td>Dockerfile, <code>.dockerignore</code>, <code>docker-compose.yml</code></td>
+<td>✅ stack verified healthy on Postgres</td>
 </tr>
 <tr>
-<td>DVC pointer files in repo</td>
-<td>⏳</td>
-</tr>
-<tr>
-<td>DagsHub project connected</td>
-<td>⏳</td>
-</tr>
-<tr>
-<td>≥6 MLflow runs</td>
-<td>⏳</td>
-</tr>
-<tr>
-<td>Model registry <code>champion</code> alias</td>
-<td>⏳</td>
-</tr>
-<tr>
-<td>Live API URL in report</td>
-<td>⏳</td>
+<td>Live API URL</td>
+<td>⏳ pending deployment</td>
 </tr>
 <tr>
 <td>Postman test evidence</td>
-<td>⏳</td>
+<td>⏳ pending deployment</td>
 </tr>
 <tr>
-<td>Different-network verification</td>
-<td>⏳</td>
+<td>API tested from a different network</td>
+<td>⏳ pending deployment</td>
 </tr>
 <tr>
-<td>EVIDENCE.md complete</td>
-<td>⏳</td>
+<td>Graded commit hash in front matter</td>
+<td>filled in at submission</td>
 </tr>
 </tbody>
-</table>
-<h2>Not Submitted — Marks at Risk</h2>
-<p><em>All originally-excluded scope items have been reinstated per Phase 0 answer (item D.11). None are skipped.</em></p>
-<table>
-<thead>
-<tr>
-<th>Sub-task</th>
-<th>Description</th>
-<th>Status</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1.4-toy</td>
-<td>CSV DVC versioning practice</td>
-<td>Queued — after main tasks</td>
-</tr>
-<tr>
-<td>2.7-toy</td>
-<td>Fashion-MNIST Keras Tuner</td>
-<td>Queued — after main tasks</td>
-</tr>
-<tr>
-<td>3.1</td>
-<td>Local MLflow lab</td>
-<td>Queued — after main tasks</td>
-</tr>
-<tr>
-<td>3.2-toy</td>
-<td>Toy DagsHub repeat run</td>
-<td>Queued — after main tasks</td>
-</tr>
-<tr>
-<td>6.1</td>
-<td>Docker warm-up image</td>
-<td>Queued — after main tasks</td>
-</tr>
-<tr>
-<td>6.6-toy</td>
-<td>Red-then-green throwaway CI</td>
-<td>Queued — after main tasks</td>
-</tr>
-</tbody>
-</table>
+</table></body></html>
