@@ -1,0 +1,3 @@
+cls,count,min_width,median_width,max_width,min_height,median_height,max_height,min_size_bytes,median_size_bytes,max_size_bytes
+AiArtData,539,225,1024.0,6000,135,800.0,4001,11738,199760.0,5626183
+RealArt,435,183,940.0,8495,158,720.0,7091,11311,144982.0,10195352

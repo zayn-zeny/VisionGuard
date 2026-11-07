@@ -90,11 +90,11 @@ cd D:\Zayn\mlops_Assignment\A2
 |---|---|---|---|
 | **0** | Pre-flight interview & confirmed settings | **DONE** | Logged in chat & confirmed settings |
 | **1.1** | Isolated env, pinned deps, GPU check transcript | **DONE** | `requirements.txt`, `report/figures/task_1_1_env_transcript.txt` |
-| **1.2** | Audit script & Kaggle dataset download | **PAUSED** | Waiting for user to supply `kaggle.json` |
-| **1.3** | Class sample grid & distributions | Pending | `scripts/plot_dataset.py` ready to execute |
-| **1.4** | DVC init, track `data/raw`, DagsHub remote | Pending | Code & commands ready; needs DagsHub token |
+| **1.2** | Audit script & Kaggle dataset download | **DONE** | `data/audit_report.csv`, `data/audit_summary.csv`, `audit_summary_table.txt` |
+| **1.3** | Class sample grid & distributions | **DONE** | `sample_grid.png`, `hist_width.png`, `hist_height.png`, `hist_filesize.png` |
+| **1.4** | DVC init, track `data/raw`, DagsHub remote | In Progress | `data/raw.dvc` created; awaiting DagsHub token for remote push |
 | **1.4 (toy)** | Practice CSV DVC versioning | Queued | Runs after Tasks 1–8 |
-| **1.5 / Splits** | Stratified train/val/test split lists (seeded) | Pending | `scripts/split_dataset.py` ready to execute |
+| **1.5 / Splits** | Stratified train/val/test split lists (seeded) | **DONE** | `data/splits/train.csv` (681), `val.csv` (146), `test.csv` (146) |
 | **2.1** | `tf.data` pipeline, squash resize, aug figure | Ready | Implemented in `scripts/train.py` |
 | **2.2** | Hand-crafted CNN baseline model summary | Ready | Implemented in `scripts/train.py` |
 | **2.3** | MobileNetV2 2-stage transfer learning | Ready | Implemented in `scripts/train.py` |
@@ -206,3 +206,4 @@ D:\Zayn\mlops_Assignment\A2\
      ```
 2. **Next Checkpoint:** Prompt user for GitHub token and DagsHub credentials to initialize git remote and DVC remote (Task 1.4 & Task 3.2).
 3. **Keep `RUNLOG.md`, `EVIDENCE.md`, and `agent.md` synchronized.**
+

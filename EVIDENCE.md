@@ -3,11 +3,12 @@
 
 | Sub-task | Evidence Artifact | Screenshot # | Report Section | Status |
 |----------|-------------------|--------------|----------------|--------|
-| 1.1 | requirements.txt, terminal transcript | SS_01 | §1.1 | ⏳ |
-| 1.2 | scripts/audit_dataset.py, data/audit_report.csv | SS_02 | §1.2 | ⏳ |
-| 1.3 | report/figures/sample_grid_*.png, histograms | SS_03 | §1.3 | ⏳ |
-| 1.4 | data/.dvc pointer file, dvc push/pull | SS_04 | §1.4 | ⏳ |
-| 1.4-toy | toy CSV DVC versioning | SS_05 | §1.4-toy | ⏳ |
+| 1.1 | requirements.txt, terminal transcript | SS_01, SS_02 | §1.1 | ✅ |
+| 1.2 | scripts/audit_dataset.py, data/audit_report.csv | SS_03 | §1.2 | ✅ |
+| 1.3 | report/figures/sample_grid.png, histograms | SS_04, SS_05 | §1.3 | ✅ |
+| 1.4 | data/raw.dvc pointer file, dvc push/pull | SS_06, SS_07 | §1.4 | ⏳ (awaiting DagsHub remote) |
+| 1.4-toy | toy CSV DVC versioning | SS_08 | §1.4-toy | ⏳ |
+| 1.5 | data/splits/{train,val,test}.csv (seeded, stratified) | — | §1.5 | ✅ |
 | 2.1 | scripts/train.py pipeline section, aug batch fig | SS_06 | §2.1 | ⏳ |
 | 2.2 | model summary output, CNN architecture | SS_07 | §2.2 | ⏳ |
 | 2.3 | training curves (freeze/unfreeze stages) | SS_08 | §2.3 | ⏳ |

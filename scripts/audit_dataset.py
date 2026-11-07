@@ -107,7 +107,7 @@ def run_audit(data_dir: Path, out_dir: Path) -> None:
     summary = (
         clean.groupby("cls")
         .agg(
-            count=("path", "len"),
+            count=("path", "count"),
             min_width=("width", "min"),
             median_width=("width", "median"),
             max_width=("width", "max"),

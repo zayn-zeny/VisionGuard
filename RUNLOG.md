@@ -12,4 +12,9 @@
 [09:49] [TASK 1.1] Python 3.11.9 venv established, exact package versions pinned in requirements.txt ✓
 [09:49] [TASK 1.1] Verified TF 2.17.0, NumPy 1.26.4, PIL 10.4.0, MLflow 2.17.0, DVC 3.55.2, Flask 3.0.3 ✓
 [09:49] [TASK 1.1] GPU check: GPUs: [] (CPU only confirmed) ✓
+[11:08] [TASK 1.2] Kaggle dataset downloaded & extracted (974 images: 539 AiArtData, 435 RealArt) ✓
+[11:15] [TASK 1.2] scripts/audit_dataset.py executed: 0 corrupt files, 2 duplicates (f3268a4fc047...) ✓
+[11:17] [TASK 1.3] scripts/plot_dataset.py executed: generated sample_grid.png, hist_width.png, hist_height.png, hist_filesize.png ✓
+[11:18] [TASK 1.5] scripts/split_dataset.py executed: seeded split (SEED=42) -> Train: 681, Val: 146, Test: 146 ✓
+[11:24] [TASK 1.4] dvc init executed, data/raw tracked via DVC (data/raw.dvc, md5: b2cec67839f742df4653f66d4bcbbafb.dir) ✓
 
