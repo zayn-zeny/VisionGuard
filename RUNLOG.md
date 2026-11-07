@@ -17,4 +17,9 @@
 [11:17] [TASK 1.3] scripts/plot_dataset.py executed: generated sample_grid.png, hist_width.png, hist_height.png, hist_filesize.png ✓
 [11:18] [TASK 1.5] scripts/split_dataset.py executed: seeded split (SEED=42) -> Train: 681, Val: 146, Test: 146 ✓
 [11:24] [TASK 1.4] dvc init executed, data/raw tracked via DVC (data/raw.dvc, md5: b2cec67839f742df4653f66d4bcbbafb.dir) ✓
+[11:40] [TASK 1.4] DagsHub repo zayn-zeny/VisionGuard created & verified via API ✓
+[11:42] [TASK 1.4] DagsHub DVC remote configured (https://dagshub.com/zayn-zeny/VisionGuard.dvc) ✓
+[11:44] [TASK 1.4] dvc push executed: 975 files pushed to DagsHub remote storage ✓
+[11:45] [TASK 1.4] dvc round-trip proven: deleted data/raw locally and restored via dvc pull (975 files restored) ✓
+[11:46] [TASK 3.2] .env git-ignored proof verified via git check-ignore -v .env ✓
 

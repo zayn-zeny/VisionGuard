@@ -92,7 +92,7 @@ cd D:\Zayn\mlops_Assignment\A2
 | **1.1** | Isolated env, pinned deps, GPU check transcript | **DONE** | `requirements.txt`, `report/figures/task_1_1_env_transcript.txt` |
 | **1.2** | Audit script & Kaggle dataset download | **DONE** | `data/audit_report.csv`, `data/audit_summary.csv`, `audit_summary_table.txt` |
 | **1.3** | Class sample grid & distributions | **DONE** | `sample_grid.png`, `hist_width.png`, `hist_height.png`, `hist_filesize.png` |
-| **1.4** | DVC init, track `data/raw`, DagsHub remote | In Progress | `data/raw.dvc` created; awaiting DagsHub token for remote push |
+| **1.4** | DVC init, track `data/raw`, DagsHub remote | **DONE** | 975 files pushed to DagsHub remote, round-trip proven via `dvc pull` |
 | **1.4 (toy)** | Practice CSV DVC versioning | Queued | Runs after Tasks 1–8 |
 | **1.5 / Splits** | Stratified train/val/test split lists (seeded) | **DONE** | `data/splits/train.csv` (681), `val.csv` (146), `test.csv` (146) |
 | **2.1** | `tf.data` pipeline, squash resize, aug figure | Ready | Implemented in `scripts/train.py` |
