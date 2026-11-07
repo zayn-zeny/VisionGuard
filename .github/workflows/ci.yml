@@ -27,13 +27,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Lint with flake8
+      # 4. Lint with flake8 (configuration lives in .flake8)
       - name: Lint (flake8)
-        run: |
-          flake8 app/ scripts/ tests/ \
-            --max-line-length=100 \
-            --extend-ignore=E203,W503 \
-            --count --statistics
+        run: flake8 app/ scripts/ tests/ --count --statistics
 
       # 5. Run tests
       - name: Run pytest

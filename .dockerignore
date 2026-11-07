@@ -11,11 +11,17 @@ venv/
 .venv/
 env/
 
-# ── Data and models (large; model is COPY'd explicitly) ──────────────
+# ── Data and models (large; only models/champion.keras is COPY'd) ────
 data/
 models/*.h5
+models/*_best.keras
 mlruns/
 mlartifacts/
+tuner_logs/
+labs/
+logs/
+venv_install.log
+.report_build/
 
 # ── Dev / test tooling ───────────────────────────────────────────────
 tests/

@@ -1,29 +1,24 @@
-"""
-tests/test_app.py — Task 6.6 real tests for VisionGuard.
+"""tests/test_app.py — Task 6.6 real tests for VisionGuard.
 
 Tests:
-  1. Preprocessing output shape
+  1. Preprocessing output shape / value range
   2. Threshold logic (above/below threshold → correct label)
   3. Upload validation rejects bad file types
   4. /health returns 200
-  5. Oversized file returns 413
-  6. Corrupt file returns 422
+  5. Corrupt file returns 422
+  6. Successful upload persists a row and renders a verdict
 """
 import io
-import os
-import pytest
-import numpy as np
-from PIL import Image
+import unittest.mock as mock
 
-# ── Skip tests that require the champion model if it doesn't exist ────────────
-MODEL_EXISTS = os.path.exists(os.environ.get("MODEL_PATH", "models/champion.keras"))
+import numpy as np
+import pytest
 
 
 # ── 1. Preprocessing shape ────────────────────────────────────────────────────
 
 def test_preprocess_shape(valid_jpeg_bytes):
     """_preprocess_image must return (1, 224, 224, 3) float32 array."""
-    # Import directly — doesn't need TF model loaded
     from app.inference import _preprocess_image
     arr = _preprocess_image(valid_jpeg_bytes)
     assert arr.shape == (1, 224, 224, 3), f"Expected (1,224,224,3), got {arr.shape}"
@@ -35,48 +30,41 @@ def test_preprocess_range(valid_jpeg_bytes):
     from app.inference import _preprocess_image
     arr = _preprocess_image(valid_jpeg_bytes)
     assert arr.min() >= -1.1, f"Min value {arr.min()} out of range"
-    assert arr.max() <= 1.1,  f"Max value {arr.max()} out of range"
+    assert arr.max() <= 1.1, f"Max value {arr.max()} out of range"
 
 
 # ── 2. Threshold logic ────────────────────────────────────────────────────────
 
-def test_threshold_above():
-    """Confidence >= threshold → 'AI-generated'."""
-    from app.inference import _classify_local
-    # Monkey-patch _model with a stub
+class _StubModel:
+    def __init__(self, probability):
+        self.probability = probability
+
+    def predict(self, x, verbose=0):
+        return np.array([[self.probability]])
+
+
+def _classify_with_stub(probability):
     import app.inference as inf
     original = inf._model
+    inf._model = _StubModel(probability)
+    try:
+        with mock.patch("app.inference._preprocess_image",
+                        return_value=np.zeros((1, 224, 224, 3), dtype=np.float32)):
+            return inf._classify_local(b"dummy", threshold=0.5)
+    finally:
+        inf._model = original
 
-    class StubModel:
-        def predict(self, x, verbose=0):
-            return np.array([[0.8]])  # above 0.5 threshold
 
-    inf._model = StubModel()
-    result = _classify_local(b"dummy", threshold=0.5)
-    inf._model = original
-
+def test_threshold_above():
+    """Confidence >= threshold → 'AI-generated'."""
+    result = _classify_with_stub(0.8)
     assert result["label"] == "AI-generated"
     assert result["confidence"] == pytest.approx(0.8, abs=0.01)
 
 
 def test_threshold_below():
     """Confidence < threshold → 'Real'."""
-    from app.inference import _classify_local
-    import app.inference as inf
-    original = inf._model
-
-    class StubModel:
-        def predict(self, x, verbose=0):
-            return np.array([[0.2]])
-
-    inf._model = StubModel()
-
-    # Also need _preprocess_image to not fail on b"dummy"
-    import unittest.mock as mock
-    with mock.patch("app.inference._preprocess_image", return_value=np.zeros((1, 224, 224, 3))):
-        result = _classify_local(b"dummy", threshold=0.5)
-
-    inf._model = original
+    result = _classify_with_stub(0.2)
     assert result["label"] == "Real"
 
 
@@ -125,3 +113,30 @@ def test_index_renders(client):
     assert resp.status_code == 200
     assert b"VisionGuard" in resp.data or b"upload" in resp.data.lower()
 
+
+# ── 7. Happy path writes the database trail (Task 5) ─────────────────────────
+
+def test_successful_upload_persists_row(app, client, valid_jpeg_bytes):
+    """A valid upload returns a verdict and writes exactly one predictions row."""
+    from app.database import Prediction
+
+    data = {"image": (io.BytesIO(valid_jpeg_bytes), "portrait.jpg")}
+    resp = client.post("/predict", data=data, content_type="multipart/form-data")
+    assert resp.status_code == 302, f"Expected redirect to /result, got {resp.status_code}"
+    assert "/result" in resp.headers["Location"]
+
+    result_page = client.get("/result")
+    assert result_page.status_code == 200
+    assert b"AI-generated" in result_page.data or b"Real" in result_page.data
+
+    with app.app_context():
+        assert Prediction.query.count() == 1
+        row = Prediction.query.first()
+        assert row.filename_sanitized == "portrait.jpg"
+        assert row.label in {"AI-generated", "Real"}
+        assert 0.0 <= row.confidence <= 1.0
+        assert len(row.image_sha256) == 64
+
+    history = client.get("/history")
+    assert history.status_code == 200
+    assert b"portrait.jpg" in history.data

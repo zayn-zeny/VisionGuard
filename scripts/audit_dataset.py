@@ -19,18 +19,19 @@ Usage:
 Evidence: Task 1.2 — printed summary + CSVs are referenced in report §1.2
 """
 import argparse
-import csv
 import hashlib
-import io
-import os
 import sys
-from collections import defaultdict
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 from PIL import Image, UnidentifiedImageError
 
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
 
 EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".bmp", ".gif", ".tiff"}
 
@@ -139,7 +140,7 @@ def run_audit(data_dir: Path, out_dir: Path) -> None:
     txt_path = Path("report/figures/audit_summary_table.txt")
     txt_path.parent.mkdir(parents=True, exist_ok=True)
     with open(txt_path, "w") as f:
-        f.write(f"Dataset Audit Summary\n")
+        f.write("Dataset Audit Summary\n")
         f.write(f"Total images   : {len(df)}\n")
         f.write(f"Corrupt files  : {int(corrupt_count)}\n")
         f.write(f"Duplicate files: {dup_count}\n\n")
@@ -160,7 +161,9 @@ def run_audit(data_dir: Path, out_dir: Path) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Audit VisionGuard dataset")
-    parser.add_argument("--data-dir", default="data/raw", help="Root directory containing class folders")
+    parser.add_argument(
+        "--data-dir", default="data/raw", help="Root directory containing class folders"
+    )
     parser.add_argument("--out-dir", default="data", help="Output directory for CSVs")
     args = parser.parse_args()
 

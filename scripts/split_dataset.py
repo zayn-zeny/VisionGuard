@@ -22,7 +22,6 @@ Usage:
 """
 import argparse
 import csv
-import os
 import sys
 from pathlib import Path
 
@@ -84,9 +83,8 @@ def collect_files(data_dir: Path, label_map: dict[str, int],
 
 def write_split(samples: list[tuple[str, int]], path: Path, note: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w", newline="") as f:
+    with open(path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow([f"# {note}"])
         writer.writerow(["path", "label"])
         writer.writerows(samples)
     print(f"  → {path}  ({len(samples)} rows)")

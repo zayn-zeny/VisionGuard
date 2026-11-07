@@ -13,6 +13,7 @@ Usage:
 import argparse
 import os
 import shutil
+import sys
 from pathlib import Path
 
 import mlflow
@@ -20,6 +21,12 @@ from mlflow.tracking import MlflowClient
 from dotenv import load_dotenv
 
 load_dotenv()
+
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
 
 MODEL_NAME = os.environ.get("MODEL_NAME", "MobileNetV2_VisionGuard")
 
@@ -67,26 +74,40 @@ def set_champion_alias(version: str) -> None:
 
 
 def copy_to_local(run_id: str, dest: Path = Path("models/champion.keras")) -> None:
-    """Download champion model artifacts to local models/ directory."""
+    """Download the champion model artifact and write it as a local .keras file.
+
+    mlflow.tensorflow.log_model stores a TensorFlow SavedModel directory, so if
+    no .keras file is present we load the SavedModel and re-save it in the
+    modern Keras format the Flask app expects at MODEL_PATH.
+    """
     dest.parent.mkdir(exist_ok=True)
     local = mlflow.artifacts.download_artifacts(
         f"runs:/{run_id}/model", dst_path="models/_tmp"
     )
-    # Find .keras or saved_model
     keras_files = list(Path(local).rglob("*.keras"))
     if keras_files:
         shutil.copy2(keras_files[0], dest)
         print(f"Champion model copied to {dest}")
-    else:
-        print(f"No .keras file found; saved_model dir at {local}")
+        return
+
+    saved_model_dir = Path(local)
+    if (saved_model_dir / "MLmodel").exists():
+        saved_model_dir = saved_model_dir / "data"
+    print(f"SavedModel at {saved_model_dir} → exporting to {dest}")
+    import tensorflow as tf
+    model = tf.keras.models.load_model(saved_model_dir)
+    model.save(dest)
+    print(f"Champion model written to {dest}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--run-id",       default=None)
-    parser.add_argument("--best",         action="store_true")
-    parser.add_argument("--version-note", default="auto")
-    parser.add_argument("--alias",        default="champion")
+    parser.add_argument("--run-id",          default=None,
+                        help="run to promote as champion (default: best test_f1)")
+    parser.add_argument("--previous-run-id", default=None,
+                        help="second run registered as the earlier version")
+    parser.add_argument("--best",            action="store_true")
+    parser.add_argument("--version-note",    default="auto")
     args = parser.parse_args()
 
     tracking_uri = os.environ.get("MLFLOW_TRACKING_URI", "mlruns")
@@ -96,15 +117,22 @@ if __name__ == "__main__":
     if args.best or run_id is None:
         run_id = get_best_run()
 
-    # Register two versions (rubric requires ≥2)
-    v1 = register_model(run_id, f"{args.version_note}_v1")
+    # Version 1 = the earlier candidate, version 2 = the promoted champion.
+    # Registering two different runs is what makes the registry comparison real
+    # (two versions of the same run would be identical weights).
+    previous_id = args.previous_run_id
+    if previous_id:
+        v1 = register_model(previous_id, f"{args.version_note}_v1")
+    else:
+        v1 = register_model(run_id, f"{args.version_note}_v1")
     v2 = register_model(run_id, f"{args.version_note}_v2")
 
-    # Alias the latest as champion
+    # Alias the promoted run as champion
     set_champion_alias(v2)
 
-    # Copy locally
+    # Copy locally so the Flask app can load it at startup
     copy_to_local(run_id)
 
-    print(f"\nDone. Model '{MODEL_NAME}' has ≥2 versions; alias 'champion' → v{v2}")
+    print(f"\nDone. Model '{MODEL_NAME}' has 2 versions (v{v1}, v{v2}); "
+          f"alias 'champion' → v{v2}")
 

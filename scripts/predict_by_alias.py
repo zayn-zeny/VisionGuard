@@ -30,6 +30,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 IMAGE_SIZE = (224, 224)
 MODEL_NAME = os.environ.get("MODEL_NAME", "MobileNetV2_VisionGuard")
 
@@ -55,7 +61,7 @@ def download_champion(alias: str = "champion") -> str:
         return str(local_path)
 
     # Download from registry
-    print(f"  → Downloading model artifacts …")
+    print("  → Downloading model artifacts …")
     model_uri = f"models:/{MODEL_NAME}@{alias}"
     local_dir = mlflow.artifacts.download_artifacts(model_uri, dst_path="models/")
     # Find the .keras file
@@ -87,7 +93,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Classify an image using the champion model")
     parser.add_argument("--image",     required=True, help="Path to image file")
     parser.add_argument("--alias",     default="champion", help="Model registry alias")
-    parser.add_argument("--threshold", type=float, default=float(os.environ.get("THRESHOLD", "0.5")))
+    parser.add_argument(
+        "--threshold", type=float,
+        default=float(os.environ.get("THRESHOLD", "0.5")),
+    )
     args = parser.parse_args()
 
     if not Path(args.image).exists():

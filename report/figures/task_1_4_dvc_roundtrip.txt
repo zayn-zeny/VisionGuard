@@ -11,3 +11,4 @@ A       data\raw\
 
 PS D:\Zayn\mlops_Assignment\A2> (Get-ChildItem "data\raw" -Recurse -File).Count
 975
+

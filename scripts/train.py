@@ -23,9 +23,6 @@ Hyperparameter sweep:
 from __future__ import annotations
 
 import argparse
-import hashlib
-import io
-import json
 import os
 import random
 import subprocess
@@ -38,8 +35,16 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from PIL import Image
 from dotenv import load_dotenv
+
+# Windows consoles/pipes default to cp1252, which cannot encode the arrows and
+# box characters used in the progress output. Force UTF-8 so a redirected log
+# never crashes mid-run.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (AttributeError, ValueError):
+        pass
 
 load_dotenv()
 
@@ -55,7 +60,7 @@ tf.random.set_seed(SEED)
 import mlflow
 import mlflow.tensorflow
 from sklearn.metrics import (
-    accuracy_score, classification_report, confusion_matrix,
+    accuracy_score, confusion_matrix,
     f1_score, precision_score, recall_score, roc_auc_score, roc_curve,
 )
 
@@ -128,7 +133,9 @@ def build_dataset(split_csv: Path, image_size: int, batch_size: int,
     waiting for the next one to load from disk. Prefetch fills a background
     buffer so the GPU always has a batch ready.
     """
-    df = pd.read_csv(split_csv, comment="#")
+    df = pd.read_csv(split_csv)
+    if "path" not in df.columns:
+        df = pd.read_csv(split_csv, skiprows=1)
     paths  = df["path"].tolist()
     labels = df["label"].tolist()
 
@@ -139,7 +146,7 @@ def build_dataset(split_csv: Path, image_size: int, batch_size: int,
         ds = ds.shuffle(buffer_size=min(len(paths), 4096), seed=SEED)
 
     ds = ds.map(
-        lambda p, l: _decode_resize(p, l, image_size),
+        lambda p, lbl: _decode_resize(p, lbl, image_size),
         num_parallel_calls=AUTOTUNE,
     )
 
@@ -286,7 +293,11 @@ def unfreeze_top_layers(model: tf.keras.Model, num_layers: int, lr: float) -> No
     Unfreeze the last `num_layers` of the base model for fine-tuning.
     Recompile at the lower learning rate.
     """
-    base = model.layers[1]  # MobileNetV2 is the second layer after Input
+    base_layers = [layer for layer in model.layers if hasattr(layer, "layers")]
+    if not base_layers:
+        print("No sub-model found in model to unfreeze.")
+        return
+    base = base_layers[0]
     base.trainable = True
     # Re-freeze all but the last num_layers
     for layer in base.layers[:-num_layers]:
@@ -297,7 +308,7 @@ def unfreeze_top_layers(model: tf.keras.Model, num_layers: int, lr: float) -> No
         loss="binary_crossentropy",
         metrics=["accuracy", tf.keras.metrics.AUC(name="auc")],
     )
-    trainable = sum(1 for l in base.layers if l.trainable)
+    trainable = sum(1 for layer in base.layers if layer.trainable)
     print(f"Unfrozen layers in base: {trainable}/{len(base.layers)}")
 
 
@@ -638,7 +649,8 @@ def train(
                 verbose=1,
             )
             epoch1_time = time.time() - t0
-            print(f"Stage 1 complete. Approx time/epoch: {epoch1_time/max(1,len(history1.history['loss'])):.0f}s")
+            epochs_done = max(1, len(history1.history["loss"]))
+            print(f"Stage 1 complete. Approx time/epoch: {epoch1_time/epochs_done:.0f}s")
 
             # Unfreeze top layers and fine-tune
             print(f"\n--- Stage 2: Fine-tuning (top {num_unfreeze_layers} layers unfrozen) ---")
@@ -726,14 +738,18 @@ SWEEP_CONFIGS = [
 ]
 
 
-def run_sweep(epochs: int, batch_size: int, image_size: int, max_per_class: int | None) -> None:
+def run_sweep(epochs: int, batch_size: int, image_size: int, max_per_class: int | None,
+              unfreeze_epochs: int = 5, only: list[str] | None = None) -> None:
     results = []
     for cfg in SWEEP_CONFIGS:
         name, mtype, lr, drop, aug, unf = cfg
+        if only and name not in only:
+            continue
         r = train(
             model_type=mtype, run_name=name,
             lr=lr, dropout=drop, augment=aug,
             image_size=image_size, epochs=epochs,
+            unfreeze_epochs=unfreeze_epochs,
             batch_size=batch_size, num_unfreeze_layers=unf,
         )
         results.append({"run": name, **r["metrics"]})
@@ -765,6 +781,8 @@ if __name__ == "__main__":
     parser.add_argument("--autolog",          action="store_true")
     parser.add_argument("--sweep",            action="store_true",
                         help="Run the full ≥6 run hyperparameter sweep")
+    parser.add_argument("--only-runs",        nargs="*", default=None,
+                        help="Run only the named sweep configs")
     parser.add_argument("--max-per-class",    type=int, default=None)
     args = parser.parse_args()
 
@@ -773,7 +791,8 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if args.sweep:
-        run_sweep(args.epochs, args.batch_size, args.image_size, args.max_per_class)
+        run_sweep(args.epochs, args.batch_size, args.image_size, args.max_per_class,
+                  unfreeze_epochs=args.unfreeze_epochs, only=args.only_runs)
     else:
         # Save augmented batch figure first
         save_augmented_batch_figure(SPLITS_DIR / "train.csv", args.image_size)

@@ -102,12 +102,13 @@ def predict():
 
     # 2. Extension check
     safe_name = secure_filename(file.filename)
+    extension = safe_name.rsplit(".", 1)[-1].lower() if "." in safe_name else "?"
     if not _allowed_file(safe_name):
         return render_template(
             "error.html",
             error_code=415,
             message=(
-                f"Unsupported file type: '{safe_name.rsplit('.', 1)[-1] if '.' in safe_name else '?'}'. "
+                f"Unsupported file type: '{extension}'. "
                 f"Allowed: {', '.join(sorted(ALLOWED_EXTENSIONS))}."
             ),
         ), 415

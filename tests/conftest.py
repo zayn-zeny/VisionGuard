@@ -1,8 +1,8 @@
-"""
-tests/conftest.py — pytest fixtures for VisionGuard tests.
-"""
+"""tests/conftest.py — pytest fixtures for VisionGuard tests."""
 import io
 import os
+
+import numpy as np
 import pytest
 from PIL import Image
 
@@ -17,9 +17,28 @@ os.environ.setdefault("MODEL_VERSION", "champion")
 os.environ.setdefault("MAX_CONTENT_LENGTH_MB", "10")
 
 
+class _StubModel:
+    """Deterministic stand-in used when the champion .keras file is absent (CI)."""
+
+    def predict(self, x, verbose=0):
+        return np.array([[0.8]])
+
+
 @pytest.fixture
-def app():
-    """Create Flask app in test mode (local inference, SQLite)."""
+def app(monkeypatch):
+    """Create Flask app in test mode (local inference, SQLite).
+
+    The champion model file is git-ignored, so CI has no copy of it. When the
+    file is missing we substitute a stub model: the tests then verify routing,
+    validation, persistence and response shape without depending on 19 MB of
+    weights being present in the repository.
+    """
+    import app.inference as inference
+
+    if not os.path.exists(os.environ.get("MODEL_PATH", "models/champion.keras")):
+        monkeypatch.setattr(inference, "load_model_once", lambda path: None)
+        monkeypatch.setattr(inference, "_model", _StubModel())
+
     from app import create_app
     application = create_app(config_override={
         "TESTING": True,
@@ -50,4 +69,3 @@ def valid_png_bytes() -> bytes:
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return buf.getvalue()
-

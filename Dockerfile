@@ -38,8 +38,6 @@ FROM python:3.11-slim-bookworm
 # ── System dependencies ──────────────────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libgomp1 \
-        libgl1-mesa-glx \
-        libglib2.0-0 \
         curl \
     && rm -rf /var/lib/apt/lists/*
 
@@ -50,15 +48,18 @@ RUN groupadd --gid 1001 appgroup \
 WORKDIR /app
 
 # ── Install dependencies BEFORE copying source (layer cache) ─────────────────
-COPY requirements.txt .
+# Task 6.4 optimisation: the image installs requirements-runtime.txt, not the
+# full requirements.txt. The container only serves predictions, so training and
+# EDA packages (mlflow, dvc, kaggle, keras-tuner, scikit-learn, matplotlib,
+# opencv, pytest) are dead weight: dropping them cuts the pip download by more
+# than half and removes the apt libraries OpenCV needs.
+COPY requirements-runtime.txt .
 RUN pip install --no-cache-dir --upgrade pip \
- && pip install --no-cache-dir -r requirements.txt
+ && pip install --no-cache-dir -r requirements-runtime.txt
 
 # ── Copy application source ───────────────────────────────────────────────────
-COPY app/        ./app/
-COPY scripts/    ./scripts/
-COPY models/     ./models/
-COPY .env.example .env.example
+COPY app/         ./app/
+COPY models/      ./models/
 
 # ── Environment defaults (overridden by docker-compose .env) ─────────────────
 ENV PYTHONDONTWRITEBYTECODE=1 \

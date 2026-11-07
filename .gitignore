@@ -43,6 +43,15 @@ desktop.ini
 # ── MLflow local artifacts ───────────────────────────────────────────
 mlruns/
 mlartifacts/
+tuner_logs/
+
+# ── Toy-lab working directories (scripts are tracked, artifacts are not) ──
+labs/mlruns/
+labs/tuner_fashion/
+labs/dvc_toy_repo/
+labs/dvc_toy_remote/
+labs/*.keras
+labs/*.png
 
 # ── Docker ───────────────────────────────────────────────────────────
 *.tar

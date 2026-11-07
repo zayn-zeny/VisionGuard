@@ -1,4 +1,3 @@
-"# SEED=42  max_per_class=None  label_map={'AiArtData': 1, 'RealArt': 0}  train=681 val=146 test=146"
 path,label
 data\raw\AiArtData\AiArtData\teaser_400.jpg,1
 data\raw\RealArt\RealArt\HD-wallpaper-scenery-lake-nature-sky-tree-water.jpg,0
