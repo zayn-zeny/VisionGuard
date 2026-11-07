@@ -1,0 +1,16 @@
+Keras Tuner — VisionGuard MobileNetV2
+Search: RandomSearch, 8 trials, 2 epochs/trial
+Best validation AUC: 0.8838
+  lr              = 0.0001
+  dropout         = 0.2
+  unfreeze_layers = 20
+
+trial     lr  dropout  unfreeze_layers  val_auc    status
+    6 0.0001      0.2               20   0.8838 COMPLETED
+    4 0.0005      0.3               40   0.8596 COMPLETED
+    1 0.0005      0.5               10   0.8542 COMPLETED
+    5 0.0005      0.3               10   0.8523 COMPLETED
+    3 0.0001      0.4                5   0.8299 COMPLETED
+    2 0.0001      0.5               20   0.8138 COMPLETED
+    0 0.0010      0.2               10   0.7855 COMPLETED
+    7 0.0010      0.5               10   0.7602 COMPLETED

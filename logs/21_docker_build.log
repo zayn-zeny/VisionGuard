@@ -1,0 +1,236 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.36kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 ...
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 1.8s
+
+#4 [1/9] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#4 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.1s done
+#4 DONE 0.1s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.79kB 0.0s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 29.31MB 4.9s
+#6 transferring context: 57.98MB 9.4s done
+#6 DONE 9.4s
+
+#7 [2/9] RUN apt-get update && apt-get install -y --no-install-recommends         libgomp1         curl     && rm -rf /var/lib/apt/lists/*
+#7 CACHED
+
+#8 [3/9] RUN groupadd --gid 1001 appgroup  && useradd  --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+#8 CACHED
+
+#9 [4/9] WORKDIR /app
+#9 CACHED
+
+#10 [5/9] COPY requirements-runtime.txt .
+#10 CACHED
+
+#11 [6/9] RUN pip install --no-cache-dir --upgrade pip  && pip install --no-cache-dir -r requirements-runtime.txt
+#11 5.565 Requirement already satisfied: pip in /usr/local/lib/python3.11/site-packages (24.0)
+#11 6.451 Collecting pip
+#11 7.091   Downloading pip-26.3-py3-none-any.whl.metadata (4.6 kB)
+#11 7.295 Downloading pip-26.3-py3-none-any.whl (2.0 MB)
+#11 7.998    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 2.8 MB/s eta 0:00:00
+#11 8.148 Installing collected packages: pip
+#11 8.148   Attempting uninstall: pip
+#11 8.160     Found existing installation: pip 24.0
+#11 8.309     Uninstalling pip-24.0:
+#11 9.069       Successfully uninstalled pip-24.0
+#11 11.86 Successfully installed pip-26.3
+#11 11.86 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#11 15.80 Collecting tensorflow-cpu==2.17.0 (from -r requirements-runtime.txt (line 6))
+#11 16.62   Downloading tensorflow_cpu-2.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+#11 17.62 Collecting numpy==1.26.4 (from -r requirements-runtime.txt (line 7))
+#11 17.75   Downloading numpy-1.26.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (61 kB)
+#11 18.69 Collecting Pillow==10.4.0 (from -r requirements-runtime.txt (line 8))
+#11 18.82   Downloading pillow-10.4.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (9.2 kB)
+#11 19.11 Collecting flask==3.0.3 (from -r requirements-runtime.txt (line 10))
+#11 19.28   Downloading flask-3.0.3-py3-none-any.whl.metadata (3.2 kB)
+#11 19.45 Collecting flask-sqlalchemy==3.1.1 (from -r requirements-runtime.txt (line 11))
+#11 19.58   Downloading flask_sqlalchemy-3.1.1-py3-none-any.whl.metadata (3.4 kB)
+#11 19.95 Collecting psycopg2-binary==2.9.10 (from -r requirements-runtime.txt (line 12))
+#11 20.09   Downloading psycopg2_binary-2.9.10-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#11 20.32 Collecting python-dotenv==1.0.1 (from -r requirements-runtime.txt (line 13))
+#11 20.45   Downloading python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+#11 20.72 Collecting Werkzeug==3.0.4 (from -r requirements-runtime.txt (line 14))
+#11 20.92   Downloading werkzeug-3.0.4-py3-none-any.whl.metadata (3.7 kB)
+#11 21.09 Collecting gunicorn==23.0.0 (from -r requirements-runtime.txt (line 15))
+#11 21.23   Downloading gunicorn-23.0.0-py3-none-any.whl.metadata (4.4 kB)
+#11 21.47 Collecting requests==2.32.3 (from -r requirements-runtime.txt (line 16))
+#11 21.60   Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
+#11 21.76 Collecting absl-py>=1.0.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 21.89   Downloading absl_py-2.5.1-py3-none-any.whl.metadata (3.3 kB)
+#11 22.05 Collecting astunparse>=1.6.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 22.17   Downloading astunparse-1.6.3-py2.py3-none-any.whl.metadata (4.4 kB)
+#11 22.33 Collecting flatbuffers>=24.3.25 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 22.56   Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+#11 22.72 Collecting gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 22.85   Downloading gast-0.7.0-py3-none-any.whl.metadata (1.5 kB)
+#11 23.00 Collecting google-pasta>=0.1.1 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 23.13   Downloading google_pasta-0.2.0-py3-none-any.whl.metadata (814 bytes)
+#11 23.37 Collecting h5py>=3.10.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 23.50   Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+#11 23.71 Collecting libclang>=13.0.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 23.83   Downloading libclang-18.1.1-py2.py3-none-manylinux2010_x86_64.whl.metadata (5.2 kB)
+#11 24.04 Collecting ml-dtypes<0.5.0,>=0.3.1 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 24.17   Downloading ml_dtypes-0.4.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (20 kB)
+#11 24.42 Collecting opt-einsum>=2.3.2 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 24.58   Downloading opt_einsum-3.4.0-py3-none-any.whl.metadata (6.3 kB)
+#11 24.60 Requirement already satisfied: packaging in /usr/local/lib/python3.11/site-packages (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6)) (26.3)
+#11 25.23 Collecting protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.20.3 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 25.36   Downloading protobuf-4.25.9-cp37-abi3-manylinux2014_x86_64.whl.metadata (541 bytes)
+#11 25.37 Requirement already satisfied: setuptools in /usr/local/lib/python3.11/site-packages (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6)) (79.0.1)
+#11 25.53 Collecting six>=1.12.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 25.77   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#11 25.93 Collecting termcolor>=1.1.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 26.06   Downloading termcolor-3.3.0-py3-none-any.whl.metadata (6.5 kB)
+#11 26.25 Collecting typing-extensions>=3.6.6 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 26.38   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#11 27.75 Collecting wrapt>=1.11.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 27.99   Downloading wrapt-2.5.2-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (7.6 kB)
+#11 29.95 Collecting grpcio<2.0,>=1.24.3 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 30.08   Downloading grpcio-1.85.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)
+#11 30.26 Collecting tensorboard<2.18,>=2.17 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 30.40   Downloading tensorboard-2.17.1-py3-none-any.whl.metadata (1.6 kB)
+#11 30.76 Collecting keras>=3.2.0 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 30.89   Downloading keras-3.15.1-py3-none-any.whl.metadata (6.4 kB)
+#11 31.10 Collecting tensorflow-io-gcs-filesystem>=0.23.1 (from tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 31.34   Downloading tensorflow_io_gcs_filesystem-0.37.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (14 kB)
+#11 32.13 Collecting charset-normalizer<4,>=2 (from requests==2.32.3->-r requirements-runtime.txt (line 16))
+#11 32.25   Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+#11 32.61 Collecting idna<4,>=2.5 (from requests==2.32.3->-r requirements-runtime.txt (line 16))
+#11 32.73   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#11 32.91 Collecting urllib3<3,>=1.21.1 (from requests==2.32.3->-r requirements-runtime.txt (line 16))
+#11 33.20   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#11 33.38 Collecting certifi>=2017.4.17 (from requests==2.32.3->-r requirements-runtime.txt (line 16))
+#11 33.62   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#11 33.79 Collecting Jinja2>=3.1.2 (from flask==3.0.3->-r requirements-runtime.txt (line 10))
+#11 33.92   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#11 34.09 Collecting itsdangerous>=2.1.2 (from flask==3.0.3->-r requirements-runtime.txt (line 10))
+#11 34.23   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+#11 34.41 Collecting click>=8.1.3 (from flask==3.0.3->-r requirements-runtime.txt (line 10))
+#11 34.64   Downloading click-8.5.1-py3-none-any.whl.metadata (2.6 kB)
+#11 35.01 Collecting blinker>=1.6.2 (from flask==3.0.3->-r requirements-runtime.txt (line 10))
+#11 35.15   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+#11 36.22 Collecting sqlalchemy>=2.0.16 (from flask-sqlalchemy==3.1.1->-r requirements-runtime.txt (line 11))
+#11 36.38   Downloading sqlalchemy-2.1.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.7 kB)
+#11 36.78 Collecting MarkupSafe>=2.1.1 (from Werkzeug==3.0.4->-r requirements-runtime.txt (line 14))
+#11 37.10   Downloading markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#11 37.48 Collecting markdown>=2.6.8 (from tensorboard<2.18,>=2.17->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 37.61   Downloading markdown-3.11.3-py3-none-any.whl.metadata (5.1 kB)
+#11 37.80 Collecting tensorboard-data-server<0.8.0,>=0.7.0 (from tensorboard<2.18,>=2.17->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 38.12   Downloading tensorboard_data_server-0.7.2-py3-none-manylinux_2_31_x86_64.whl.metadata (1.1 kB)
+#11 38.14 Requirement already satisfied: wheel<1.0,>=0.23.0 in /usr/local/lib/python3.11/site-packages (from astunparse>=1.6.0->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6)) (0.46.3)
+#11 38.44 Collecting rich (from keras>=3.2.0->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 38.63   Downloading rich-15.0.0-py3-none-any.whl.metadata (18 kB)
+#11 38.84 Collecting namex (from keras>=3.2.0->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 39.04   Downloading namex-0.1.0-py3-none-any.whl.metadata (322 bytes)
+#11 39.43 Collecting optree (from keras>=3.2.0->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 39.56   Downloading optree-0.20.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (32 kB)
+#11 39.88 Collecting markdown-it-py>=2.2.0 (from rich->keras>=3.2.0->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 40.07   Downloading markdown_it_py-4.2.0-py3-none-any.whl.metadata (7.4 kB)
+#11 40.30 Collecting pygments<3.0.0,>=2.13.0 (from rich->keras>=3.2.0->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 40.48   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#11 40.68 Collecting mdurl~=0.1 (from markdown-it-py>=2.2.0->rich->keras>=3.2.0->tensorflow-cpu==2.17.0->-r requirements-runtime.txt (line 6))
+#11 40.89   Downloading mdurl-0.1.2-py3-none-any.whl.metadata (1.6 kB)
+#11 41.09 Downloading tensorflow_cpu-2.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (221.2 MB)
+#11 84.83    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 221.2/221.2 MB 5.3 MB/s  0:00:43
+#11 84.95 Downloading numpy-1.26.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (18.3 MB)
+#11 88.11    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 18.3/18.3 MB 5.8 MB/s  0:00:03
+#11 88.29 Downloading requests-2.32.3-py3-none-any.whl (64 kB)
+#11 88.43 Downloading pillow-10.4.0-cp311-cp311-manylinux_2_28_x86_64.whl (4.5 MB)
+#11 89.21    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.5/4.5 MB 5.9 MB/s  0:00:00
+#11 89.34 Downloading flask-3.0.3-py3-none-any.whl (101 kB)
+#11 89.49 Downloading flask_sqlalchemy-3.1.1-py3-none-any.whl (25 kB)
+#11 89.62 Downloading psycopg2_binary-2.9.10-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.0 MB)
+#11 90.06    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.0/3.0 MB 7.1 MB/s  0:00:00
+#11 90.24 Downloading python_dotenv-1.0.1-py3-none-any.whl (19 kB)
+#11 90.45 Downloading werkzeug-3.0.4-py3-none-any.whl (227 kB)
+#11 90.67 Downloading gunicorn-23.0.0-py3-none-any.whl (85 kB)
+#11 90.85 Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (269 kB)
+#11 91.06 Downloading grpcio-1.85.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (7.4 MB)
+#11 92.12    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.4/7.4 MB 7.0 MB/s  0:00:01
+#11 92.25 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#11 92.49 Downloading ml_dtypes-0.4.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+#11 92.85    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 6.0 MB/s  0:00:00
+#11 93.01 Downloading protobuf-4.25.9-cp37-abi3-manylinux2014_x86_64.whl (295 kB)
+#11 93.21 Downloading tensorboard-2.17.1-py3-none-any.whl (5.5 MB)
+#11 93.96    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.5/5.5 MB 7.5 MB/s  0:00:00
+#11 94.09 Downloading tensorboard_data_server-0.7.2-py3-none-manylinux_2_31_x86_64.whl (6.6 MB)
+#11 95.08    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 6.6/6.6 MB 6.7 MB/s  0:00:00
+#11 95.21 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#11 95.35 Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+#11 95.50 Downloading absl_py-2.5.1-py3-none-any.whl (137 kB)
+#11 95.67 Downloading astunparse-1.6.3-py2.py3-none-any.whl (12 kB)
+#11 95.79 Downloading six-1.17.0-py2.py3-none-any.whl (11 kB)
+#11 95.92 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+#11 96.08 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+#11 96.23 Downloading click-8.5.1-py3-none-any.whl (126 kB)
+#11 96.39 Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+#11 96.59 Downloading gast-0.7.0-py3-none-any.whl (22 kB)
+#11 96.72 Downloading google_pasta-0.2.0-py3-none-any.whl (57 kB)
+#11 96.90 Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl (5.0 MB)
+#11 97.58    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.0/5.0 MB 7.6 MB/s  0:00:00
+#11 97.71 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+#11 97.92 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#11 98.13 Downloading keras-3.15.1-py3-none-any.whl (2.4 MB)
+#11 98.46    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.4/2.4 MB 7.3 MB/s  0:00:00
+#11 98.65 Downloading libclang-18.1.1-py2.py3-none-manylinux2010_x86_64.whl (24.5 MB)
+#11 104.7    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 24.5/24.5 MB 4.0 MB/s  0:00:06
+#11 104.9 Downloading markdown-3.11.3-py3-none-any.whl (116 kB)
+#11 105.1 Downloading markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+#11 105.3 Downloading opt_einsum-3.4.0-py3-none-any.whl (71 kB)
+#11 105.4 Downloading sqlalchemy-2.1.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (4.7 MB)
+#11 107.1    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.7/4.7 MB 2.9 MB/s  0:00:01
+#11 107.2 Downloading tensorflow_io_gcs_filesystem-0.37.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (5.1 MB)
+#11 109.0    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 2.9 MB/s  0:00:01
+#11 109.1 Downloading termcolor-3.3.0-py3-none-any.whl (7.7 kB)
+#11 109.3 Downloading wrapt-2.5.2-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (240 kB)
+#11 109.5 Downloading namex-0.1.0-py3-none-any.whl (5.9 kB)
+#11 109.6 Downloading optree-0.20.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (477 kB)
+#11 109.9 Downloading rich-15.0.0-py3-none-any.whl (310 kB)
+#11 110.1 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#11 110.5    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 3.0 MB/s  0:00:00
+#11 110.6 Downloading markdown_it_py-4.2.0-py3-none-any.whl (91 kB)
+#11 110.8 Downloading mdurl-0.1.2-py3-none-any.whl (10.0 kB)
+#11 113.9 Installing collected packages: namex, libclang, flatbuffers, wrapt, urllib3, typing-extensions, termcolor, tensorflow-io-gcs-filesystem, tensorboard-data-server, six, python-dotenv, pygments, psycopg2-binary, protobuf, Pillow, opt-einsum, numpy, mdurl, MarkupSafe, markdown, itsdangerous, idna, gunicorn, gast, click, charset-normalizer, certifi, blinker, absl-py, Werkzeug, sqlalchemy, requests, optree, ml-dtypes, markdown-it-py, Jinja2, h5py, grpcio, google-pasta, astunparse, tensorboard, rich, flask, keras, flask-sqlalchemy, tensorflow-cpu
+#11 172.0 
+#11 172.0 Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 Pillow-10.4.0 Werkzeug-3.0.4 absl-py-2.5.1 astunparse-1.6.3 blinker-1.9.0 certifi-2026.10.23 charset-normalizer-3.5.2 click-8.5.1 flask-3.0.3 flask-sqlalchemy-3.1.1 flatbuffers-25.12.19 gast-0.7.0 google-pasta-0.2.0 grpcio-1.85.1 gunicorn-23.0.0 h5py-3.16.0 idna-3.20 itsdangerous-2.2.0 keras-3.15.1 libclang-18.1.1 markdown-3.11.3 markdown-it-py-4.2.0 mdurl-0.1.2 ml-dtypes-0.4.1 namex-0.1.0 numpy-1.26.4 opt-einsum-3.4.0 optree-0.20.0 protobuf-4.25.9 psycopg2-binary-2.9.10 pygments-2.21.0 python-dotenv-1.0.1 requests-2.32.3 rich-15.0.0 six-1.17.0 sqlalchemy-2.1.8 tensorboard-2.17.1 tensorboard-data-server-0.7.2 tensorflow-cpu-2.17.0 tensorflow-io-gcs-filesystem-0.37.1 termcolor-3.3.0 typing-extensions-4.16.0 urllib3-2.8.0 wrapt-2.5.2
+#11 172.0 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#11 DONE 173.3s
+
+#12 [7/9] COPY app/         ./app/
+#12 DONE 0.5s
+
+#13 [8/9] COPY models/      ./models/
+#13 DONE 0.3s
+
+#14 [9/9] RUN chown -R appuser:appgroup /app
+#14 DONE 0.8s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 1.3s done
+#15 exporting manifest sha256:ead14d9bd168640ce095ceba97f1f1feff7403c4c7a15287f98f5205ccd2fd2b 0.1s done
+#15 exporting config sha256:6ceeca68f0f3bd558e1ed54148574e173aa3d94b4378542c996895fe56812f37 0.0s done
+#15 exporting attestation manifest sha256:81b93666ef22c4cce41ae4b906e262cf3a78e89a0f15528925ba6c45cc4d1fb4
+#15 exporting attestation manifest sha256:81b93666ef22c4cce41ae4b906e262cf3a78e89a0f15528925ba6c45cc4d1fb4 0.1s done
+#15 exporting manifest list sha256:b4bdc488fa0a1c76eb4bf12a1eaa06eaec991db48f8811d03d61d599a826e670 0.1s done
+#15 naming to docker.io/library/visionguard-web:latest
+#15 naming to docker.io/library/visionguard-web:latest 0.0s done
+#15 unpacking to docker.io/library/visionguard-web:latest
+#15 unpacking to docker.io/library/visionguard-web:latest 94.3s done
+#15 DONE 96.1s

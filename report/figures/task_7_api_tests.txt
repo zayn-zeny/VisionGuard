@@ -1,0 +1,21 @@
+Cloud inference API - endpoint http://127.0.0.1:8000/predict
+Auth header: X-API-Key (<redacted>)
+
+[AI sample] bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg
+  HTTP 200 -> {
+    "label": "AI-generated",
+    "confidence": 0.5523,
+    "model": "MobileNetV2_VisionGuard",
+    "sha256": "b97f1938ec705979"
+  }
+[Real sample] 360_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rtaDBI.jpg
+  HTTP 200 -> {
+    "label": "Real",
+    "confidence": 0.1519,
+    "model": "MobileNetV2_VisionGuard",
+    "sha256": "84b628a60c4d6e3f"
+  }
+
+[Error case] missing API key  -> HTTP 401 {'detail': 'Invalid or missing API key.'}
+[Error case] wrong file type -> HTTP 415 {'detail': 'Unsupported content type: text/plain'}
+[Error case] corrupt image  -> HTTP 422 {'detail': 'Cannot decode image: Truncated File Read'}

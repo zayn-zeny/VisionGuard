@@ -1,0 +1,14 @@
+[ZAYN@ZAYN 2026-11-08 02:24:50 23L-0578_A2_Ops]$ docker compose -p a2 logs web --tail 12
+web-1  |     return fn(*args, **kwargs)  # type: ignore[no-any-return]
+web-1  |            ^^^^^^^^^^^^^^^^^^^
+web-1  |   File "/usr/local/lib/python3.11/site-packages/sqlalchemy/engine/create.py", line 602, in create_engine
+web-1  |     dbapi = dbapi_meth(**dbapi_args)
+web-1  |             ^^^^^^^^^^^^^^^^^^^^^^^^
+web-1  |   File "/usr/local/lib/python3.11/site-packages/sqlalchemy/dialects/postgresql/psycopg.py", line 497, in import_dbapi
+web-1  |     import psycopg
+web-1  | ModuleNotFoundError: No module named 'psycopg'
+web-1  | [2026-11-07 21:24:44 +0000] [8] [INFO] Worker exiting (pid: 8)
+web-1  | [2026-11-07 21:24:45 +0000] [1] [ERROR] Worker (pid:7) exited with code 3
+web-1  | [2026-11-07 21:24:45 +0000] [1] [ERROR] Shutting down: Master
+web-1  | [2026-11-07 21:24:45 +0000] [1] [ERROR] Reason: Worker failed to boot.
+

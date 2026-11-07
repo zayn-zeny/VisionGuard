@@ -1,0 +1,25 @@
+[ZAYN@ZAYN 2026-11-08 02:25:17 23L-0578_A2_Ops]$ docker compose up -d
+time="2026-11-08T02:25:18+05:00" level=warning msg="volume \"23l0578_visionguard_pgdata\" already exists but was created for project \"a2\" (expected \"23l0578_a2_ops\"). Use `external: true` to use an existing volume"
+ Network 23l0578_a2_ops_visionguard_net Creating 
+ Network 23l0578_a2_ops_visionguard_net Creating 
+ Network 23l0578_a2_ops_visionguard_net Created 
+ Network 23l0578_a2_ops_visionguard_net Created 
+ Container 23l0578_a2_ops-db-1 Creating 
+ Container 23l0578_a2_ops-db-1 Created 
+ Container 23l0578_a2_ops-web-1 Creating 
+ Container 23l0578_a2_ops-web-1 Created 
+ Container 23l0578_a2_ops-db-1 Starting 
+ Container 23l0578_a2_ops-db-1 Started 
+ Container 23l0578_a2_ops-db-1 Waiting 
+ Container 23l0578_a2_ops-db-1 Healthy 
+ Container 23l0578_a2_ops-web-1 Starting 
+ Container 23l0578_a2_ops-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 02:26:40 23L-0578_A2_Ops]$ docker compose ps
+NAME                   IMAGE                    COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+23l0578_a2_ops-db-1    postgres:16-alpine       "docker-entrypoint.s…"   db        About a minute ago   Up About a minute (healthy)   5432/tcp
+23l0578_a2_ops-web-1   visionguard-web:latest   "gunicorn --bind 0.0…"   web       About a minute ago   Up 57 seconds (healthy)       0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp
+
+[ZAYN@ZAYN 2026-11-08 02:26:41 23L-0578_A2_Ops]$ curl -s http://localhost:5000/health
+{"db":"ok","debug":false,"inference_mode":"local","model_name":"MobileNetV2_VisionGuard","model_version":"champion","prediction_count":0,"status":"healthy"}
+

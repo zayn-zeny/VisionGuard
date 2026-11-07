@@ -1,0 +1,45 @@
+# Task 6.4 BEFORE image: identical to Dockerfile but installs the full
+# development requirements.txt (training, tracking, testing tooling).
+# Used only to measure the size of the unoptimised image.
+FROM python:3.11-slim-bookworm
+
+# ── System dependencies ──────────────────────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libgomp1 \
+        curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# ── Create non-root user ─────────────────────────────────────────────────────
+RUN groupadd --gid 1001 appgroup \
+ && useradd  --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+
+WORKDIR /app
+
+# ── Install dependencies BEFORE copying source (layer cache) ─────────────────
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip \
+ && pip install --no-cache-dir -r requirements.txt
+
+# ── Copy application source ───────────────────────────────────────────────────
+COPY app/         ./app/
+COPY models/      ./models/
+
+# ── Environment defaults (overridden by docker-compose .env) ─────────────────
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    FLASK_ENV=production
+
+# ── Switch to non-root user ───────────────────────────────────────────────────
+RUN chown -R appuser:appgroup /app
+USER appuser
+
+# ── Health check (used by Docker Compose condition: service_healthy) ──────────
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:5000/health || exit 1
+
+EXPOSE 5000
+
+# ── Start Gunicorn (not Flask dev server — debug=False enforced in app) ───────
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", \
+     "--timeout", "120", "--access-logfile", "-", "app.wsgi:application"]
+

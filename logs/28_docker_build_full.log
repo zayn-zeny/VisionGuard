@@ -1,0 +1,277 @@
+[ZAYN@ZAYN 2026-11-08 02:28:04 23L-0578_A2_Ops]$ docker build -f Dockerfile.full -t visionguard-web:full .
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile.full
+#1 transferring dockerfile: 2.33kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 2.4s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 1.79kB 0.0s done
+#3 DONE 0.1s
+
+#4 [internal] load build context
+#4 DONE 0.0s
+
+#5 [1/9] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#5 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.0s done
+#5 DONE 0.2s
+
+#4 [internal] load build context
+#4 transferring context: 24.75MB 4.9s
+#4 transferring context: 56.64MB 10.1s
+#4 ...
+
+#5 [1/9] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#5 extracting sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 6.1s done
+#5 extracting sha256:f299daadc43c5ed23895e21e1c157957073ba706385b1bd6495df95cc9d4d823 0.8s done
+#5 extracting sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2
+#5 ...
+
+#4 [internal] load build context
+#4 transferring context: 57.99MB 10.5s done
+#4 DONE 10.5s
+
+#5 [1/9] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#5 extracting sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2 3.6s done
+#5 DONE 10.8s
+
+#5 [1/9] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#5 extracting sha256:4855ce9685bd81f7592de6c10e3a6b2362e86c0fd9ffe03001e028699b15cc2e 0.0s done
+#5 DONE 10.8s
+
+#6 [2/9] RUN apt-get update && apt-get install -y --no-install-recommends         libgomp1         curl     && rm -rf /var/lib/apt/lists/*
+#6 2.002 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#6 2.374 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#6 2.494 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#6 2.625 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#6 4.561 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#6 4.682 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [361 kB]
+#6 6.982 Fetched 9400 kB in 6s (1512 kB/s)
+#6 6.982 Reading package lists...
+#6 8.426 Reading package lists...
+#6 10.33 Building dependency tree...
+#6 11.36 Reading state information...
+#6 12.19 The following additional packages will be installed:
+#6 12.19   libbrotli1 libcurl4 libldap-2.5-0 libnghttp2-14 libpsl5 librtmp1 libsasl2-2
+#6 12.21   libsasl2-modules-db libssh2-1
+#6 12.21 Recommended packages:
+#6 12.21   libldap-common publicsuffix libsasl2-modules
+#6 12.44 The following NEW packages will be installed:
+#6 12.45   curl libbrotli1 libcurl4 libgomp1 libldap-2.5-0 libnghttp2-14 libpsl5
+#6 12.45   librtmp1 libsasl2-2 libsasl2-modules-db libssh2-1
+#6 12.90 0 upgraded, 11 newly installed, 0 to remove and 0 not upgraded.
+#6 12.90 Need to get 1730 kB of archives.
+#6 12.90 After this operation, 4133 kB of additional disk space will be used.
+#6 12.90 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libbrotli1 amd64 1.0.9-2+deb12u1 [275 kB]
+#6 13.37 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10+deb12u1 [20.5 kB]
+#6 13.38 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10+deb12u1 [59.9 kB]
+#6 13.39 Get:4 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#6 13.48 Get:5 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u3 [72.4 kB]
+#6 13.50 Get:6 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#6 13.52 Get:7 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#6 13.53 Get:8 http://deb.debian.org/debian-security bookworm-security/main amd64 libssh2-1 amd64 1.10.0-3+deb12u1 [176 kB]
+#6 13.55 Get:9 http://deb.debian.org/debian bookworm/main amd64 libcurl4 amd64 7.88.1-10+deb12u15 [392 kB]
+#6 13.65 Get:10 http://deb.debian.org/debian bookworm/main amd64 curl amd64 7.88.1-10+deb12u15 [316 kB]
+#6 13.68 Get:11 http://deb.debian.org/debian bookworm/main amd64 libgomp1 amd64 12.2.0-14+deb12u1 [116 kB]
+#6 13.94 debconf: delaying package configuration, since apt-utils is not installed
+#6 14.00 Fetched 1730 kB in 1s (1422 kB/s)
+#6 14.05 Selecting previously unselected package libbrotli1:amd64.
+#6 14.05 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 6701 files and directories currently installed.)
+#6 14.08 Preparing to unpack .../00-libbrotli1_1.0.9-2+deb12u1_amd64.deb ...
+#6 14.10 Unpacking libbrotli1:amd64 (1.0.9-2+deb12u1) ...
+#6 14.19 Selecting previously unselected package libsasl2-modules-db:amd64.
+#6 14.19 Preparing to unpack .../01-libsasl2-modules-db_2.1.28+dfsg-10+deb12u1_amd64.deb ...
+#6 14.20 Unpacking libsasl2-modules-db:amd64 (2.1.28+dfsg-10+deb12u1) ...
+#6 14.25 Selecting previously unselected package libsasl2-2:amd64.
+#6 14.26 Preparing to unpack .../02-libsasl2-2_2.1.28+dfsg-10+deb12u1_amd64.deb ...
+#6 14.27 Unpacking libsasl2-2:amd64 (2.1.28+dfsg-10+deb12u1) ...
+#6 14.34 Selecting previously unselected package libldap-2.5-0:amd64.
+#6 14.34 Preparing to unpack .../03-libldap-2.5-0_2.5.13+dfsg-5_amd64.deb ...
+#6 14.35 Unpacking libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#6 14.45 Selecting previously unselected package libnghttp2-14:amd64.
+#6 14.45 Preparing to unpack .../04-libnghttp2-14_1.52.0-1+deb12u3_amd64.deb ...
+#6 14.46 Unpacking libnghttp2-14:amd64 (1.52.0-1+deb12u3) ...
+#6 14.53 Selecting previously unselected package libpsl5:amd64.
+#6 14.53 Preparing to unpack .../05-libpsl5_0.21.2-1_amd64.deb ...
+#6 14.54 Unpacking libpsl5:amd64 (0.21.2-1) ...
+#6 14.61 Selecting previously unselected package librtmp1:amd64.
+#6 14.61 Preparing to unpack .../06-librtmp1_2.4+20151223.gitfa8646d.1-2+b2_amd64.deb ...
+#6 14.62 Unpacking librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#6 14.70 Selecting previously unselected package libssh2-1:amd64.
+#6 14.70 Preparing to unpack .../07-libssh2-1_1.10.0-3+deb12u1_amd64.deb ...
+#6 14.71 Unpacking libssh2-1:amd64 (1.10.0-3+deb12u1) ...
+#6 14.79 Selecting previously unselected package libcurl4:amd64.
+#6 14.79 Preparing to unpack .../08-libcurl4_7.88.1-10+deb12u15_amd64.deb ...
+#6 14.80 Unpacking libcurl4:amd64 (7.88.1-10+deb12u15) ...
+#6 14.90 Selecting previously unselected package curl.
+#6 14.90 Preparing to unpack .../09-curl_7.88.1-10+deb12u15_amd64.deb ...
+#6 14.91 Unpacking curl (7.88.1-10+deb12u15) ...
+#6 15.02 Selecting previously unselected package libgomp1:amd64.
+#6 15.02 Preparing to unpack .../10-libgomp1_12.2.0-14+deb12u1_amd64.deb ...
+#6 15.03 Unpacking libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#6 15.11 Setting up libpsl5:amd64 (0.21.2-1) ...
+#6 15.13 Setting up libbrotli1:amd64 (1.0.9-2+deb12u1) ...
+#6 15.15 Setting up libnghttp2-14:amd64 (1.52.0-1+deb12u3) ...
+#6 15.17 Setting up libgomp1:amd64 (12.2.0-14+deb12u1) ...
+#6 15.19 Setting up libsasl2-modules-db:amd64 (2.1.28+dfsg-10+deb12u1) ...
+#6 15.21 Setting up librtmp1:amd64 (2.4+20151223.gitfa8646d.1-2+b2) ...
+#6 15.24 Setting up libsasl2-2:amd64 (2.1.28+dfsg-10+deb12u1) ...
+#6 15.26 Setting up libssh2-1:amd64 (1.10.0-3+deb12u1) ...
+#6 15.28 Setting up libldap-2.5-0:amd64 (2.5.13+dfsg-5) ...
+#6 15.30 Setting up libcurl4:amd64 (7.88.1-10+deb12u15) ...
+#6 15.33 Setting up curl (7.88.1-10+deb12u15) ...
+#6 15.35 Processing triggers for libc-bin (2.36-9+deb12u14) ...
+#6 DONE 15.8s
+
+#7 [3/9] RUN groupadd --gid 1001 appgroup  && useradd  --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+#7 DONE 0.5s
+
+#8 [4/9] WORKDIR /app
+#8 DONE 0.1s
+
+#9 [5/9] COPY requirements.txt .
+#9 DONE 0.1s
+
+#10 [6/9] RUN pip install --no-cache-dir --upgrade pip  && pip install --no-cache-dir -r requirements.txt
+#10 4.137 Requirement already satisfied: pip in /usr/local/lib/python3.11/site-packages (24.0)
+#10 4.937 Collecting pip
+#10 5.499   Downloading pip-26.3-py3-none-any.whl.metadata (4.6 kB)
+#10 5.650 Downloading pip-26.3-py3-none-any.whl (2.0 MB)
+#10 6.552    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.0/2.0 MB 2.2 MB/s eta 0:00:00
+#10 6.687 Installing collected packages: pip
+#10 6.689   Attempting uninstall: pip
+#10 6.696     Found existing installation: pip 24.0
+#10 6.810     Uninstalling pip-24.0:
+#10 7.262       Successfully uninstalled pip-24.0
+#10 9.018 Successfully installed pip-26.3
+#10 9.018 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+#10 11.95 Collecting tensorflow-cpu==2.17.0 (from -r requirements.txt (line 2))
+#10 12.56   Downloading tensorflow_cpu-2.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.2 kB)
+#10 13.43 Collecting numpy==1.26.4 (from -r requirements.txt (line 3))
+#10 13.57   Downloading numpy-1.26.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (61 kB)
+#10 14.37 Collecting Pillow==10.4.0 (from -r requirements.txt (line 4))
+#10 14.55   Downloading pillow-10.4.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (9.2 kB)
+#10 15.38 Collecting scikit-learn==1.5.2 (from -r requirements.txt (line 5))
+#10 15.55   Downloading scikit_learn-1.5.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (13 kB)
+#10 16.17 Collecting matplotlib==3.9.2 (from -r requirements.txt (line 6))
+#10 16.36   Downloading matplotlib-3.9.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (11 kB)
+#10 16.83 Collecting scipy==1.14.1 (from -r requirements.txt (line 7))
+#10 16.96   Downloading scipy-1.14.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (60 kB)
+#10 17.27 Collecting opencv-python-headless==4.10.0.84 (from -r requirements.txt (line 8))
+#10 17.40   Downloading opencv_python_headless-4.10.0.84-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (20 kB)
+#10 17.65 Collecting keras-tuner==1.4.7 (from -r requirements.txt (line 9))
+#10 17.79   Downloading keras_tuner-1.4.7-py3-none-any.whl.metadata (5.4 kB)
+#10 17.97 Collecting mlflow==2.17.0 (from -r requirements.txt (line 12))
+#10 18.11   Downloading mlflow-2.17.0-py3-none-any.whl.metadata (29 kB)
+#10 18.30 Collecting dagshub==0.3.40 (from -r requirements.txt (line 13))
+#10 18.52   Downloading dagshub-0.3.40-py3-none-any.whl.metadata (11 kB)
+#10 18.78 Collecting dvc==3.55.2 (from -r requirements.txt (line 16))
+#10 18.91   Downloading dvc-3.55.2-py3-none-any.whl.metadata (18 kB)
+#10 19.16 Collecting dvc-s3==3.2.0 (from -r requirements.txt (line 17))
+#10 19.30   Downloading dvc_s3-3.2.0-py3-none-any.whl.metadata (1.4 kB)
+#10 19.46 Collecting pathspec==0.12.1 (from -r requirements.txt (line 18))
+#10 19.59   Downloading pathspec-0.12.1-py3-none-any.whl.metadata (21 kB)
+#10 19.78 Collecting flask==3.0.3 (from -r requirements.txt (line 21))
+#10 19.91   Downloading flask-3.0.3-py3-none-any.whl.metadata (3.2 kB)
+#10 20.06 Collecting flask-sqlalchemy==3.1.1 (from -r requirements.txt (line 22))
+#10 20.26   Downloading flask_sqlalchemy-3.1.1-py3-none-any.whl.metadata (3.4 kB)
+#10 20.61 Collecting psycopg2-binary==2.9.10 (from -r requirements.txt (line 23))
+#10 20.78   Downloading psycopg2_binary-2.9.10-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.9 kB)
+#10 20.99 Collecting python-dotenv==1.0.1 (from -r requirements.txt (line 24))
+#10 21.14   Downloading python_dotenv-1.0.1-py3-none-any.whl.metadata (23 kB)
+#10 21.42 Collecting Werkzeug==3.0.4 (from -r requirements.txt (line 25))
+#10 21.55   Downloading werkzeug-3.0.4-py3-none-any.whl.metadata (3.7 kB)
+#10 21.82 Collecting gunicorn==23.0.0 (from -r requirements.txt (line 26))
+#10 22.00   Downloading gunicorn-23.0.0-py3-none-any.whl.metadata (4.4 kB)
+#10 22.17 Collecting kaggle>=2.0.0 (from -r requirements.txt (line 29))
+#10 22.31   Downloading kaggle-2.2.5-py3-none-any.whl.metadata (17 kB)
+#10 22.77 Collecting pandas==2.2.3 (from -r requirements.txt (line 30))
+#10 22.93   Downloading pandas-2.2.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (89 kB)
+#10 23.20 Collecting pytest==8.3.3 (from -r requirements.txt (line 33))
+#10 23.34   Downloading pytest-8.3.3-py3-none-any.whl.metadata (7.5 kB)
+#10 23.58 Collecting pytest-flask==1.3.0 (from -r requirements.txt (line 34))
+#10 23.75   Downloading pytest_flask-1.3.0-py3-none-any.whl.metadata (14 kB)
+#10 23.91 Collecting flake8==7.1.1 (from -r requirements.txt (line 35))
+#10 24.05   Downloading flake8-7.1.1-py2.py3-none-any.whl.metadata (3.8 kB)
+#10 24.25 Collecting requests==2.32.3 (from -r requirements.txt (line 36))
+#10 24.38   Downloading requests-2.32.3-py3-none-any.whl.metadata (4.6 kB)
+#10 24.54 Collecting absl-py>=1.0.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 24.69   Downloading absl_py-2.5.1-py3-none-any.whl.metadata (3.3 kB)
+#10 24.88 Collecting astunparse>=1.6.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 25.01   Downloading astunparse-1.6.3-py2.py3-none-any.whl.metadata (4.4 kB)
+#10 25.16 Collecting flatbuffers>=24.3.25 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 25.39   Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+#10 25.55 Collecting gast!=0.5.0,!=0.5.1,!=0.5.2,>=0.2.1 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 25.69   Downloading gast-0.7.0-py3-none-any.whl.metadata (1.5 kB)
+#10 25.83 Collecting google-pasta>=0.1.1 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 25.97   Downloading google_pasta-0.2.0-py3-none-any.whl.metadata (814 bytes)
+#10 26.19 Collecting h5py>=3.10.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 26.33   Downloading h5py-3.16.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.0 kB)
+#10 26.53 Collecting libclang>=13.0.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 26.68   Downloading libclang-18.1.1-py2.py3-none-manylinux2010_x86_64.whl.metadata (5.2 kB)
+#10 26.88 Collecting ml-dtypes<0.5.0,>=0.3.1 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 27.05   Downloading ml_dtypes-0.4.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (20 kB)
+#10 27.23 Collecting opt-einsum>=2.3.2 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 27.43   Downloading opt_einsum-3.4.0-py3-none-any.whl.metadata (6.3 kB)
+#10 27.44 Requirement already satisfied: packaging in /usr/local/lib/python3.11/site-packages (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2)) (26.3)
+#10 28.09 Collecting protobuf!=4.21.0,!=4.21.1,!=4.21.2,!=4.21.3,!=4.21.4,!=4.21.5,<5.0.0dev,>=3.20.3 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 28.25   Downloading protobuf-4.25.9-cp37-abi3-manylinux2014_x86_64.whl.metadata (541 bytes)
+#10 28.26 Requirement already satisfied: setuptools in /usr/local/lib/python3.11/site-packages (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2)) (79.0.1)
+#10 28.46 Collecting six>=1.12.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 28.60   Downloading six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+#10 28.77 Collecting termcolor>=1.1.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 28.97   Downloading termcolor-3.3.0-py3-none-any.whl.metadata (6.5 kB)
+#10 29.13 Collecting typing-extensions>=3.6.6 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 29.27   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#10 30.49 Collecting wrapt>=1.11.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 30.71   Downloading wrapt-2.5.2-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (7.6 kB)
+#10 32.47 Collecting grpcio<2.0,>=1.24.3 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 32.66   Downloading grpcio-1.85.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (3.8 kB)
+#10 32.82 Collecting tensorboard<2.18,>=2.17 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 32.96   Downloading tensorboard-2.17.1-py3-none-any.whl.metadata (1.6 kB)
+#10 33.14 Collecting keras>=3.2.0 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 33.27   Downloading keras-3.15.1-py3-none-any.whl.metadata (6.4 kB)
+#10 33.52 Collecting tensorflow-io-gcs-filesystem>=0.23.1 (from tensorflow-cpu==2.17.0->-r requirements.txt (line 2))
+#10 33.68   Downloading tensorflow_io_gcs_filesystem-0.37.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (14 kB)
+#10 34.12 Collecting charset-normalizer<4,>=2 (from requests==2.32.3->-r requirements.txt (line 36))
+#10 34.46   Downloading charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (46 kB)
+#10 34.62 Collecting idna<4,>=2.5 (from requests==2.32.3->-r requirements.txt (line 36))
+#10 34.75   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#10 34.92 Collecting urllib3<3,>=1.21.1 (from requests==2.32.3->-r requirements.txt (line 36))
+#10 35.05   Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+#10 35.22 Collecting certifi>=2017.4.17 (from requests==2.32.3->-r requirements.txt (line 36))
+#10 35.36   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#10 35.53 Collecting joblib>=1.2.0 (from scikit-learn==1.5.2->-r requirements.txt (line 5))
+#10 35.66   Downloading joblib-1.6.0-py3-none-any.whl.metadata (6.5 kB)
+#10 35.81 Collecting threadpoolctl>=3.1.0 (from scikit-learn==1.5.2->-r requirements.txt (line 5))
+#10 35.95   Downloading threadpoolctl-3.8.0-py3-none-any.whl.metadata (29 kB)
+#10 36.26 Collecting contourpy>=1.0.1 (from matplotlib==3.9.2->-r requirements.txt (line 6))
+#10 36.43   Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+#10 36.65 Collecting cycler>=0.10 (from matplotlib==3.9.2->-r requirements.txt (line 6))
+#10 36.79   Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+#10 37.43 Collecting fonttools>=4.22.0 (from matplotlib==3.9.2->-r requirements.txt (line 6))
+#10 37.57   Downloading fonttools-4.68.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (139 kB)
+#10 37.99 Collecting kiwisolver>=1.3.1 (from matplotlib==3.9.2->-r requirements.txt (line 6))
+#10 38.13   Downloading kiwisolver-1.5.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.2 kB)
+#10 38.30 Collecting pyparsing>=2.3.1 (from matplotlib==3.9.2->-r requirements.txt (line 6))
+#10 38.49   Downloading pyparsing-3.3.3-py3-none-any.whl.metadata (5.9 kB)
+#10 38.65 Collecting python-dateutil>=2.7 (from matplotlib==3.9.2->-r requirements.txt (line 6))
+#10 38.80   Downloading python_dateutil-4.0.0-py3-none-any.whl.metadata (7.3 kB)
+#10 39.04 Collecting kt-legacy (from keras-tuner==1.4.7->-r requirements.txt (line 9))
+#10 39.17   Downloading kt_legacy-1.0.5-py3-none-any.whl.metadata (221 bytes)
+#10 39.49 Collecting mlflow-skinny==2.17.0 (from mlflow==2.17.0->-r requirements.txt (line 12))
+#10 39.63   Downloading mlflow_skinny-2.17.0-py3-none-any.whl.metadata (30 kB)
+#10 39.81 Collecting alembic!=1.10.0,<2 (from mlflow==2.17.0->-r requirements.txt (line 12))
+#10 39.95   Downloading alembic-1.20.1-py3-none-any.whl.metadata (7.3 kB)
+#10 40.11 Collecting docker<8,>=4.0.0 (from mlflow==2.17.0->-r requirements.txt (line 12))
+#10 40.25   Downloading docker-7.2.0-py3-none-any.whl.metadata (3.8 kB)
+#10 40.41 Collecting graphene<4 (from mlflow==2.17.0->-r requirements.txt (line 12))
+#10 40.55   Downloading graphene-3.4.3-py2.py3-none-any.whl.metadata (6.9 kB)
+#10 40.77 Collecting markdown<4,>=3.3 (from mlflow==2.17.0->-r requirements.txt (line 12))
+#10 40.91   Downloading markdown-3.11.3-py3-none-any.whl.metadata (5.1 kB)
+#10 41.34 Collecting pyarrow<18,>=4.0.0 (from mlflow==2.17.0->-r requirements.txt (line 12))
+#10 41.47   Downloading pyarrow-17.0.0-cp311-cp311-manylinux_2_28_x86_64.whl.metadata (3.3 kB)
+

@@ -7,6 +7,20 @@ from dotenv import load_dotenv
 from .database import db, init_db
 
 
+def _normalise_db_url(url: str) -> str:
+    """Pin the Postgres driver explicitly.
+
+    SQLAlchemy 2.1 changed the default driver for ``postgresql://`` URLs
+    from psycopg2 to psycopg (v3). The image ships psycopg2-binary, so a
+    bare ``postgresql://`` URL crashed the workers at boot with
+    ``ModuleNotFoundError: No module named 'psycopg'``.
+    """
+    for prefix in ("postgresql://", "postgres://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg2://" + url[len(prefix):]
+    return url
+
+
 def create_app(config_override: dict = None) -> Flask:
     """Create and configure the Flask application."""
     load_dotenv()
@@ -16,10 +30,14 @@ def create_app(config_override: dict = None) -> Flask:
     # ── Core settings from environment ────────────────────────────────
     app.config["SECRET_KEY"] = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-me")
     app.config["DEBUG"] = False  # always off; task 4.4 requirement
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
-        "DATABASE_URL", "sqlite:///visionguard.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = _normalise_db_url(
+        os.environ.get("DATABASE_URL", "sqlite:///visionguard.db")
     )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    # Test each pooled connection before use. Without this, restarting the
+    # db container left dead connections in the pool and the next request
+    # failed with "server closed the connection unexpectedly" (Task 6.5).
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {"pool_pre_ping": True}
     app.config["MAX_CONTENT_LENGTH"] = int(
         os.environ.get("MAX_CONTENT_LENGTH_MB", "10")
     ) * 1024 * 1024  # bytes

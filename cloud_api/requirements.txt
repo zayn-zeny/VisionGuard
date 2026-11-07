@@ -1,8 +1,10 @@
-tensorflow-cpu==2.21.0
+# Pinned to the SAME TensorFlow/Keras/NumPy/Pillow versions used for training
+# (requirements.txt), so the cloud API decodes, resizes and normalises images
+# exactly as the training pipeline and the local Flask path do.
+tensorflow-cpu==2.17.0
+keras==3.15.1
+numpy==1.26.4
+Pillow==10.4.0
 fastapi==0.115.5
-uvicorn[standard]==0.32.1
+uvicorn==0.32.1
 python-multipart==0.0.12
-Pillow==11.1.0
-numpy==2.0.2
-python-dotenv==1.0.1
-

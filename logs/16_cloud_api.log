@@ -1,0 +1,22 @@
+INFO:     Loading environment from '.env'
+INFO:     Started server process [18380]
+INFO:     Waiting for application startup.
+2026-11-07 17:02:34.935854: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 17:02:39.573180: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 17:02:54.568346: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+Loading model from models/champion.keras …
+Model loaded in 7.14s
+INFO:     127.0.0.1:49260 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49261 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49267 - "POST /predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49271 - "POST /predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49272 - "POST /predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49273 - "POST /predict HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:49274 - "POST /predict HTTP/1.1" 415 Unsupported Media Type
+INFO:     127.0.0.1:49275 - "POST /predict HTTP/1.1" 422 Unprocessable Entity
+INFO:     127.0.0.1:49394 - "POST /predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49402 - "POST /predict HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49406 - "POST /predict HTTP/1.1" 200 OK

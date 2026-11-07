@@ -1,0 +1,6 @@
+run,accuracy,precision,recall,f1,roc_auc,threshold
+run3_mobilenet_lr_high,0.7808,0.7753,0.8519,0.8118,0.845,0.4
+run4_mobilenet_no_aug,0.7603,0.7447,0.8642,0.8,0.8528,0.4
+run5_mobilenet_drop_high,0.7055,0.7317,0.7407,0.7362,0.8142,0.3
+run6_mobilenet_unfreeze_5,0.7603,0.7396,0.8765,0.8023,0.8558,0.3
+run7_cnn_baseline,0.6507,0.6271,0.9136,0.7437,0.6815,0.5

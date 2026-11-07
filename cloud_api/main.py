@@ -43,6 +43,8 @@ API_KEY     = os.environ.get("REMOTE_API_KEY", "")
 MODEL_PATH  = os.environ.get("MODEL_PATH", "models/champion.keras")
 IMAGE_SIZE  = (224, 224)
 MAX_SIZE_MB = int(os.environ.get("MAX_CONTENT_LENGTH_MB", "10"))
+THRESHOLD   = float(os.environ.get("THRESHOLD", "0.4"))
+MODEL_NAME  = os.environ.get("MODEL_NAME", "MobileNetV2_VisionGuard")
 
 _model = None
 
@@ -89,9 +91,21 @@ def _preprocess(image_bytes: bytes) -> np.ndarray:
     return np.expand_dims(arr, axis=0)
 
 
+@app.get("/")
+def root():
+    return {
+        "service": "VisionGuard Inference API",
+        "project": "23L-0578_A2_Ops",
+        "endpoints": {"GET /health": "liveness + model status",
+                      "POST /predict": "multipart field 'image', header X-API-Key"},
+        "docs": "/docs",
+    }
+
+
 @app.get("/health")
 def health():
-    return {"status": "healthy", "model_loaded": _model is not None}
+    return {"status": "healthy", "model_loaded": _model is not None,
+            "model": MODEL_NAME, "threshold": THRESHOLD}
 
 
 @app.post("/predict")
@@ -123,14 +137,15 @@ async def predict(
     try:
         arr  = _preprocess(contents)
         prob = float(_model.predict(arr, verbose=0)[0][0])
-        label = "AI-generated" if prob >= 0.5 else "Real"
+        label = "AI-generated" if prob >= THRESHOLD else "Real"
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Inference error: {e}")
 
     return {
         "label":      label,
         "confidence": round(prob, 4),
-        "model":      os.environ.get("MODEL_NAME", "MobileNetV2_VisionGuard"),
+        "threshold":  THRESHOLD,
+        "model":      MODEL_NAME,
         "sha256":     hashlib.sha256(contents).hexdigest()[:16],
     }
 

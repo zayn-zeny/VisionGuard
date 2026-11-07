@@ -1,0 +1,26 @@
+2026-11-07 16:41:26.963222: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 16:41:45.248429: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026/11/07 16:42:33 INFO mlflow.tracking.fluent: Experiment with name 'toy_local' does not exist. Creating a new experiment.
+2026-11-07 16:42:37.247450: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Epoch 1/4
+43/43 - 5s - 117ms/step - accuracy: 0.6337 - loss: 1.1585 - val_accuracy: 0.7300 - val_loss: 0.7698
+Epoch 2/4
+43/43 - 1s - 13ms/step - accuracy: 0.7713 - loss: 0.6750 - val_accuracy: 0.7983 - val_loss: 0.6430
+Epoch 3/4
+43/43 - 1s - 12ms/step - accuracy: 0.8050 - loss: 0.5796 - val_accuracy: 0.8100 - val_loss: 0.5827
+Epoch 4/4
+43/43 - 1s - 12ms/step - accuracy: 0.8226 - loss: 0.5272 - val_accuracy: 0.8217 - val_loss: 0.5494
+lr=0.001: test accuracy 0.8110  run 3b1bf3ff723746de9356cf4c3175867c
+Epoch 1/4
+43/43 - 5s - 125ms/step - accuracy: 0.4209 - loss: 5.1514 - val_accuracy: 0.5200 - val_loss: 1.1570
+Epoch 2/4
+43/43 - 1s - 13ms/step - accuracy: 0.5578 - loss: 1.1056 - val_accuracy: 0.4733 - val_loss: 1.2568
+Epoch 3/4
+43/43 - 1s - 16ms/step - accuracy: 0.5559 - loss: 1.0634 - val_accuracy: 0.5367 - val_loss: 1.0675
+Epoch 4/4
+43/43 - 1s - 13ms/step - accuracy: 0.5915 - loss: 0.9811 - val_accuracy: 0.5983 - val_loss: 1.0147
+lr=0.1: test accuracy 0.5560  run a17b5eab3ae9409c9e1e8fabfa1a8a34
+
+Runs logged to ./labs/mlruns. Open: mlflow ui --backend-store-uri ./labs/mlruns --port 5001
+EXIT=0

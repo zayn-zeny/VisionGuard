@@ -1,0 +1,19 @@
+[flake8]
+# Shared lint configuration — used locally and by .github/workflows/ci.yml.
+max-line-length = 100
+
+# E203/W503: black-compatible slicing/whitespace rules.
+# E221: column alignment of dict/params blocks is intentional in the scripts.
+# E402: scripts deliberately set TF seeds/env vars before importing TF.
+# E702: compact callback/lambda composition reads better on one line.
+# E127: continuation-line indent inside multi-argument calls.
+# W391: trailing blank line at EOF (cosmetic only).
+extend-ignore = E203,W503,E221,E402,E702,E127,W391
+
+exclude =
+    .git,
+    .dvc,
+    venv,
+    .venv,
+    __pycache__,
+    labs

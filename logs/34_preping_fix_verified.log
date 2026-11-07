@@ -1,0 +1,20 @@
+[ZAYN@ZAYN 2026-11-08 02:38:55 23L-0578_A2_Ops]$ docker compose up -d web
+time="2026-11-08T02:38:56+05:00" level=warning msg="volume \"23l0578_visionguard_pgdata\" already exists but was created for project \"a2\" (expected \"23l0578_a2_ops\"). Use `external: true` to use an existing volume"
+ Container 23l0578_a2_ops-db-1 Running 
+ Container 23l0578_a2_ops-web-1 Recreate 
+ Container 23l0578_a2_ops-web-1 Recreated 
+ Container 23l0578_a2_ops-db-1 Waiting 
+ Container 23l0578_a2_ops-db-1 Healthy 
+ Container 23l0578_a2_ops-web-1 Starting 
+ Container 23l0578_a2_ops-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 02:39:55 23L-0578_A2_Ops]$ curl -s http://localhost:5000/health
+{"db":"ok","debug":false,"inference_mode":"local","model_name":"MobileNetV2_VisionGuard","model_version":"champion","prediction_count":6,"status":"healthy"}
+
+[ZAYN@ZAYN 2026-11-08 02:39:55 23L-0578_A2_Ops]$ docker compose restart db
+ Container 23l0578_a2_ops-db-1 Restarting 
+ Container 23l0578_a2_ops-db-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 02:40:12 23L-0578_A2_Ops]$ curl -s http://localhost:5000/health
+{"db":"ok","debug":false,"inference_mode":"local","model_name":"MobileNetV2_VisionGuard","model_version":"champion","prediction_count":6,"status":"healthy"}
+

@@ -44,6 +44,8 @@
 #    allowing hot-swap without rebuild, but adds ops complexity and a risk of
 #    the mount being missing at startup.
 
+name: 23l0578_a2_ops
+
 services:
 
   db:
@@ -67,6 +69,7 @@ services:
 
   web:
     build: .
+    image: visionguard-web:latest
     environment:
       FLASK_SECRET_KEY:      ${FLASK_SECRET_KEY:?required}
       DATABASE_URL:          postgresql://${POSTGRES_USER:-visionguard}:${POSTGRES_PASSWORD}@db:5432/visionguard

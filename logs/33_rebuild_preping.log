@@ -1,0 +1,72 @@
+[ZAYN@ZAYN 2026-11-08 02:38:45 23L-0578_A2_Ops]$ docker compose build web
+ Image visionguard-web:latest Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 519B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 4.88kB 0.0s done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#3 ...
+
+#4 [auth] library/python:pull token for registry-1.docker.io
+#4 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#3 DONE 2.3s
+
+#5 [internal] load .dockerignore
+#5 transferring context: 1.79kB done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 ...
+
+#7 [1/8] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#7 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.1s done
+#7 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 19.37MB 2.4s done
+#6 DONE 2.4s
+
+#8 [4/8] WORKDIR /app
+#8 CACHED
+
+#9 [5/8] COPY requirements-runtime.txt .
+#9 CACHED
+
+#10 [2/8] RUN apt-get update && apt-get install -y --no-install-recommends         libgomp1         curl     && rm -rf /var/lib/apt/lists/*
+#10 CACHED
+
+#11 [3/8] RUN groupadd --gid 1001 appgroup  && useradd  --uid 1001 --gid appgroup --shell /bin/bash --create-home appuser
+#11 CACHED
+
+#12 [6/8] RUN pip install --no-cache-dir --upgrade pip  && pip install --no-cache-dir -r requirements-runtime.txt
+#12 CACHED
+
+#13 [7/8] COPY --chown=appuser:appgroup app/                   ./app/
+#13 DONE 0.1s
+
+#14 [8/8] COPY --chown=appuser:appgroup models/champion.keras  ./models/champion.keras
+#14 DONE 0.2s
+
+#15 exporting to image
+#15 exporting layers
+#15 exporting layers 1.8s done
+#15 exporting manifest sha256:7c66ca259aff805fe9f1ccb8aa04b1f2669fbfbd60cba4168828e980209fa1ae 0.0s done
+#15 exporting config sha256:47c769828762c265172da99d70f6b8fa16180986a52732614f9c3b2d0313b8bb 0.0s done
+#15 exporting attestation manifest sha256:27b91e12b4c54d6dea14b5ddcdd2fd184f1313696a5f9f7f2e682b239d7b7d59 0.0s done
+#15 exporting manifest list sha256:3279a2f196d44635e35a35688c80137b6a23505b3b6d6f83ff4b037254d7385e
+#15 exporting manifest list sha256:3279a2f196d44635e35a35688c80137b6a23505b3b6d6f83ff4b037254d7385e 0.0s done
+#15 naming to docker.io/library/visionguard-web:latest done
+#15 unpacking to docker.io/library/visionguard-web:latest
+#15 unpacking to docker.io/library/visionguard-web:latest 0.4s done
+#15 DONE 2.5s
+
+#16 resolving provenance for metadata file
+#16 DONE 0.1s
+ Image visionguard-web:latest Built 
+

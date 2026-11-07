@@ -1,0 +1,5 @@
+# The trained .keras weights are intentionally NOT in Git (see .gitignore).
+# This placeholder keeps the models/ directory in the repository so that
+# `COPY models/ ./models/` in the Dockerfile and CI docker build always work.
+# The champion model is restored with scripts/register_champion.py or by
+# copying the best checkpoint before building the image.

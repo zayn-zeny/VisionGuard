@@ -1,0 +1,44 @@
+[ZAYN@ZAYN 2026-11-08 02:27:22 23L-0578_A2_Ops]$ docker compose exec db psql -U visionguard -d visionguard -c '\d predictions'
+                                            Table "public.predictions"
+       Column       |            Type             | Collation | Nullable |                 Default                 
+--------------------+-----------------------------+-----------+----------+-----------------------------------------
+ id                 | integer                     |           | not null | nextval('predictions_id_seq'::regclass)
+ timestamp_utc      | timestamp without time zone |           | not null | 
+ label              | character varying(16)       |           | not null | 
+ confidence         | double precision            |           | not null | 
+ threshold          | double precision            |           | not null | 
+ model_name         | character varying(128)      |           | not null | 
+ model_version      | character varying(64)       |           | not null | 
+ inference_mode     | character varying(16)       |           | not null | 
+ image_sha256       | character varying(64)       |           | not null | 
+ image_size_bytes   | integer                     |           | not null | 
+ image_width        | integer                     |           |          | 
+ image_height       | integer                     |           |          | 
+ filename_sanitized | character varying(256)      |           | not null | 
+ request_latency_ms | double precision            |           |          | 
+ client_ip          | character varying(64)       |           |          | 
+ user_agent         | character varying(512)      |           |          | 
+Indexes:
+    "predictions_pkey" PRIMARY KEY, btree (id)
+
+
+[ZAYN@ZAYN 2026-11-08 02:27:24 23L-0578_A2_Ops]$ docker compose exec db psql -U visionguard -d visionguard -c "SELECT id, to_char(timestamp_utc,'YYYY-MM-DD HH24:MI:SS') AS ts_utc, left(filename_sanitized,32) AS file, label, round(confidence::numeric,4) AS conf, threshold, model_name, model_version, inference_mode, round(request_latency_ms::numeric,1) AS ms FROM predictions ORDER BY id;"
+ id |       ts_utc        |               file               |    label     |  conf  | threshold |       model_name        | model_version | inference_mode |   ms   
+----+---------------------+----------------------------------+--------------+--------+-----------+-------------------------+---------------+----------------+--------
+  1 | 2026-11-07 21:27:17 | bDSF6saJUuPLsEu9i3ud--1--gvs7i.j | AI-generated | 0.5523 |       0.4 | MobileNetV2_VisionGuard | champion      | local          | 2622.2
+  2 | 2026-11-07 21:27:18 | 6324662e5ee3110438933c1b_COBE-Pi | AI-generated | 0.7257 |       0.4 | MobileNetV2_VisionGuard | champion      | local          |  207.8
+  3 | 2026-11-07 21:27:18 | landscape-art-ai-generated-photo | AI-generated | 0.8603 |       0.4 | MobileNetV2_VisionGuard | champion      | local          |  301.6
+  4 | 2026-11-07 21:27:21 | 360_F_380747975_sS1hCVB0qPqFCWBM | Real         | 0.1519 |       0.4 | MobileNetV2_VisionGuard | champion      | local          | 3066.6
+  5 | 2026-11-07 21:27:22 | 33100scr.jpg                     | Real         | 0.0205 |       0.4 | MobileNetV2_VisionGuard | champion      | local          |  277.5
+  6 | 2026-11-07 21:27:22 | the-essay_58_resurgence-of-the-p | Real         | 0.0145 |       0.4 | MobileNetV2_VisionGuard | champion      | local          |  205.6
+(6 rows)
+
+
+[ZAYN@ZAYN 2026-11-08 02:27:25 23L-0578_A2_Ops]$ docker compose exec db psql -U visionguard -d visionguard -c "SELECT inference_mode, label, count(*), round(avg(confidence)::numeric,4) AS avg_conf FROM predictions GROUP BY 1,2 ORDER BY 1,2;"
+ inference_mode |    label     | count | avg_conf 
+----------------+--------------+-------+----------
+ local          | AI-generated |     3 |   0.7128
+ local          | Real         |     3 |   0.0623
+(2 rows)
+
+

@@ -1,0 +1,15 @@
+Registering model from runs:/dfc26da7e1d54a31bdb002c2ee81b5ff/model as 'MobileNetV2_VisionGuard' …
+Successfully registered model 'MobileNetV2_VisionGuard'.
+2026/11/07 16:21:11 INFO mlflow.store.model_registry.abstract_store: Waiting up to 300 seconds for model version to finish creation. Model name: MobileNetV2_VisionGuard, version 1
+Created version '1' of model 'MobileNetV2_VisionGuard'.
+Registered as version 1
+Registering model from runs:/bfd3d2308998455a9023a6a6929f2d65/model as 'MobileNetV2_VisionGuard' …
+Registered model 'MobileNetV2_VisionGuard' already exists. Creating a new version of this model...
+2026/11/07 16:21:12 INFO mlflow.store.model_registry.abstract_store: Waiting up to 300 seconds for model version to finish creation. Model name: MobileNetV2_VisionGuard, version 2
+Created version '2' of model 'MobileNetV2_VisionGuard'.
+Registered as version 2
+Alias 'champion' → version 2
+Downloading artifacts:   0%|          | 0/7 [00:00<?, ?it/s]Downloading artifacts:  14%|█▍        | 1/7 [00:00<?, ?it/s]Downloading artifacts:  29%|██▊       | 2/7 [00:00<00:00, 1971.47it/s]Downloading artifacts:  43%|████▎     | 3/7 [00:00<00:00, 28.36it/s]  Downloading artifacts:  43%|████▎     | 3/7 [00:00<00:00, 28.36it/s]Downloading artifacts:  57%|█████▋    | 4/7 [00:00<00:00, 28.36it/s]Downloading artifacts:  71%|███████▏  | 5/7 [00:00<00:00, 28.36it/s]Downloading artifacts:  86%|████████▌ | 6/7 [00:00<00:00,  7.79it/s]Downloading artifacts:  86%|████████▌ | 6/7 [00:00<00:00,  7.79it/s]Downloading artifacts: 100%|██████████| 7/7 [00:04<00:00,  7.79it/s]Downloading artifacts: 100%|██████████| 7/7 [00:04<00:00,  1.46it/s]
+Champion model copied to models\champion.keras
+
+Done. Model 'MobileNetV2_VisionGuard' has 2 versions (v1, v2); alias 'champion' → v2

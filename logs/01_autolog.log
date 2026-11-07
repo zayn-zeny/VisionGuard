@@ -1,0 +1,156 @@
+2026-11-07 15:46:39.562296: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 15:46:42.678323: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 15:46:52.286179: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Augmented batch figure → report\figures\augmented_batch.png
+MLflow tracking URI: https://dagshub.com/zayn-zeny/VisionGuard.mlflow
+
+============================================================
+MLflow run: run2_mobilenet_lr_low  id=a7569e56df01441cbd9c16d92c68b2b7
+============================================================
+Measuring 1 epoch …
+
+--- Stage 1: Feature extraction (base frozen) ---
+2026/11/07 15:47:02 WARNING mlflow.utils.autologging_utils: MLflow autologging encountered a warning: "D:\Zayn\mlops_Assignment\A2\venv\Lib\site-packages\keras\src\trainers\epoch_iterator.py:74: UserWarning: `shuffle=True` was passed, but will be ignored since the data `x` was provided as a tf.data.Dataset. The Dataset is expected to already be shuffled (via `.shuffle(buffer_size)`)."
+Epoch 1/2
+
+[1m 1/21[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m3:01[0m 9s/step - accuracy: 0.4688 - auc: 0.5099 - loss: 0.9471
+[1m 2/21[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m18s[0m 952ms/step - accuracy: 0.4062 - auc: 0.4172 - loss: 0.9467
+[1m 3/21[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m17s[0m 945ms/step - accuracy: 0.3854 - auc: 0.3809 - loss: 0.9902
+[1m 4/21[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m16s[0m 946ms/step - accuracy: 0.3672 - auc: 0.3574 - loss: 1.0228
+[1m 5/21[0m [32m━━━━[0m[37m━━━━━━━━━━━━━━━━[0m [1m15s[0m 943ms/step - accuracy: 0.4125 - auc: 0.3931 - loss: 0.9828
+[1m 6/21[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m13s[0m 916ms/step - accuracy: 0.4427 - auc: 0.4496 - loss: 0.9258
+[1m 7/21[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m12s[0m 908ms/step - accuracy: 0.4643 - auc: 0.4718 - loss: 0.9065
+[1m 8/21[0m [32m━━━━━━━[0m[37m━━━━━━━━━━━━━[0m [1m12s[0m 963ms/step - accuracy: 0.4727 - auc: 0.4850 - loss: 0.8824
+[1m 9/21[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m11s[0m 965ms/step - accuracy: 0.4931 - auc: 0.5035 - loss: 0.8591
+[1m10/21[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m10s[0m 960ms/step - accuracy: 0.5063 - auc: 0.5172 - loss: 0.8393
+[1m11/21[0m [32m━━━━━━━━━━[0m[37m━━━━━━━━━━[0m [1m9s[0m 955ms/step - accuracy: 0.5028 - auc: 0.5162 - loss: 0.8376 
+[1m12/21[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m8s[0m 954ms/step - accuracy: 0.5052 - auc: 0.5212 - loss: 0.83162026-11-07 15:47:21.994530: W tensorflow/core/lib/png/png_io.cc:89] PNG warning: iCCP: profile 'ICC Profile': 'CMYK': invalid ICC profile color space
+
+[1m13/21[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m7s[0m 953ms/step - accuracy: 0.5072 - auc: 0.5216 - loss: 0.8349
+[1m14/21[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m6s[0m 942ms/step - accuracy: 0.5134 - auc: 0.5221 - loss: 0.8403
+[1m15/21[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m5s[0m 952ms/step - accuracy: 0.5208 - auc: 0.5276 - loss: 0.8378
+[1m16/21[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m4s[0m 953ms/step - accuracy: 0.5156 - auc: 0.5251 - loss: 0.8398
+[1m17/21[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m3s[0m 951ms/step - accuracy: 0.5147 - auc: 0.5264 - loss: 0.8371
+[1m18/21[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m2s[0m 952ms/step - accuracy: 0.5139 - auc: 0.5197 - loss: 0.8444
+[1m19/21[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m1s[0m 949ms/step - accuracy: 0.5164 - auc: 0.5252 - loss: 0.8357
+[1m20/21[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m0s[0m 946ms/step - accuracy: 0.5188 - auc: 0.5288 - loss: 0.8269
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 943ms/step - accuracy: 0.5223 - auc: 0.5295 - loss: 0.82412026-11-07 15:47:30.486499: W tensorflow/core/lib/png/png_io.cc:89] PNG warning: iCCP: profile 'ICC Profile': 'CMYK': invalid ICC profile color space
+
+Epoch 1: val_loss improved from None to 0.68795, saving model to models\run2_mobilenet_lr_low_best.keras
+
+Epoch 1: finished saving model to models\run2_mobilenet_lr_low_best.keras
+
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m38s[0m 1s/step - accuracy: 0.5223 - auc: 0.5295 - loss: 0.8241 - val_accuracy: 0.6094 - val_auc: 0.6132 - val_loss: 0.6879 - learning_rate: 0.0010
+Epoch 2/2
+
+[1m 1/21[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m7s[0m 359ms/step - accuracy: 0.2222 - auc: 0.5000 - loss: 0.8223
+[1m 2/21[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m18s[0m 973ms/step - accuracy: 0.5610 - auc: 0.5809 - loss: 0.7242
+[1m 3/21[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m19s[0m 1s/step - accuracy: 0.5616 - auc: 0.5381 - loss: 0.7959   
+[1m 4/21[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m18s[0m 1s/step - accuracy: 0.5810 - auc: 0.5662 - loss: 0.7816
+[1m 5/21[0m [32m━━━━[0m[37m━━━━━━━━━━━━━━━━[0m [1m16s[0m 1s/step - accuracy: 0.5766 - auc: 0.5737 - loss: 0.7572
+[1m 6/21[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m15s[0m 1s/step - accuracy: 0.5858 - auc: 0.5809 - loss: 0.7338
+[1m 7/21[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m14s[0m 1s/step - accuracy: 0.5821 - auc: 0.5983 - loss: 0.7332
+[1m 8/21[0m [32m━━━━━━━[0m[37m━━━━━━━━━━━━━[0m [1m13s[0m 1s/step - accuracy: 0.5837 - auc: 0.6043 - loss: 0.7321
+[1m 9/21[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m11s[0m 998ms/step - accuracy: 0.6075 - auc: 0.6293 - loss: 0.7146
+[1m10/21[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m10s[0m 994ms/step - accuracy: 0.6195 - auc: 0.6426 - loss: 0.7050
+[1m11/21[0m [32m━━━━━━━━━━[0m[37m━━━━━━━━━━[0m [1m9s[0m 988ms/step - accuracy: 0.6322 - auc: 0.6530 - loss: 0.6993 
+[1m12/21[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m8s[0m 974ms/step - accuracy: 0.6260 - auc: 0.6404 - loss: 0.7105
+[1m13/21[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m7s[0m 968ms/step - accuracy: 0.6260 - auc: 0.6390 - loss: 0.7138
+[1m14/21[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m7s[0m 1s/step - accuracy: 0.6141 - auc: 0.6274 - loss: 0.7246   
+[1m15/21[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m6s[0m 1s/step - accuracy: 0.6193 - auc: 0.6353 - loss: 0.7143
+[1m16/21[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m5s[0m 1s/step - accuracy: 0.6237 - auc: 0.6458 - loss: 0.7064
+[1m17/21[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m4s[0m 1s/step - accuracy: 0.6161 - auc: 0.6344 - loss: 0.7166
+[1m18/21[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m3s[0m 1s/step - accuracy: 0.6148 - auc: 0.6389 - loss: 0.7104
+[1m19/21[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m2s[0m 1s/step - accuracy: 0.6154 - auc: 0.6395 - loss: 0.7090
+[1m20/21[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m1s[0m 1s/step - accuracy: 0.6126 - auc: 0.6380 - loss: 0.7101
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 1s/step - accuracy: 0.6133 - auc: 0.6364 - loss: 0.7099
+Epoch 2: val_loss improved from 0.68795 to 0.62505, saving model to models\run2_mobilenet_lr_low_best.keras
+
+Epoch 2: finished saving model to models\run2_mobilenet_lr_low_best.keras
+
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m29s[0m 1s/step - accuracy: 0.6133 - auc: 0.6364 - loss: 0.7099 - val_accuracy: 0.6484 - val_auc: 0.7104 - val_loss: 0.6250 - learning_rate: 0.0010
+Restoring model weights from the end of the best epoch: 2.
+2026/11/07 15:48:08 WARNING mlflow.utils.autologging_utils: Encountered unexpected error during tensorflow autologging: INVALID_PARAMETER_VALUE: Response: {'error_code': 'INVALID_PARAMETER_VALUE'}
+Stage 1 complete. Approx time/epoch: 35s
+
+--- Stage 2: Fine-tuning (top 20 layers unfrozen) ---
+Unfrozen layers in base: 20/154
+Epoch 1/2
+
+[1m 1/21[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m4:44[0m 14s/step - accuracy: 0.7188 - auc: 0.7431 - loss: 0.6064
+[1m 2/21[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m22s[0m 1s/step - accuracy: 0.6719 - auc: 0.7131 - loss: 0.6485  
+[1m 3/21[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m20s[0m 1s/step - accuracy: 0.6250 - auc: 0.6537 - loss: 0.6956
+[1m 4/21[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m19s[0m 1s/step - accuracy: 0.6172 - auc: 0.6555 - loss: 0.6895
+[1m 5/21[0m [32m━━━━[0m[37m━━━━━━━━━━━━━━━━[0m [1m19s[0m 1s/step - accuracy: 0.6187 - auc: 0.6609 - loss: 0.6854
+[1m 6/21[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m18s[0m 1s/step - accuracy: 0.6302 - auc: 0.6802 - loss: 0.6648
+[1m 7/21[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m17s[0m 1s/step - accuracy: 0.6295 - auc: 0.6831 - loss: 0.65882026-11-07 15:48:32.758590: W tensorflow/core/lib/png/png_io.cc:89] PNG warning: iCCP: profile 'ICC Profile': 'CMYK': invalid ICC profile color space
+
+[1m 8/21[0m [32m━━━━━━━[0m[37m━━━━━━━━━━━━━[0m [1m16s[0m 1s/step - accuracy: 0.6133 - auc: 0.6656 - loss: 0.6750
+[1m 9/21[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m14s[0m 1s/step - accuracy: 0.5972 - auc: 0.6481 - loss: 0.6924
+[1m10/21[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m13s[0m 1s/step - accuracy: 0.6000 - auc: 0.6584 - loss: 0.6843
+[1m11/21[0m [32m━━━━━━━━━━[0m[37m━━━━━━━━━━[0m [1m12s[0m 1s/step - accuracy: 0.5966 - auc: 0.6488 - loss: 0.7012
+[1m12/21[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m10s[0m 1s/step - accuracy: 0.6042 - auc: 0.6517 - loss: 0.6983
+[1m13/21[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m9s[0m 1s/step - accuracy: 0.6106 - auc: 0.6601 - loss: 0.6936 
+[1m14/21[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m8s[0m 1s/step - accuracy: 0.6138 - auc: 0.6570 - loss: 0.6938
+[1m15/21[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m7s[0m 1s/step - accuracy: 0.6125 - auc: 0.6553 - loss: 0.6934
+[1m16/21[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m6s[0m 1s/step - accuracy: 0.6074 - auc: 0.6521 - loss: 0.7008
+[1m17/21[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m4s[0m 1s/step - accuracy: 0.6140 - auc: 0.6580 - loss: 0.6936
+[1m18/21[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m3s[0m 1s/step - accuracy: 0.6181 - auc: 0.6600 - loss: 0.6914
+[1m19/21[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m2s[0m 1s/step - accuracy: 0.6086 - auc: 0.6547 - loss: 0.6927
+[1m20/21[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m1s[0m 1s/step - accuracy: 0.6109 - auc: 0.6582 - loss: 0.6890
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 1s/step - accuracy: 0.6101 - auc: 0.6619 - loss: 0.6840
+Epoch 1: val_loss improved from None to 0.60708, saving model to models\run2_mobilenet_lr_low_best.keras
+
+Epoch 1: finished saving model to models\run2_mobilenet_lr_low_best.keras
+
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m48s[0m 2s/step - accuracy: 0.6101 - auc: 0.6619 - loss: 0.6840 - val_accuracy: 0.6875 - val_auc: 0.7358 - val_loss: 0.6071 - learning_rate: 1.0000e-05
+Epoch 2/2
+
+[1m 1/21[0m [37m━━━━━━━━━━━━━━━━━━━━[0m [1m9s[0m 454ms/step - accuracy: 0.8889 - auc: 0.8333 - loss: 0.5760
+[1m 2/21[0m [32m━[0m[37m━━━━━━━━━━━━━━━━━━━[0m [1m23s[0m 1s/step - accuracy: 0.7317 - auc: 0.7610 - loss: 0.5888  
+[1m 3/21[0m [32m━━[0m[37m━━━━━━━━━━━━━━━━━━[0m [1m22s[0m 1s/step - accuracy: 0.6164 - auc: 0.6830 - loss: 0.6722
+[1m 4/21[0m [32m━━━[0m[37m━━━━━━━━━━━━━━━━━[0m [1m20s[0m 1s/step - accuracy: 0.5810 - auc: 0.6424 - loss: 0.6907
+[1m 5/21[0m [32m━━━━[0m[37m━━━━━━━━━━━━━━━━[0m [1m18s[0m 1s/step - accuracy: 0.5912 - auc: 0.6445 - loss: 0.6917
+[1m 6/21[0m [32m━━━━━[0m[37m━━━━━━━━━━━━━━━[0m [1m17s[0m 1s/step - accuracy: 0.5976 - auc: 0.6504 - loss: 0.69162026-11-07 15:49:05.880456: W tensorflow/core/lib/png/png_io.cc:89] PNG warning: iCCP: profile 'ICC Profile': 'CMYK': invalid ICC profile color space
+
+[1m 7/21[0m [32m━━━━━━[0m[37m━━━━━━━━━━━━━━[0m [1m16s[0m 1s/step - accuracy: 0.5871 - auc: 0.6432 - loss: 0.7016
+[1m 8/21[0m [32m━━━━━━━[0m[37m━━━━━━━━━━━━━[0m [1m15s[0m 1s/step - accuracy: 0.6052 - auc: 0.6692 - loss: 0.6746
+[1m 9/21[0m [32m━━━━━━━━[0m[37m━━━━━━━━━━━━[0m [1m14s[0m 1s/step - accuracy: 0.6000 - auc: 0.6667 - loss: 0.6706
+[1m10/21[0m [32m━━━━━━━━━[0m[37m━━━━━━━━━━━[0m [1m13s[0m 1s/step - accuracy: 0.6027 - auc: 0.6794 - loss: 0.6603
+[1m11/21[0m [32m━━━━━━━━━━[0m[37m━━━━━━━━━━[0m [1m11s[0m 1s/step - accuracy: 0.6201 - auc: 0.6980 - loss: 0.6468
+[1m12/21[0m [32m━━━━━━━━━━━[0m[37m━━━━━━━━━[0m [1m10s[0m 1s/step - accuracy: 0.6150 - auc: 0.6995 - loss: 0.6475
+[1m13/21[0m [32m━━━━━━━━━━━━[0m[37m━━━━━━━━[0m [1m9s[0m 1s/step - accuracy: 0.6260 - auc: 0.7057 - loss: 0.6394 
+[1m14/21[0m [32m━━━━━━━━━━━━━[0m[37m━━━━━━━[0m [1m8s[0m 1s/step - accuracy: 0.6353 - auc: 0.7153 - loss: 0.6303
+[1m15/21[0m [32m━━━━━━━━━━━━━━[0m[37m━━━━━━[0m [1m7s[0m 1s/step - accuracy: 0.6324 - auc: 0.7077 - loss: 0.6337
+[1m16/21[0m [32m━━━━━━━━━━━━━━━[0m[37m━━━━━[0m [1m5s[0m 1s/step - accuracy: 0.6299 - auc: 0.7040 - loss: 0.6420
+[1m17/21[0m [32m━━━━━━━━━━━━━━━━[0m[37m━━━━[0m [1m4s[0m 1s/step - accuracy: 0.6353 - auc: 0.7084 - loss: 0.6376
+[1m18/21[0m [32m━━━━━━━━━━━━━━━━━[0m[37m━━━[0m [1m3s[0m 1s/step - accuracy: 0.6347 - auc: 0.7100 - loss: 0.6350
+[1m19/21[0m [32m━━━━━━━━━━━━━━━━━━[0m[37m━━[0m [1m2s[0m 1s/step - accuracy: 0.6410 - auc: 0.7168 - loss: 0.6299
+[1m20/21[0m [32m━━━━━━━━━━━━━━━━━━━[0m[37m━[0m [1m1s[0m 1s/step - accuracy: 0.6418 - auc: 0.7124 - loss: 0.6337
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m0s[0m 1s/step - accuracy: 0.6425 - auc: 0.7131 - loss: 0.6333
+Epoch 2: val_loss improved from 0.60708 to 0.58888, saving model to models\run2_mobilenet_lr_low_best.keras
+
+Epoch 2: finished saving model to models\run2_mobilenet_lr_low_best.keras
+
+[1m21/21[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m33s[0m 2s/step - accuracy: 0.6425 - auc: 0.7131 - loss: 0.6333 - val_accuracy: 0.6797 - val_auc: 0.7581 - val_loss: 0.5889 - learning_rate: 1.0000e-05
+Restoring model weights from the end of the best epoch: 2.
+2026/11/07 15:49:31 WARNING mlflow.utils.autologging_utils: Encountered unexpected error during tensorflow autologging: INVALID_PARAMETER_VALUE: Response: {'error_code': 'INVALID_PARAMETER_VALUE'}
+Training curves → report\figures\curves_run2_mobilenet_lr_low_stage1_freeze.png
+Training curves → report\figures\curves_run2_mobilenet_lr_low_stage2_unfreeze.png
+2026-11-07 15:49:46.637053: I tensorflow/core/framework/local_rendezvous.cc:404] Local rendezvous is aborting with status: OUT_OF_RANGE: End of sequence
+Best threshold on val: 0.35  (F1=0.7717)
+2026-11-07 15:49:53.298188: I tensorflow/core/framework/local_rendezvous.cc:404] Local rendezvous is aborting with status: OUT_OF_RANGE: End of sequence
+
+[run2_mobilenet_lr_low] Test metrics: {'accuracy': 0.6712, 'precision': 0.6542, 'recall': 0.8642, 'f1': 0.7447, 'roc_auc': 0.7527, 'threshold': 0.35}
+Confusion matrix → report\figures\confusion_matrix_run2_mobilenet_lr_low.png
+ROC curve → report\figures\roc_curve_run2_mobilenet_lr_low.png
+Misclassified grid → report\figures\misclassified_run2_mobilenet_lr_low.png
+Training curves → report\figures\curves_run2_mobilenet_lr_low.png
+2026/11/07 15:50:06 WARNING mlflow.tensorflow: You are saving a TensorFlow Core model or Keras model without a signature. Inference with mlflow.pyfunc.spark_udf() will not work unless the model's pyfunc representation accepts pandas DataFrames as inference inputs.
+2026/11/07 15:50:31 WARNING mlflow.models.model: Model logged without a signature and input example. Please set `input_example` parameter when logging the model to auto infer the model signature.
+
+Run 'run2_mobilenet_lr_low' complete. Run ID: a7569e56df01441cbd9c16d92c68b2b7
+Test metrics: {'accuracy': 0.6712, 'precision': 0.6542, 'recall': 0.8642, 'f1': 0.7447, 'roc_auc': 0.7527, 'threshold': 0.35}
+2026/11/07 15:50:49 INFO mlflow.tracking._tracking_service.client: 🏃 View run run2_mobilenet_lr_low at: https://dagshub.com/zayn-zeny/VisionGuard.mlflow/#/experiments/0/runs/a7569e56df01441cbd9c16d92c68b2b7.
+2026/11/07 15:50:49 INFO mlflow.tracking._tracking_service.client: 🧪 View experiment at: https://dagshub.com/zayn-zeny/VisionGuard.mlflow/#/experiments/0.

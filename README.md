@@ -1,6 +1,6 @@
 # 23L-0578_A2_Ops — VisionGuard
 
-[![CI](https://github.com/zayn-zeny/23L-0578_A2_Ops/actions/workflows/ci.yml/badge.svg)](https://github.com/zayn-zeny/23L-0578_A2_Ops/actions/workflows/ci.yml)
+[![CI](https://github.com/zayn-zeny/VisionGuard/actions/workflows/ci.yml/badge.svg)](https://github.com/zayn-zeny/VisionGuard/actions/workflows/ci.yml)
 
 A web service that classifies an uploaded image as **AI-generated** or **real**, built as Assignment 2 for the MLOps course.
 
@@ -63,7 +63,7 @@ All secrets live in `.env` (git-ignored). See `.env.example` for the full key li
 
 ## DagsHub
 
-Project: [https://dagshub.com/zayn-zeny/23L-0578_A2_Ops](https://dagshub.com/zayn-zeny/23L-0578_A2_Ops)  
+Project: [https://dagshub.com/zayn-zeny/VisionGuard](https://dagshub.com/zayn-zeny/VisionGuard)  
 MLflow runs and DVC-tracked data are stored there.
 
 ## Live API

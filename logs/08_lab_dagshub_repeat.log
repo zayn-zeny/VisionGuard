@@ -1,0 +1,16 @@
+2026-11-07 16:43:42.512832: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 16:43:51.141590: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026/11/07 16:44:43 INFO mlflow.tracking.fluent: Experiment with name 'toy_dagshub' does not exist. Creating a new experiment.
+Tracking URI: https://dagshub.com/zayn-zeny/VisionGuard.mlflow
+2026-11-07 16:45:01.595523: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+Epoch 1/2
+29/29 - 16s - 566ms/step - accuracy: 0.5664 - loss: 1.3636 - val_accuracy: 0.7025 - val_loss: 0.8781
+Epoch 2/2
+29/29 - 3s - 91ms/step - accuracy: 0.7419 - loss: 0.7711 - val_accuracy: 0.7650 - val_loss: 0.7273
+
+Logged toy run to DagsHub. test accuracy=0.7513
+Run id: 6cd7a1426dc74c5a9f7b7b0232526a25
+2026/11/07 16:45:27 INFO mlflow.tracking._tracking_service.client: \U0001f3c3 View run toy_dagshub_repeat at: https://dagshub.com/zayn-zeny/VisionGuard.mlflow/#/experiments/1/runs/6cd7a1426dc74c5a9f7b7b0232526a25.
+2026/11/07 16:45:27 INFO mlflow.tracking._tracking_service.client: \U0001f9ea View experiment at: https://dagshub.com/zayn-zeny/VisionGuard.mlflow/#/experiments/1.
+EXIT=0

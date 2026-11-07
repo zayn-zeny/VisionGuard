@@ -1,0 +1,25 @@
+[ZAYN@ZAYN 2026-11-08 02:23:24 23L-0578_A2_Ops]$ docker compose up -d
+ Network a2_visionguard_net Creating 
+ Volume 23l0578_visionguard_pgdata Creating 
+ Network a2_visionguard_net Creating 
+ Volume 23l0578_visionguard_pgdata Creating 
+ Volume 23l0578_visionguard_pgdata Created 
+ Volume 23l0578_visionguard_pgdata Created 
+ Network a2_visionguard_net Created 
+ Network a2_visionguard_net Created 
+ Container a2-db-1 Creating 
+ Container a2-db-1 Created 
+ Container a2-web-1 Creating 
+ Container a2-web-1 Created 
+ Container a2-db-1 Starting 
+ Container a2-db-1 Started 
+ Container a2-db-1 Waiting 
+ Container a2-db-1 Healthy 
+ Container a2-web-1 Starting 
+ Container a2-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 02:24:19 23L-0578_A2_Ops]$ docker compose ps
+NAME       IMAGE                    COMMAND                  SERVICE   CREATED          STATUS                         PORTS
+a2-db-1    postgres:16-alpine       "docker-entrypoint.s…"   db        54 seconds ago   Up 52 seconds (healthy)        5432/tcp
+a2-web-1   visionguard-web:latest   "gunicorn --bind 0.0…"   web       53 seconds ago   Restarting (3) 3 seconds ago   
+

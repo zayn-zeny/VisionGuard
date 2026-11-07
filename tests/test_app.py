@@ -140,3 +140,12 @@ def test_successful_upload_persists_row(app, client, valid_jpeg_bytes):
     history = client.get("/history")
     assert history.status_code == 200
     assert b"portrait.jpg" in history.data
+
+
+def test_postgres_url_pins_psycopg2_driver():
+    """Regression (Task 6.5): SQLAlchemy 2.1 defaults postgresql:// to psycopg v3,
+    which is not installed; the app must pin the psycopg2 driver explicitly."""
+    from app import _normalise_db_url
+    assert _normalise_db_url("postgresql://u:p@db:5432/x") == "postgresql+psycopg2://u:p@db:5432/x"
+    assert _normalise_db_url("postgres://u:p@db/x") == "postgresql+psycopg2://u:p@db/x"
+    assert _normalise_db_url("sqlite:///a.db") == "sqlite:///a.db"

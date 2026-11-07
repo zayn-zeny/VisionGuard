@@ -1,0 +1,15 @@
+Resolving alias 'champion' for model 'MobileNetV2_VisionGuard' …
+  → Version 2  (run_id=bfd3d2308998455a9023a6a6929f2d65)
+  → Downloading model artifacts …
+Downloading artifacts:   0%|          | 0/7 [00:00<?, ?it/s]Downloading artifacts:  14%|█▍        | 1/7 [00:00<?, ?it/s]Downloading artifacts:  29%|██▊       | 2/7 [00:00<00:00, 1996.34it/s]Downloading artifacts:  43%|████▎     | 3/7 [00:00<00:00, 2994.51it/s]Downloading artifacts:  57%|█████▋    | 4/7 [00:00<00:00, 3992.67it/s]Downloading artifacts:  71%|███████▏  | 5/7 [00:00<00:00, 23.40it/s]  Downloading artifacts:  71%|███████▏  | 5/7 [00:00<00:00, 23.40it/s]Downloading artifacts:  86%|████████▌ | 6/7 [00:00<00:00, 23.40it/s]Downloading artifacts: 100%|██████████| 7/7 [00:03<00:00, 23.40it/s]Downloading artifacts: 100%|██████████| 7/7 [00:03<00:00,  1.97it/s]
+2026-11-07 16:23:53.497651: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 16:24:07.339448: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 16:24:16.307421: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+
+==================================================
+Image     : data\raw\AiArtData\AiArtData\bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg
+Label     : AI-generated
+Confidence: 0.5523
+Threshold : 0.4
+==================================================

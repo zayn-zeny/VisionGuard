@@ -1,0 +1,246 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 4.08kB 0.0s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 ...
+
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/python:3.11-slim-bookworm
+#2 DONE 3.6s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 1.79kB 0.0s done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [ 1/11] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 resolve docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39 0.1s done
+#6 DONE 0.7s
+
+#5 [internal] load build context
+#5 transferring context: 1.63MB 5.0s
+#5 ...
+
+#6 [ 1/11] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 1.05MB / 28.25MB 4.5s
+#6 sha256:f299daadc43c5ed23895e21e1c157957073ba706385b1bd6495df95cc9d4d823 1.05MB / 3.34MB 4.4s
+#6 sha256:4855ce9685bd81f7592de6c10e3a6b2362e86c0fd9ffe03001e028699b15cc2e 249B / 249B 1.5s done
+#6 sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2 0B / 16.03MB 4.1s
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 5.04MB 10.1s
+#5 ...
+
+#6 [ 1/11] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 9.44MB / 28.25MB 13.4s
+#6 sha256:f299daadc43c5ed23895e21e1c157957073ba706385b1bd6495df95cc9d4d823 3.34MB / 3.34MB 7.4s done
+#6 sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2 9.44MB / 16.03MB 12.9s
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 8.58MB 15.2s
+#5 transferring context: 12.15MB 20.3s
+#5 ...
+
+#6 [ 1/11] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 15.73MB / 28.25MB 21.3s
+#6 sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2 15.73MB / 16.03MB 20.9s
+#6 sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2 16.03MB / 16.03MB 21.0s done
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 17.83MB / 28.25MB 23.2s
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 19.92MB / 28.25MB 25.2s
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 22.02MB / 28.25MB 26.7s
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 24.12MB / 28.25MB 28.2s
+#6 ...
+
+#5 [internal] load build context
+#5 transferring context: 19.50MB 29.9s done
+#5 DONE 30.1s
+
+#6 [ 1/11] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 26.21MB / 28.25MB 29.5s
+#6 sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 28.25MB / 28.25MB 30.1s done
+#6 extracting sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3
+#6 extracting sha256:dd051e1b8c92ff101fa3071ab97ea4924885942f15644e01c3dc095764e863e3 5.7s done
+#6 DONE 36.7s
+
+#6 [ 1/11] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 extracting sha256:f299daadc43c5ed23895e21e1c157957073ba706385b1bd6495df95cc9d4d823
+#6 extracting sha256:f299daadc43c5ed23895e21e1c157957073ba706385b1bd6495df95cc9d4d823 0.5s done
+#6 extracting sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2
+#6 extracting sha256:35c9163bf2bae2f9c986f7e1e1ea9ccd9c36cc0e216d96c0c14553fb8d61d9d2 2.3s done
+#6 DONE 39.5s
+
+#6 [ 1/11] FROM docker.io/library/python:3.11-slim-bookworm@sha256:a83ba18aef0f865b1a4a611c2cf460fe446f2795673bbb9fe43be570439e3b39
+#6 extracting sha256:4855ce9685bd81f7592de6c10e3a6b2362e86c0fd9ffe03001e028699b15cc2e 0.1s done
+#6 DONE 39.6s
+
+#7 [ 2/11] RUN apt-get update && apt-get install -y --no-install-recommends         libgomp1         libgl1-mesa-glx         libglib2.0-0         curl     && rm -rf /var/lib/apt/lists/*
+#7 4.467 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#7 4.957 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#7 5.093 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [34.8 kB]
+#7 5.387 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8790 kB]
+#7 10.11 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [6924 B]
+#7 10.26 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [361 kB]
+#7 13.70 Fetched 9400 kB in 10s (971 kB/s)
+#7 13.70 Reading package lists...
+#7 20.15 Reading package lists...
+#7 27.76 Building dependency tree...
+#7 29.35 Reading state information...
+#7 32.02 The following additional packages will be installed:
+#7 32.02   libbrotli1 libbsd0 libcurl4 libdrm-amdgpu1 libdrm-common libdrm-intel1
+#7 32.03   libdrm-nouveau2 libdrm-radeon1 libdrm2 libedit2 libelf1 libexpat1 libgl1
+#7 32.03   libgl1-mesa-dri libglapi-mesa libglvnd0 libglx-mesa0 libglx0 libicu72
+#7 32.03   libldap-2.5-0 libllvm15 libnghttp2-14 libpciaccess0 libpsl5 librtmp1
+#7 32.03   libsasl2-2 libsasl2-modules-db libsensors-config libsensors5 libssh2-1
+#7 32.03   libx11-6 libx11-data libx11-xcb1 libxau6 libxcb-dri2-0 libxcb-dri3-0
+#7 32.03   libxcb-glx0 libxcb-present0 libxcb-randr0 libxcb-shm0 libxcb-sync1
+#7 32.03   libxcb-xfixes0 libxcb1 libxdmcp6 libxext6 libxfixes3 libxml2 libxshmfence1
+#7 32.03   libxxf86vm1 libz3-4
+#7 32.04 Suggested packages:
+#7 32.04   low-memory-monitor pciutils lm-sensors
+#7 32.04 Recommended packages:
+#7 32.04   libglib2.0-data shared-mime-info xdg-user-dirs libldap-common publicsuffix
+#7 32.04   libsasl2-modules
+#7 33.62 The following NEW packages will be installed:
+#7 33.62   curl libbrotli1 libbsd0 libcurl4 libdrm-amdgpu1 libdrm-common libdrm-intel1
+#7 33.62   libdrm-nouveau2 libdrm-radeon1 libdrm2 libedit2 libelf1 libexpat1 libgl1
+#7 33.62   libgl1-mesa-dri libgl1-mesa-glx libglapi-mesa libglib2.0-0 libglvnd0
+#7 33.62   libglx-mesa0 libglx0 libgomp1 libicu72 libldap-2.5-0 libllvm15 libnghttp2-14
+#7 33.62   libpciaccess0 libpsl5 librtmp1 libsasl2-2 libsasl2-modules-db
+#7 33.62   libsensors-config libsensors5 libssh2-1 libx11-6 libx11-data libx11-xcb1
+#7 33.62   libxau6 libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-present0
+#7 33.62   libxcb-randr0 libxcb-shm0 libxcb-sync1 libxcb-xfixes0 libxcb1 libxdmcp6
+#7 33.63   libxext6 libxfixes3 libxml2 libxshmfence1 libxxf86vm1 libz3-4
+#7 34.26 0 upgraded, 54 newly installed, 0 to remove and 0 not upgraded.
+#7 34.26 Need to get 54.3 MB of archives.
+#7 34.26 After this operation, 224 MB of additional disk space will be used.
+#7 34.26 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 libbrotli1 amd64 1.0.9-2+deb12u1 [275 kB]
+#7 34.76 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10+deb12u1 [20.5 kB]
+#7 34.76 Get:3 http://deb.debian.org/debian-security bookworm-security/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10+deb12u1 [59.9 kB]
+#7 34.78 Get:4 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#7 34.85 Get:5 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u3 [72.4 kB]
+#7 35.07 Get:6 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#7 35.11 Get:7 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#7 35.16 Get:8 http://deb.debian.org/debian-security bookworm-security/main amd64 libssh2-1 amd64 1.10.0-3+deb12u1 [176 kB]
+#7 35.32 Get:9 http://deb.debian.org/debian bookworm/main amd64 libcurl4 amd64 7.88.1-10+deb12u15 [392 kB]
+#7 35.58 Get:10 http://deb.debian.org/debian bookworm/main amd64 curl amd64 7.88.1-10+deb12u15 [316 kB]
+#7 35.83 Get:11 http://deb.debian.org/debian bookworm/main amd64 libbsd0 amd64 0.11.7-2 [117 kB]
+#7 36.00 Get:12 http://deb.debian.org/debian bookworm/main amd64 libdrm-common all 2.4.114-1 [7112 B]
+#7 36.00 Get:13 http://deb.debian.org/debian bookworm/main amd64 libdrm2 amd64 2.4.114-1+b1 [37.5 kB]
+#7 36.05 Get:14 http://deb.debian.org/debian bookworm/main amd64 libdrm-amdgpu1 amd64 2.4.114-1+b1 [20.9 kB]
+#7 36.06 Get:15 http://deb.debian.org/debian bookworm/main amd64 libpciaccess0 amd64 0.17-2 [51.4 kB]
+#7 36.08 Get:16 http://deb.debian.org/debian bookworm/main amd64 libdrm-intel1 amd64 2.4.114-1+b1 [64.0 kB]
+#7 36.10 Get:17 http://deb.debian.org/debian bookworm/main amd64 libdrm-nouveau2 amd64 2.4.114-1+b1 [19.1 kB]
+#7 36.12 Get:18 http://deb.debian.org/debian bookworm/main amd64 libdrm-radeon1 amd64 2.4.114-1+b1 [21.8 kB]
+#7 36.13 Get:19 http://deb.debian.org/debian bookworm/main amd64 libedit2 amd64 3.1-20221030-2 [93.0 kB]
+#7 36.24 Get:20 http://deb.debian.org/debian bookworm/main amd64 libelf1 amd64 0.188-2.1 [174 kB]
+#7 36.40 Get:21 http://deb.debian.org/debian-security bookworm-security/main amd64 libexpat1 amd64 2.5.0-1+deb12u5 [108 kB]
+#7 36.47 Get:22 http://deb.debian.org/debian bookworm/main amd64 libglvnd0 amd64 1.6.0-1 [51.8 kB]
+#7 36.53 Get:23 http://deb.debian.org/debian bookworm/main amd64 libxau6 amd64 1:1.0.9-1 [19.7 kB]
+#7 36.57 Get:24 http://deb.debian.org/debian bookworm/main amd64 libxdmcp6 amd64 1:1.1.2-3 [26.3 kB]
+#7 36.60 Get:25 http://deb.debian.org/debian bookworm/main amd64 libxcb1 amd64 1.15-1 [144 kB]
+#7 36.68 Get:26 http://deb.debian.org/debian bookworm/main amd64 libx11-data all 2:1.8.4-2+deb12u2 [292 kB]
+#7 36.90 Get:27 http://deb.debian.org/debian bookworm/main amd64 libx11-6 amd64 2:1.8.4-2+deb12u2 [760 kB]
+#7 37.35 Get:28 http://deb.debian.org/debian bookworm/main amd64 libglapi-mesa amd64 22.3.6-1+deb12u2 [35.9 kB]
+#7 37.37 Get:29 http://deb.debian.org/debian bookworm/main amd64 libx11-xcb1 amd64 2:1.8.4-2+deb12u2 [192 kB]
+#7 37.45 Get:30 http://deb.debian.org/debian bookworm/main amd64 libxcb-dri2-0 amd64 1.15-1 [107 kB]
+#7 37.51 Get:31 http://deb.debian.org/debian bookworm/main amd64 libxcb-dri3-0 amd64 1.15-1 [107 kB]
+#7 37.55 Get:32 http://deb.debian.org/debian bookworm/main amd64 libxcb-glx0 amd64 1.15-1 [122 kB]
+#7 37.59 Get:33 http://deb.debian.org/debian bookworm/main amd64 libxcb-present0 amd64 1.15-1 [105 kB]
+#7 37.63 Get:34 http://deb.debian.org/debian bookworm/main amd64 libxcb-randr0 amd64 1.15-1 [117 kB]
+#7 37.68 Get:35 http://deb.debian.org/debian bookworm/main amd64 libxcb-shm0 amd64 1.15-1 [105 kB]
+#7 37.74 Get:36 http://deb.debian.org/debian bookworm/main amd64 libxcb-sync1 amd64 1.15-1 [109 kB]
+#7 37.81 Get:37 http://deb.debian.org/debian bookworm/main amd64 libxcb-xfixes0 amd64 1.15-1 [109 kB]
+#7 37.88 Get:38 http://deb.debian.org/debian bookworm/main amd64 libxext6 amd64 2:1.3.4-1+b1 [52.9 kB]
+#7 37.94 Get:39 http://deb.debian.org/debian bookworm/main amd64 libxfixes3 amd64 1:6.0.0-2 [22.7 kB]
+#7 37.96 Get:40 http://deb.debian.org/debian bookworm/main amd64 libxshmfence1 amd64 1.3-1 [8820 B]
+#7 37.97 Get:41 http://deb.debian.org/debian bookworm/main amd64 libxxf86vm1 amd64 1:1.1.4-1+b2 [20.8 kB]
+#7 37.97 Get:42 http://deb.debian.org/debian bookworm/main amd64 libicu72 amd64 72.1-3+deb12u1 [9376 kB]
+#7 47.68 Ign:42 http://deb.debian.org/debian bookworm/main amd64 libicu72 amd64 72.1-3+deb12u1
+#7 47.97 Err:43 http://deb.debian.org/debian bookworm/main amd64 libxml2 amd64 2.9.14+dfsg-1.3~deb12u6
+#7 47.97   Could not open file /var/cache/apt/archives/partial/libxml2_2.9.14+dfsg-1.3~deb12u6_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 48.22 Err:44 http://deb.debian.org/debian bookworm/main amd64 libz3-4 amd64 4.8.12-3.1
+#7 48.22   Could not open file /var/cache/apt/archives/partial/libz3-4_4.8.12-3.1_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+#7 48.48 Err:45 http://deb.debian.org/debian bookworm/main amd64 libllvm15 amd64 1:15.0.6-4+b1
+#7 48.48   Could not open file /var/cache/apt/archives/partial/libllvm15_1%3a15.0.6-4+b1_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+#7 48.74 Err:46 http://deb.debian.org/debian bookworm/main amd64 libsensors-config all 1:3.6.0-7.1
+#7 48.74   Could not open file /var/cache/apt/archives/partial/libsensors-config_1%3a3.6.0-7.1_all.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+#7 49.09 Err:47 http://deb.debian.org/debian bookworm/main amd64 libsensors5 amd64 1:3.6.0-7.1
+#7 49.09   Could not open file /var/cache/apt/archives/partial/libsensors5_1%3a3.6.0-7.1_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 49.50 Err:48 http://deb.debian.org/debian bookworm/main amd64 libgl1-mesa-dri amd64 22.3.6-1+deb12u2
+#7 49.50   Could not open file /var/cache/apt/archives/partial/libgl1-mesa-dri_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+#7 49.81 Err:49 http://deb.debian.org/debian bookworm/main amd64 libglx-mesa0 amd64 22.3.6-1+deb12u2
+#7 49.81   Could not open file /var/cache/apt/archives/partial/libglx-mesa0_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+#7 50.13 Err:50 http://deb.debian.org/debian bookworm/main amd64 libglx0 amd64 1.6.0-1
+#7 50.13   Could not open file /var/cache/apt/archives/partial/libglx0_1.6.0-1_amd64.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+#7 50.42 Err:51 http://deb.debian.org/debian bookworm/main amd64 libgl1 amd64 1.6.0-1
+#7 50.42   Could not open file /var/cache/apt/archives/partial/libgl1_1.6.0-1_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 50.83 Err:52 http://deb.debian.org/debian bookworm/main amd64 libgl1-mesa-glx amd64 22.3.6-1+deb12u2
+#7 50.83   Could not open file /var/cache/apt/archives/partial/libgl1-mesa-glx_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+#7 51.11 Err:53 http://deb.debian.org/debian bookworm/main amd64 libglib2.0-0 amd64 2.74.6-2+deb12u9
+#7 51.11   Could not open file /var/cache/apt/archives/partial/libglib2.0-0_2.74.6-2+deb12u9_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+#7 51.45 Err:54 http://deb.debian.org/debian bookworm/main amd64 libgomp1 amd64 12.2.0-14+deb12u1
+#7 51.45   Could not open file /var/cache/apt/archives/partial/libgomp1_12.2.0-14+deb12u1_amd64.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+#7 51.86 Ign:42 http://deb.debian.org/debian bookworm/main amd64 libicu72 amd64 72.1-3+deb12u1
+#7 52.10 Err:42 http://deb.debian.org/debian bookworm/main amd64 libicu72 amd64 72.1-3+deb12u1
+#7 52.10   Error writing to file - write (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 52.12 W: chown to root:root of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - 400::URIFailure (30: Read-only file system)
+#7 52.12 W: chmod 0644 of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - 400::URIFailure (30: Read-only file system)
+#7 52.12 W: chown to _apt:root of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - Item::QueueURI (30: Read-only file system)
+#7 52.12 W: chmod 0600 of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - Item::QueueURI (30: Read-only file system)
+#7 52.12 W: chown to root:root of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - 400::URIFailure (30: Read-only file system)
+#7 52.12 W: chmod 0644 of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - 400::URIFailure (30: Read-only file system)
+#7 52.12 W: chown to _apt:root of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - Item::QueueURI (30: Read-only file system)
+#7 52.12 W: chmod 0600 of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - Item::QueueURI (30: Read-only file system)
+#7 52.12 W: chown to root:root of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - 400::URIFailure (30: Read-only file system)
+#7 52.12 W: chmod 0644 of file /var/cache/apt/archives/partial/libicu72_72.1-3+deb12u1_amd64.deb failed - 400::URIFailure (30: Read-only file system)
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian-security/pool/updates/main/i/icu/libicu72_72.1-3%2bdeb12u1_amd64.deb  Error writing to file - write (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/libx/libxml2/libxml2_2.9.14%2bdfsg-1.3%7edeb12u6_amd64.deb  Could not open file /var/cache/apt/archives/partial/libxml2_2.9.14+dfsg-1.3~deb12u6_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/z/z3/libz3-4_4.8.12-3.1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libz3-4_4.8.12-3.1_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/llvm-toolchain-15/libllvm15_15.0.6-4%2bb1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libllvm15_1%3a15.0.6-4+b1_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lm-sensors/libsensors-config_3.6.0-7.1_all.deb  Could not open file /var/cache/apt/archives/partial/libsensors-config_1%3a3.6.0-7.1_all.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lm-sensors/libsensors5_3.6.0-7.1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libsensors5_1%3a3.6.0-7.1_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libgl1-mesa-dri_22.3.6-1%2bdeb12u2_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgl1-mesa-dri_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libglx-mesa0_22.3.6-1%2bdeb12u2_amd64.deb  Could not open file /var/cache/apt/archives/partial/libglx-mesa0_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/libg/libglvnd/libglx0_1.6.0-1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libglx0_1.6.0-1_amd64.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/libg/libglvnd/libgl1_1.6.0-1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgl1_1.6.0-1_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libgl1-mesa-glx_22.3.6-1%2bdeb12u2_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgl1-mesa-glx_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/glib2.0/libglib2.0-0_2.74.6-2%2bdeb12u9_amd64.deb  Could not open file /var/cache/apt/archives/partial/libglib2.0-0_2.74.6-2+deb12u9_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+#7 52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gcc-12/libgomp1_12.2.0-14%2bdeb12u1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgomp1_12.2.0-14+deb12u1_amd64.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+#7 52.12 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+#7 52.12 Fetched 4837 kB in 18s (264 kB/s)
+#7 ERROR: error committing hqk4tuyxjy8kk65lqbr2thw4x: write /var/lib/docker/buildkit/containerd-overlayfs/metadata_v2.db: read-only file system
+------
+ > [ 2/11] RUN apt-get update && apt-get install -y --no-install-recommends         libgomp1         libgl1-mesa-glx         libglib2.0-0         curl     && rm -rf /var/lib/apt/lists/*:
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/l/lm-sensors/libsensors5_3.6.0-7.1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libsensors5_1%3a3.6.0-7.1_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libgl1-mesa-dri_22.3.6-1%2bdeb12u2_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgl1-mesa-dri_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libglx-mesa0_22.3.6-1%2bdeb12u2_amd64.deb  Could not open file /var/cache/apt/archives/partial/libglx-mesa0_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/libg/libglvnd/libglx0_1.6.0-1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libglx0_1.6.0-1_amd64.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/libg/libglvnd/libgl1_1.6.0-1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgl1_1.6.0-1_amd64.deb - open (30: Read-only file system) [IP: 151.101.66.132 80]
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/m/mesa/libgl1-mesa-glx_22.3.6-1%2bdeb12u2_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgl1-mesa-glx_22.3.6-1+deb12u2_amd64.deb - open (30: Read-only file system) [IP: 151.101.130.132 80]
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/glib2.0/libglib2.0-0_2.74.6-2%2bdeb12u9_amd64.deb  Could not open file /var/cache/apt/archives/partial/libglib2.0-0_2.74.6-2+deb12u9_amd64.deb - open (30: Read-only file system) [IP: 151.101.2.132 80]
+52.12 E: Failed to fetch http://deb.debian.org/debian/pool/main/g/gcc-12/libgomp1_12.2.0-14%2bdeb12u1_amd64.deb  Could not open file /var/cache/apt/archives/partial/libgomp1_12.2.0-14+deb12u1_amd64.deb - open (30: Read-only file system) [IP: 151.101.194.132 80]
+52.12 E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+52.12 Fetched 4837 kB in 18s (264 kB/s)
+------
+Dockerfile:39
+--------------------
+  38 |     # ── System dependencies ──────────────────────────────────────────────────────
+  39 | >>> RUN apt-get update && apt-get install -y --no-install-recommends \
+  40 | >>>         libgomp1 \
+  41 | >>>         libgl1-mesa-glx \
+  42 | >>>         libglib2.0-0 \
+  43 | >>>         curl \
+  44 | >>>     && rm -rf /var/lib/apt/lists/*
+  45 |     
+--------------------
+ERROR: failed to build: failed to solve: error committing hqk4tuyxjy8kk65lqbr2thw4x: write /var/lib/docker/buildkit/containerd-overlayfs/metadata_v2.db: read-only file system
+BUILD_EXIT=1

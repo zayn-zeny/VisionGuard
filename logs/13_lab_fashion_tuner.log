@@ -1,0 +1,128 @@
+2026-11-07 17:00:16.037766: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 17:00:18.780561: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-11-07 17:00:34.709815: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+
+Search: Running Trial #1
+
+Value             |Best Value So Far |Hyperparameter
+192               |192               |units
+0.0001            |0.0001            |learning_rate
+
+WARNING:tensorflow:From D:\Zayn\mlops_Assignment\A2\venv\Lib\site-packages\keras\src\backend\common\global_state.py:82: The name tf.reset_default_graph is deprecated. Please use tf.compat.v1.reset_default_graph instead.
+
+Epoch 1/2
+1688/1688 - 15s - 9ms/step - accuracy: 0.7501 - loss: 0.7504 - val_accuracy: 0.8207 - val_loss: 0.5174
+Epoch 2/2
+1688/1688 - 13s - 8ms/step - accuracy: 0.8263 - loss: 0.5093 - val_accuracy: 0.8400 - val_loss: 0.4518
+
+Trial 1 Complete [00h 00m 32s]
+val_accuracy: 0.8399999737739563
+
+Best val_accuracy So Far: 0.8399999737739563
+Total elapsed time: 00h 00m 32s
+
+Search: Running Trial #2
+
+Value             |Best Value So Far |Hyperparameter
+128               |192               |units
+0.0005            |0.0001            |learning_rate
+
+Epoch 1/2
+1688/1688 - 11s - 7ms/step - accuracy: 0.7976 - loss: 0.5837 - val_accuracy: 0.8418 - val_loss: 0.4301
+Epoch 2/2
+1688/1688 - 9s - 5ms/step - accuracy: 0.8525 - loss: 0.4165 - val_accuracy: 0.8575 - val_loss: 0.3829
+
+Trial 2 Complete [00h 00m 21s]
+val_accuracy: 0.8575000166893005
+
+Best val_accuracy So Far: 0.8575000166893005
+Total elapsed time: 00h 00m 53s
+
+Search: Running Trial #3
+
+Value             |Best Value So Far |Hyperparameter
+256               |128               |units
+0.0005            |0.0005            |learning_rate
+
+Epoch 1/2
+1688/1688 - 14s - 8ms/step - accuracy: 0.8095 - loss: 0.5451 - val_accuracy: 0.8472 - val_loss: 0.4174
+Epoch 2/2
+1688/1688 - 13s - 8ms/step - accuracy: 0.8555 - loss: 0.4004 - val_accuracy: 0.8595 - val_loss: 0.3837
+
+Trial 3 Complete [00h 00m 35s]
+val_accuracy: 0.859499990940094
+
+Best val_accuracy So Far: 0.859499990940094
+Total elapsed time: 00h 01m 28s
+
+Search: Running Trial #4
+
+Value             |Best Value So Far |Hyperparameter
+160               |256               |units
+0.0001            |0.0005            |learning_rate
+
+Epoch 1/2
+1688/1688 - 13s - 8ms/step - accuracy: 0.7400 - loss: 0.7854 - val_accuracy: 0.8168 - val_loss: 0.5314
+Epoch 2/2
+1688/1688 - 9s - 5ms/step - accuracy: 0.8228 - loss: 0.5239 - val_accuracy: 0.8395 - val_loss: 0.4571
+
+Trial 4 Complete [00h 00m 22s]
+val_accuracy: 0.8395000100135803
+
+Best val_accuracy So Far: 0.859499990940094
+Total elapsed time: 00h 01m 51s
+
+Search: Running Trial #5
+
+Value             |Best Value So Far |Hyperparameter
+128               |256               |units
+0.0001            |0.0005            |learning_rate
+
+Epoch 1/2
+1688/1688 - 12s - 7ms/step - accuracy: 0.7391 - loss: 0.7993 - val_accuracy: 0.8150 - val_loss: 0.5379
+Epoch 2/2
+1688/1688 - 10s - 6ms/step - accuracy: 0.8205 - loss: 0.5342 - val_accuracy: 0.8347 - val_loss: 0.4631
+
+Trial 5 Complete [00h 00m 23s]
+val_accuracy: 0.8346666693687439
+
+Best val_accuracy So Far: 0.859499990940094
+Total elapsed time: 00h 02m 14s
+
+Search: Running Trial #6
+
+Value             |Best Value So Far |Hyperparameter
+256               |256               |units
+0.001             |0.0005            |learning_rate
+
+Epoch 1/2
+1688/1688 - 15s - 9ms/step - accuracy: 0.8153 - loss: 0.5190 - val_accuracy: 0.8492 - val_loss: 0.4003
+Epoch 2/2
+1688/1688 - 12s - 7ms/step - accuracy: 0.8565 - loss: 0.3931 - val_accuracy: 0.8565 - val_loss: 0.3813
+
+Trial 6 Complete [00h 00m 27s]
+val_accuracy: 0.8565000295639038
+
+Best val_accuracy So Far: 0.859499990940094
+Total elapsed time: 00h 02m 41s
+
+=== TRIALS ===
+trial  0  {'units': 192, 'learning_rate': 0.0001}  score=0.8399999737739563
+trial  1  {'units': 128, 'learning_rate': 0.0005}  score=0.8575000166893005
+trial  2  {'units': 256, 'learning_rate': 0.0005}  score=0.859499990940094
+trial  3  {'units': 160, 'learning_rate': 0.0001}  score=0.8395000100135803
+trial  4  {'units': 128, 'learning_rate': 0.0001}  score=0.8346666693687439
+trial  5  {'units': 256, 'learning_rate': 0.001}  score=0.8565000295639038
+
+=== BEST HYPERPARAMETERS ===
+{'units': 256, 'learning_rate': 0.0005}
+Epoch 1/3
+1688/1688 - 12s - 7ms/step - accuracy: 0.8116 - loss: 0.5391 - val_accuracy: 0.8477 - val_loss: 0.4169
+Epoch 2/3
+1688/1688 - 10s - 6ms/step - accuracy: 0.8584 - loss: 0.3977 - val_accuracy: 0.8558 - val_loss: 0.3957
+Epoch 3/3
+1688/1688 - 13s - 7ms/step - accuracy: 0.8712 - loss: 0.3571 - val_accuracy: 0.8638 - val_loss: 0.3677
+
+Best model test accuracy: 0.8627  (loss 0.3952)
+EXIT=0

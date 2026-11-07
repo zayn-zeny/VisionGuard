@@ -1,0 +1,38 @@
+Database file: instance\visionguard_demo.db
+
+-- schema --
+CREATE TABLE predictions (
+	id INTEGER NOT NULL, 
+	timestamp_utc DATETIME NOT NULL, 
+	label VARCHAR(16) NOT NULL, 
+	confidence FLOAT NOT NULL, 
+	threshold FLOAT NOT NULL, 
+	model_name VARCHAR(128) NOT NULL, 
+	model_version VARCHAR(64) NOT NULL, 
+	inference_mode VARCHAR(16) NOT NULL, 
+	image_sha256 VARCHAR(64) NOT NULL, 
+	image_size_bytes INTEGER NOT NULL, 
+	image_width INTEGER, 
+	image_height INTEGER, 
+	filename_sanitized VARCHAR(256) NOT NULL, 
+	request_latency_ms FLOAT, 
+	client_ip VARCHAR(64), 
+	user_agent VARCHAR(512), 
+	PRIMARY KEY (id)
+)
+
+-- SELECT id, timestamp_utc, label, confidence, model_version, inference_mode FROM predictions ORDER BY id; --
+ 1 | 2026-11-07 12:06:06.200007 | bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg | AI-generated | 0.5415 | thr=0.4 | champion | local
+ 2 | 2026-11-07 12:06:37.885519 | 6324662e5ee3110438933c1b_COBE-Pink | AI-generated | 0.7519 | thr=0.4 | champion | local
+ 3 | 2026-11-07 12:06:38.077065 | landscape-art-ai-generated-photo2. | AI-generated | 0.8602 | thr=0.4 | champion | local
+ 4 | 2026-11-07 12:06:38.263278 | 360_F_380747975_sS1hCVB0qPqFCWBMZ3 | Real         | 0.1396 | thr=0.4 | champion | local
+ 5 | 2026-11-07 12:06:38.456159 | 33100scr.jpg                       | Real         | 0.0207 | thr=0.4 | champion | local
+ 6 | 2026-11-07 12:06:38.638866 | the-essay_58_resurgence-of-the-peo | Real         | 0.0082 | thr=0.4 | champion | local
+ 7 | 2026-11-07 12:08:19.654253 | 6324662e5ee3110438933c1b_COBE-Pink | AI-generated | 0.7519 | thr=0.4 | champion | remote
+ 8 | 2026-11-07 12:08:38.495944 | the-essay_58_resurgence-of-the-peo | Real         | 0.0082 | thr=0.4 | champion | remote
+ 9 | 2026-11-07 12:08:38.666531 | landscape-art-ai-generated-photo2. | AI-generated | 0.8602 | thr=0.4 | champion | remote
+
+-- counts by mode --
+{'inference_mode': 'local', 'n': 6, 'avg_conf': 0.387}
+{'inference_mode': 'remote', 'n': 3, 'avg_conf': 0.5401}
+total rows: 9

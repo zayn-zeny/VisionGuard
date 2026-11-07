@@ -1,0 +1,82 @@
+[ZAYN@ZAYN 2026-11-08 02:35:56 23L-0578_A2_Ops]$ docker compose up -d
+time="2026-11-08T02:35:57+05:00" level=warning msg="volume \"23l0578_visionguard_pgdata\" already exists but was created for project \"a2\" (expected \"23l0578_a2_ops\"). Use `external: true` to use an existing volume"
+ Container 23l0578_a2_ops-db-1 Running 
+ Container 23l0578_a2_ops-web-1 Recreate 
+ Container 23l0578_a2_ops-web-1 Recreated 
+ Container 23l0578_a2_ops-db-1 Waiting 
+ Container 23l0578_a2_ops-db-1 Healthy 
+ Container 23l0578_a2_ops-web-1 Starting 
+ Container 23l0578_a2_ops-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 02:37:06 23L-0578_A2_Ops]$ docker compose ps
+NAME                   IMAGE                    COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+23l0578_a2_ops-db-1    postgres:16-alpine       "docker-entrypoint.s…"   db        11 minutes ago       Up 11 minutes (healthy)       5432/tcp
+23l0578_a2_ops-web-1   visionguard-web:latest   "gunicorn --bind 0.0…"   web       About a minute ago   Up About a minute (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp
+
+[ZAYN@ZAYN 2026-11-08 02:37:08 23L-0578_A2_Ops]$ docker compose stop web
+ Container 23l0578_a2_ops-web-1 Stopping 
+ Container 23l0578_a2_ops-web-1 Stopped 
+
+[ZAYN@ZAYN 2026-11-08 02:37:11 23L-0578_A2_Ops]$ docker compose ps -a
+NAME                   IMAGE                    COMMAND                  SERVICE   CREATED              STATUS                    PORTS
+23l0578_a2_ops-db-1    postgres:16-alpine       "docker-entrypoint.s…"   db        11 minutes ago       Up 11 minutes (healthy)   5432/tcp
+23l0578_a2_ops-web-1   visionguard-web:latest   "gunicorn --bind 0.0…"   web       About a minute ago   Exited (0) 1 second ago   
+
+[ZAYN@ZAYN 2026-11-08 02:37:12 23L-0578_A2_Ops]$ docker compose start web
+ Container 23l0578_a2_ops-db-1 Waiting 
+ Container 23l0578_a2_ops-db-1 Healthy 
+ Container 23l0578_a2_ops-web-1 Starting 
+ Container 23l0578_a2_ops-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 02:38:04 23L-0578_A2_Ops]$ docker compose restart db
+ Container 23l0578_a2_ops-db-1 Restarting 
+ Container 23l0578_a2_ops-db-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 02:38:21 23L-0578_A2_Ops]$ docker compose ps
+NAME                   IMAGE                    COMMAND                  SERVICE   CREATED          STATUS                        PORTS
+23l0578_a2_ops-db-1    postgres:16-alpine       "docker-entrypoint.s…"   db        13 minutes ago   Up 16 seconds (healthy)       5432/tcp
+23l0578_a2_ops-web-1   visionguard-web:latest   "gunicorn --bind 0.0…"   web       2 minutes ago    Up About a minute (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp
+
+[ZAYN@ZAYN 2026-11-08 02:38:22 23L-0578_A2_Ops]$ docker compose logs db --tail 8
+db-1  | PostgreSQL Database directory appears to contain a database; Skipping initialization
+db-1  | 
+db-1  | 2026-11-07 21:38:06.537 UTC [1] LOG:  starting PostgreSQL 16.15 on x86_64-pc-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+db-1  | 2026-11-07 21:38:06.538 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+db-1  | 2026-11-07 21:38:06.538 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+db-1  | 2026-11-07 21:38:06.555 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+db-1  | 2026-11-07 21:38:06.580 UTC [29] LOG:  database system was shut down at 2026-11-07 21:38:05 UTC
+db-1  | 2026-11-07 21:38:06.598 UTC [1] LOG:  database system is ready to accept connections
+
+[ZAYN@ZAYN 2026-11-08 02:38:23 23L-0578_A2_Ops]$ docker compose logs web --tail 8
+web-1  | [2026-11-07 21:37:14 +0000] [7] [INFO] Booting worker with pid: 7
+web-1  | [2026-11-07 21:37:14 +0000] [8] [INFO] Booting worker with pid: 8
+web-1  | 2026-11-07 21:37:16.890702: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+web-1  | To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+web-1  | 2026-11-07 21:37:16.891970: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+web-1  | To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+web-1  | 127.0.0.1 - - [07/Nov/2026:21:37:24 +0000] "GET /health HTTP/1.1" 200 157 "-" "curl/7.88.1"
+web-1  | 127.0.0.1 - - [07/Nov/2026:21:37:54 +0000] "GET /health HTTP/1.1" 200 157 "-" "curl/7.88.1"
+
+[ZAYN@ZAYN 2026-11-08 02:38:24 23L-0578_A2_Ops]$ docker compose exec web sh -c 'whoami; hostname; ls -la /app/models; python -c "import tensorflow as tf;print(tf.__version__)"'
+appuser
+fe938d8c3d74
+total 18856
+drwxr-xr-x 2 appuser appgroup     4096 Nov  7 21:33 .
+drwxr-xr-x 1 root    root         4096 Nov  7 21:33 ..
+-rwxr-xr-x 1 appuser appgroup 19300061 Nov  7 11:21 champion.keras
+2026-11-07 21:38:26.463877: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2.17.0
+
+[ZAYN@ZAYN 2026-11-08 02:38:34 23L-0578_A2_Ops]$ docker compose exec db sh -c 'whoami; hostname; psql -U visionguard -d visionguard -c "select count(*) from predictions;"'
+root
+43f07c1b5535
+ count 
+-------
+     6
+(1 row)
+
+
+[ZAYN@ZAYN 2026-11-08 02:38:35 23L-0578_A2_Ops]$ curl -s http://localhost:5000/health
+{"db":"(psycopg2.OperationalError) server closed the connection unexpectedly\n\tThis probably means the server terminated abnormally\n\tbefore or while processing the request.\n\n[SQL: SELECT count(*) AS count_1 \nFROM (SELECT predictions.id AS predictions_id, predictions.timestamp_utc AS predictions_timestamp_utc, predictions.label AS predictions_label, predictions.confidence AS predictions_confidence, predictions.threshold AS predictions_threshold, predictions.model_name AS predictions_model_name, predictions.model_version AS predictions_model_version, predictions.inference_mode AS predictions_inference_mode, predictions.image_sha256 AS predictions_image_sha256, predictions.image_size_bytes AS predictions_image_size_bytes, predictions.image_width AS predictions_image_width, predictions.image_height AS predictions_image_height, predictions.filename_sanitized AS predictions_filename_sanitized, predictions.request_latency_ms AS predictions_request_latency_ms, predictions.client_ip AS predictions_client_ip, predictions.user_agent AS predictions_user_agent \nFROM predictions) AS anon_1]\n(Background on this error at: https://sqlalche.me/e/21/e3q8)","status":"unhealthy"}
+

@@ -1,0 +1,92 @@
++++ dirname labs/01_dvc_csv_toy.sh
+++ cd labs/..
+++ pwd
++ ROOT=/d/Zayn/mlops_Assignment/A2
++ TOY=/d/Zayn/mlops_Assignment/A2/labs/dvc_toy_repo
++ REMOTE=/d/Zayn/mlops_Assignment/A2/labs/dvc_toy_remote
++ DVC=/d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe
++ rm -rf /d/Zayn/mlops_Assignment/A2/labs/dvc_toy_repo /d/Zayn/mlops_Assignment/A2/labs/dvc_toy_remote
++ mkdir -p /d/Zayn/mlops_Assignment/A2/labs/dvc_toy_repo /d/Zayn/mlops_Assignment/A2/labs/dvc_toy_remote
++ cd /d/Zayn/mlops_Assignment/A2/labs/dvc_toy_repo
++ git init -q
++ git config user.email 23L-0578@student.example
++ git config user.name 'Zain Ul Abideen (23L-0578)'
++ printf 'image,label\nai_001.jpg,1\nai_002.jpg,1\nreal_001.jpg,0\n'
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe init -q
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe add labels.csv
+
+To track the changes with git, run:
+
+	git add labels.csv.dvc .gitignore
+
+To enable auto staging, run:
+
+	dvc config core.autostage true
++ git add .dvc .dvcignore labels.csv.dvc .gitignore
++ git commit -qm 'v1: track labels.csv with DVC'
++ printf 'image,label\nai_001.jpg,1\nai_002.jpg,1\nreal_001.jpg,0\nreal_002.jpg,0\n'
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe add labels.csv
+
+To track the changes with git, run:
+
+	git add labels.csv.dvc
+
+To enable auto staging, run:
+
+	dvc config core.autostage true
++ git add labels.csv.dvc
++ git commit -qm 'v2: add real_002.jpg'
++ git log --oneline
+a2e03f1 v2: add real_002.jpg
+d839915 v1: track labels.csv with DVC
++ git checkout HEAD~1 -- labels.csv.dvc
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe checkout -q
++ echo '--- labels.csv after returning to v1 ---'
+--- labels.csv after returning to v1 ---
++ cat labels.csv
+image,label
+ai_001.jpg,1
+ai_002.jpg,1
+real_001.jpg,0
++ git checkout HEAD -- labels.csv.dvc
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe checkout -q
++ echo '--- labels.csv back at v2 ---'
+--- labels.csv back at v2 ---
++ cat labels.csv
+image,label
+ai_001.jpg,1
+ai_002.jpg,1
+real_001.jpg,0
+real_002.jpg,0
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe remote add -d localstore /d/Zayn/mlops_Assignment/A2/labs/dvc_toy_remote
+Setting 'localstore' as a default remote.
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe push
+1 file pushed
++ rm -f labels.csv
++ rm -rf .dvc/cache
++ echo '--- labels.csv and the local cache are now deleted ---'
+--- labels.csv and the local cache are now deleted ---
++ ls labels.csv .dvc/cache
+ls: cannot access 'labels.csv': No such file or directory
+ls: cannot access '.dvc/cache': No such file or directory
++ /d/Zayn/mlops_Assignment/A2/venv/Scripts/dvc.exe pull
+A       labels.csv
+1 file added and 1 file fetched
++ echo '--- labels.csv restored by dvc pull ---'
+--- labels.csv restored by dvc pull ---
++ cat labels.csv
+image,label
+ai_001.jpg,1
+ai_002.jpg,1
+real_001.jpg,0
+real_002.jpg,0
++ echo '--- pointer file (labels.csv.dvc) ---'
+--- pointer file (labels.csv.dvc) ---
++ cat labels.csv.dvc
+outs:
+- md5: 4e1f307dfada3daada66d08664b0ddca
+  size: 68
+  hash: md5
+  path: labels.csv
++ echo '=== TOY DVC EXERCISE COMPLETE ==='
+=== TOY DVC EXERCISE COMPLETE ===

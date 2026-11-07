@@ -46,6 +46,22 @@ jobs:
           pytest tests/ -v --tb=short
 
       # 6. Build Docker image
+      #    models/champion.keras is git-ignored (19 MB binary, versioned in the
+      #    MLflow registry), so CI bakes a tiny stand-in model with the same
+      #    input/output shape. This checks that the Dockerfile builds; the real
+      #    champion is pulled by scripts/register_champion.py for releases.
+      - name: Create stand-in model for the image build
+        run: |
+          python - <<'PY'
+          import os, keras
+          os.makedirs("models", exist_ok=True)
+          if not os.path.exists("models/champion.keras"):
+              m = keras.Sequential([keras.Input((224, 224, 3)),
+                                    keras.layers.GlobalAveragePooling2D(),
+                                    keras.layers.Dense(1, activation="sigmoid")])
+              m.save("models/champion.keras")
+          PY
+
       - name: Build Docker image
         run: |
           docker build -t visionguard-ci:${{ github.sha }} .

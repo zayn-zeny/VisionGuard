@@ -68,3 +68,17 @@ logs/
 # ── Kaggle ───────────────────────────────────────────────────────────
 kaggle.json
 
+
+# ── Local-only artefacts ─────────────────────────────────────────────
+instance/
+models/*
+!models/.gitkeep
+report/23L-0578_VisionGuard.fpdf.pdf
+report/23L-0578_VisionGuard.html2.pdf
+report/completion_status.pdf
+report/github_push_status.pdf
+logs/tmp*/
+
+# ── Command transcripts ARE evidence for the report: keep them ──────
+!logs/
+!logs/*.log

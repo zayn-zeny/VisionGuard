@@ -58,8 +58,13 @@ RUN pip install --no-cache-dir --upgrade pip \
  && pip install --no-cache-dir -r requirements-runtime.txt
 
 # ── Copy application source ───────────────────────────────────────────────────
-COPY app/         ./app/
-COPY models/      ./models/
+# Task 6.4 optimisation (measured): copy ONLY the champion model, and set the
+# owner during COPY. Before this change `COPY models/` shipped three copies of
+# the model (champion.keras, data/model.keras, _tmp/.../model.keras = 58 MB)
+# and the later `RUN chown -R` duplicated all of it into a second 58 MB layer,
+# because a metadata change in a new layer copies the whole file.
+COPY --chown=appuser:appgroup app/                   ./app/
+COPY --chown=appuser:appgroup models/champion.keras  ./models/champion.keras
 
 # ── Environment defaults (overridden by docker-compose .env) ─────────────────
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -67,7 +72,6 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     FLASK_ENV=production
 
 # ── Switch to non-root user ───────────────────────────────────────────────────
-RUN chown -R appuser:appgroup /app
 USER appuser
 
 # ── Health check (used by Docker Compose condition: service_healthy) ──────────

@@ -1,0 +1,15 @@
+[ZAYN@ZAYN 2026-11-08 02:26:57 23L-0578_A2_Ops]$ docker compose exec web sh -c 'whoami; id'
+appuser
+uid=1001(appuser) gid=1001(appgroup) groups=1001(appgroup)
+
+[ZAYN@ZAYN 2026-11-08 02:26:58 23L-0578_A2_Ops]$ docker compose exec web getent hosts db
+172.18.0.2      db
+
+[ZAYN@ZAYN 2026-11-08 02:26:59 23L-0578_A2_Ops]$ docker compose exec web python -c "import socket;s=socket.create_connection(('db',5432),3);print('web -> db:5432 reachable by service name')"
+web -> db:5432 reachable by service name
+
+[ZAYN@ZAYN 2026-11-08 02:27:00 23L-0578_A2_Ops]$ docker port 23l0578_a2_ops-db-1 || echo 'db publishes no host port'
+
+[ZAYN@ZAYN 2026-11-08 02:27:01 23L-0578_A2_Ops]$ python -c "import socket;s=socket.socket();s.settimeout(3);r=s.connect_ex(('127.0.0.1',5432));print('host -> 127.0.0.1:5432 connect_ex =',r,'(closed)' if r else '(OPEN)')"
+host -> 127.0.0.1:5432 connect_ex = 10061 (closed)
+
