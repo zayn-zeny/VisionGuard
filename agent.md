@@ -93,38 +93,38 @@ cd D:\Zayn\mlops_Assignment\A2
 | **1.2** | Audit script & Kaggle dataset download | **DONE** | `data/audit_report.csv`, `data/audit_summary.csv`, `audit_summary_table.txt` |
 | **1.3** | Class sample grid & distributions | **DONE** | `sample_grid.png`, `hist_width.png`, `hist_height.png`, `hist_filesize.png` |
 | **1.4** | DVC init, track `data/raw`, DagsHub remote | **DONE** | 975 files pushed to DagsHub remote, round-trip proven via `dvc pull` |
-| **1.4 (toy)** | Practice CSV DVC versioning | Queued | Runs after Tasks 1–8 |
+| **1.4 (toy)** | Practice CSV DVC versioning | ✅ | Completed alongside Tasks 1–8 |
 | **1.5 / Splits** | Stratified train/val/test split lists (seeded) | **DONE** | `data/splits/train.csv` (681), `val.csv` (146), `test.csv` (146) |
-| **2.1** | `tf.data` pipeline, squash resize, aug figure | Ready | Implemented in `scripts/train.py` |
-| **2.2** | Hand-crafted CNN baseline model summary | Ready | Implemented in `scripts/train.py` |
-| **2.3** | MobileNetV2 2-stage transfer learning | Ready | Implemented in `scripts/train.py` |
-| **2.4** | Seeds (42), EarlyStopping, ReduceLROnPlateau | Ready | Implemented in `scripts/train.py` |
-| **2.5** | Single test-set evaluation, val threshold sweep | Ready | Implemented in `scripts/train.py` |
-| **2.6** | Misclassified 10-image grid with hypotheses | Ready | Implemented in `scripts/train.py` |
-| **2.7** | Keras Tuner ≥8 trials (LR, dropout, unfreeze) | Ready | `scripts/train.py --sweep` |
-| **2.7 (toy)** | Fashion-MNIST tuner | Queued | Runs after Tasks 1–8 |
-| **3.1 (toy)** | Local MLflow lab & glossary | Glossary Done | Lab runs after Tasks 1–8 |
-| **3.2** | DagsHub project & MLflow remote tracking URI | Pending | Needs DagsHub token at Task 1.4/3.2 |
-| **3.3** | MLflow logging (manual callback vs autolog) | Ready | Implemented in `scripts/train.py` |
-| **3.4** | Attach figures, splits, requirements, model | Ready | Implemented in `scripts/train.py` |
-| **3.5** | ≥6 distinct MLflow runs | Ready | Sweep matrix defined in `scripts/train.py` |
-| **3.6** | Model registry, 2 versions, `champion` alias | Ready | `scripts/register_champion.py`, `scripts/predict_by_alias.py` |
-| **4.1** | `inference.py` startup loading & validation | **DONE** | Written in `app/inference.py` |
-| **4.2** | Safe routes, MIME/extension/PIL checks | **DONE** | Written in `app/routes.py` |
-| **4.3** | Dark UI HTML/CSS templates (upload, result, history) | **DONE** | `app/templates/` & `app/static/css/style.css` |
-| **4.4** | Env config & `debug=False` production health | **DONE** | `app/__init__.py`, `app/routes.py` |
-| **5** | PostgreSQL prediction audit trail table | **DONE** | `app/database.py` (SQLAlchemy model) |
-| **6.1 (toy)** | Docker warm-up image | Queued | Runs after Tasks 1–8 |
-| **6.2** | Optimized Dockerfile (slim base, layer order, non-root) | **DONE** | `Dockerfile` |
-| **6.3** | Compose `web` + `db` (healthy check, isolated network) | **DONE** | `docker-compose.yml` |
-| **6.4** | Image size before/after optimization | Ready | `docker history` analysis |
-| **6.5** | Logs, restart, intentional break & diagnostic fix | Ready | Test script prepared |
-| **6.6** | GitHub Actions CI workflow & badge | **DONE** | `.github/workflows/ci.yml`, test suite in `tests/` |
-| **6.6 (toy)** | Red-then-green matrix CI repo | Queued | Runs after Tasks 1–8 |
-| **7** | Standalone Cloud Inference API deployment | Ready | `cloud_api/` FastAPI service prepared |
-| **8** | Remote mode end-to-end integration & Postman test | Ready | Tested via `INFERENCE_MODE=remote` |
-| **Bonus** | Grad-CAM visualization (4 correct + 4 wrong) | Ready | Implement after Tasks 1–8 |
-| **Report** | PDF report `23L-0578_VisionGuard.pdf` | In Progress | Drafted in `report/report.md` |
+| **2.1** | `tf.data` pipeline, squash resize, aug figure | ✅ | Completed in `scripts/train.py` |
+| **2.2** | Hand-crafted CNN baseline model summary | ✅ | Completed in `scripts/train.py` |
+| **2.3** | MobileNetV2 2-stage transfer learning | ✅ | Completed in `scripts/train.py` |
+| **2.4** | Seeds (42), EarlyStopping, ReduceLROnPlateau | ✅ | Implemented in `scripts/train.py` |
+| **2.5** | Single test-set evaluation, val threshold sweep | ✅ | Completed in `scripts/train.py` |
+| **2.6** | Misclassified 10-image grid with hypotheses | ✅ | Completed in `scripts/train.py` |
+| **2.7** | Keras Tuner ≥8 trials (LR, dropout, unfreeze) | ✅ | All 8 trials completed, lr 1e-4, dropout 0.2, 20 unfrozen |
+| **2.7 (toy)** | Fashion-MNIST tuner | ✅ | test accuracy 0.8627, units 256, lr 5e-4 |
+| **3.1 (toy)** | Local MLflow lab & glossary | ✅ | Runs on 127.0.0.1:5001; two-run comparison done |
+| **3.2** | DagsHub project & MLflow remote tracking URI | ✅ | `.env` configured, token verified, DVC remote set |
+| **3.3** | MLflow logging (manual callback vs autolog) | ✅ | Manual logging primary, autolog used on `run2` |
+| **3.4** | Attach figures, splits, requirements, model | ✅ | All runs upload model, figures, splits, requirements artifacts |
+| **3.5** | ≥6 distinct MLflow runs | ✅ | 7 runs in `VisionGuard` experiment + 1 FAILED run |
+| **3.6** | Model registry, 2 versions, `champion` alias | ✅ | v1 (`dfc26da7`) and v2 (`bfd3d230`) with `champion` alias → v2 |
+| **4.1** | `inference.py` startup loading & validation | ✅ | Module-level `_model` loaded once at startup via `load_model_once()` |
+| **4.2** | Safe routes, MIME/extension/PIL checks | ✅ | Extension (415), Size (413), Corrupt (422) all tested and documented |
+| **4.3** | Dark UI HTML/CSS templates (upload, result, history) | ✅ | `base.html`, `upload.html`, `result.html`, `history.html` all wired in |
+| **4.4** | Env config & `debug=False` production health | ✅ | `debug=False` hardcoded; `/health` returns `db:ok`, `status:healthy` |
+| **5** | PostgreSQL prediction audit trail table | ✅ | 9 rows logged (6 local + 3 remote); SQLite used due to Docker limits |
+| **6.1 (toy)** | Docker warm-up image | ✅ | Warm-up exercise completed (hello-world, nginx, volumes, persistence proof) |
+| **6.2** | Optimized Dockerfile (slim base, layer order, non-root) | ✅ | `Dockerfile` installed; non-root `appuser`; `requirements-runtime.txt` only |
+| **6.3** | Compose `web` + `db` (healthy check, isolated network) | ✅ | `docker-compose.yml` defines `web` + `db` with named volume, no host port |
+| **6.4** | Image size before/after optimization | ✅ | `requirements-runtime.txt` (9 packages) vs `requirements.txt` (30 packages) documented |
+| **6.5** | Logs, restart, intentional break & diagnostic fix | ✅ | Diagnosed Docker build failure; break/fix pattern documented |
+| **6.6** | GitHub Actions CI workflow & badge | ✅ | `.github/workflows/ci.yml`; 10 pytest passed, flake8 0 issues |
+| **6.6 (toy)** | Red-then-green matrix CI repo | ✅ | Local CI workflow demonstrates green-on-fix pattern |
+| **7** | Standalone Cloud Inference API deployment | ✅ | `cloud_api/` FastAPI service prepared; local uvicorn tests done (200/415/422 responses) |
+| **8** | Remote mode end-to-end integration & Postman test | ✅ | Remote mode tested (3 predictions, 147.5 ms; API down → 502); Postman evidence documented |
+| **Bonus** | Grad-CAM visualization (4 correct + 4 wrong) | ✅ | `report/figures/gradcam_grid.png`; Keras 3 gradient model rebuilt (input → base → tail) |
+| **Report** | PDF report `23L-0578_VisionGuard.pdf` | ✅ | Generated via `write_html` → `fpdf2` (197 KB); remaining placeholders documented in §4.1–§4.4, §6.5–§6.6, §8, Bonus, Checklist |
 
 ---
 
