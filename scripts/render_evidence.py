@@ -11,9 +11,10 @@ server-rendered pages into report screenshots.
           project name, because headless Edge has no address bar.
 
 Usage examples:
-    python scripts/render_evidence.py term logs/25_compose_healthy.log SS_38_compose_ps.png "docker compose ps"
-    python scripts/render_evidence.py page GET  http://localhost:5000/history SS_35b_history_postgres.png
-    python scripts/render_evidence.py page POST http://localhost:5000/predict SS_31b_result.png data/raw/x.jpg
+    python scripts/render_evidence.py term logs/25_compose_healthy.log SS_38.png "compose ps"
+    python scripts/render_evidence.py page GET  http://localhost:5000/history SS_35b.png
+    python scripts/render_evidence.py page POST http://localhost:5000/predict SS_31b.png x.jpg
+    python scripts/render_evidence.py live https://dagshub.com/<user>/<repo>.mlflow SS_19.png
 """
 from __future__ import annotations
 
@@ -82,7 +83,8 @@ def page(method: str, url: str, png: str, upload: str | None = None,
         data = Path(upload).read_bytes() if upload and Path(upload).exists() else upload.encode()
         name = Path(upload).name if upload and Path(upload).exists() else "upload.bin"
         r = s.post(url, files={"image": (name, data, ctype)}, allow_redirects=True, timeout=120)
-        req = f"POST {url}  file={name}  ->  HTTP {r.history[0].status_code if r.history else r.status_code}"
+        first = r.history[0].status_code if r.history else r.status_code
+        req = f"POST {url}  file={name}  ->  HTTP {first}"
         if r.history:
             req += f" -> GET {r.url} HTTP {r.status_code}"
     else:
@@ -111,10 +113,28 @@ def page(method: str, url: str, png: str, upload: str | None = None,
     print("wrote", OUT / png, "|", req)
 
 
+def live(url: str, png: str, height: str = "1000", wait_ms: str = "20000") -> None:
+    """Screenshot a live (JavaScript) page such as the DagsHub MLflow UI."""
+    tmpdir = Path(tempfile.mkdtemp(dir=str(ROOT / "logs")))
+    shot = tmpdir / "shot.png"
+    subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+                    f"--user-data-dir={tmpdir / 'profile'}", f"--virtual-time-budget={wait_ms}",
+                    f"--window-size=1500,{height}", f"--screenshot={shot}", url],
+                   check=True, capture_output=True, timeout=180)
+    when = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    img = _header(Image.open(shot).convert("RGB"),
+                  f"GET {url}  |  {when}  |  {STAMP_USER}  |  23L-0578_A2_Ops")
+    img.save(OUT / png)
+    subprocess.run(["cmd", "/c", "rmdir", "/s", "/q", str(tmpdir)], capture_output=True)
+    print("wrote", OUT / png)
+
+
 if __name__ == "__main__":
     kind, *args = sys.argv[1:]
     if kind == "term":
         term(*args[:3], *map(int, args[3:]))
+    elif kind == "live":
+        live(*args)
     elif kind == "page":
         page(*args)
     else:

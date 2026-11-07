@@ -1,0 +1,48 @@
+[ZAYN@ZAYN 2026-11-08 02:52:58 23L-0578_A2_Ops]$ curl -s 'https://dagshub.com/zayn-zeny/VisionGuard.mlflow/api/2.0/mlflow/registered-models/get?name=MobileNetV2_VisionGuard' | python -m json.tool
+{
+    "registered_model": {
+        "last_updated_timestamp": 1794050473224,
+        "latest_versions": [
+            {
+                "creation_timestamp": 1794050473224,
+                "description": "VisionGuard MobileNetV2 \u00e2\u20ac\u201d sweep_v2 (run_id=bfd3d2308998455a9023a6a6929f2d65)",
+                "source": "mlflow-artifacts:/00f89d29eca74199909ecb2fbd7294b0/bfd3d2308998455a9023a6a6929f2d65/artifacts/model",
+                "version": "2",
+                "status": "READY",
+                "run_link": "",
+                "last_updated_timestamp": 1794050473522,
+                "current_stage": "None",
+                "run_id": "bfd3d2308998455a9023a6a6929f2d65",
+                "name": "MobileNetV2_VisionGuard"
+            }
+        ],
+        "aliases": [
+            {
+                "alias": "champion",
+                "version": "2"
+            }
+        ],
+        "name": "MobileNetV2_VisionGuard",
+        "creation_timestamp": 1794050471080
+    }
+}
+
+[ZAYN@ZAYN 2026-11-08 02:52:59 23L-0578_A2_Ops]$ curl -s 'https://dagshub.com/zayn-zeny/VisionGuard.mlflow/api/2.0/mlflow/registered-models/alias?name=MobileNetV2_VisionGuard&alias=champion' | python -m json.tool
+{
+    "model_version": {
+        "name": "MobileNetV2_VisionGuard",
+        "version": "2",
+        "creation_timestamp": "1794050473224",
+        "last_updated_timestamp": "1794050473522",
+        "current_stage": "None",
+        "description": "VisionGuard MobileNetV2 \u00e2\u20ac\u201d sweep_v2 (run_id=bfd3d2308998455a9023a6a6929f2d65)",
+        "source": "mlflow-artifacts:/00f89d29eca74199909ecb2fbd7294b0/bfd3d2308998455a9023a6a6929f2d65/artifacts/model",
+        "run_id": "bfd3d2308998455a9023a6a6929f2d65",
+        "status": "READY",
+        "run_link": "",
+        "aliases": [
+            "champion"
+        ]
+    }
+}
+

@@ -28,11 +28,13 @@ from dotenv import load_dotenv
 ROOT = Path(__file__).resolve().parents[1]
 SAMPLES = [
     ("AI", "data/raw/AiArtData/AiArtData/bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg"),
-    ("AI", "data/raw/AiArtData/AiArtData/6324662e5ee3110438933c1b_COBE-Pink-Elephant-Midjourney-Article.jpg"),
+    ("AI", "data/raw/AiArtData/AiArtData/"
+           "6324662e5ee3110438933c1b_COBE-Pink-Elephant-Midjourney-Article.jpg"),
     ("AI", "data/raw/AiArtData/AiArtData/landscape-art-ai-generated-photo2.jpg"),
     ("Real", "data/raw/RealArt/RealArt/360_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rtaDBI.jpg"),
     ("Real", "data/raw/RealArt/RealArt/33100scr.jpg"),
-    ("Real", "data/raw/RealArt/RealArt/the-essay_58_resurgence-of-the-people_2019-article-image.jpg"),
+    ("Real", "data/raw/RealArt/RealArt/"
+             "the-essay_58_resurgence-of-the-people_2019-article-image.jpg"),
 ]
 
 
