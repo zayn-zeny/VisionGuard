@@ -1,0 +1,13 @@
+PS D:\Zayn\mlops_Assignment\A2> .\venv\Scripts\dvc.exe push
+975 files pushed
+
+PS D:\Zayn\mlops_Assignment\A2> Remove-Item -Recurse -Force data\raw
+PS D:\Zayn\mlops_Assignment\A2> Test-Path data\raw
+False
+
+PS D:\Zayn\mlops_Assignment\A2> .\venv\Scripts\dvc.exe pull
+A       data\raw\
+1 file added
+
+PS D:\Zayn\mlops_Assignment\A2> (Get-ChildItem "data\raw" -Recurse -File).Count
+975

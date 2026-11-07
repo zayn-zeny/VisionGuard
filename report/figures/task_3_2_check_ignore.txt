@@ -1,0 +1,2 @@
+PS D:\Zayn\mlops_Assignment\A2> git check-ignore -v .env
+.gitignore:2:.env	.env
