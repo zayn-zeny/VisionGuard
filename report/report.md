@@ -138,7 +138,9 @@ The MD5 is the hash of the directory's contents manifest, not the files themselv
 
 **How the data appears on DagsHub.** DagsHub shows DVC data *through* the Git repository: it reads `data/raw.dvc` and resolves the hash against its DVC storage. Its Files view lists `data/raw` with the DVC badge and lets me browse `AiArtData/` and `RealArt/`, even though Git itself only stores the 5-line pointer file.
 
-{{DAGSHUB_SCREENSHOTS}}
+![SS_06 — DagsHub project zayn-zeny/VisionGuard after pushing the code: Files, the 9 experiments, and the dvc/git/mlflow integrations.](screenshots/SS_06_dagshub_repo.png)
+
+![SS_06b — Browsing a DVC-tracked image inside data/raw/AiArtData on DagsHub: Git holds only the pointer, while DagsHub serves the file from DVC storage.](screenshots/SS_06b_dagshub_dvc_data.png)
 
 ![SS_07 — Task 1.4: `dvc push`, local deletion of `data/raw`, and `dvc pull` restoring all 975 files.](screenshots/SS_07_dvc_roundtrip.png)
 
@@ -1048,7 +1050,13 @@ Over the entire test split the largest probability difference is 0.0000028, and 
 
 ![SS_44c — The live /health endpoint on the production domain.](screenshots/SS_44c_vercel_health_live.png)
 
-{{DEPLOY_SCREENSHOTS}}
+The same deployment in the Vercel dashboard:
+
+![SS_44e — Vercel project overview: production deployment Ready, domain 23l-0578-a2-ops.vercel.app, deployed from the CLI.](screenshots/SS_44e_vercel_overview.png)
+
+![SS_44f — Deployment log: Python 3.12 picked up from .python-version, requirements installed with uv, build completed in 5 s.](screenshots/SS_44f_vercel_build_log.png)
+
+![SS_44g — Settings → Environment Variables: REMOTE_API_KEY (sensitive, value not readable) and THRESHOLD, both scoped to Production.](screenshots/SS_44g_vercel_env_vars.png)
 
 ## 7.4 — Testing the live API
 
@@ -1094,7 +1102,20 @@ newman run vercel_api/VisionGuard.postman_collection.json -e <environment> --wor
 
 ![SS_46 — The Postman collection run with Newman against https://23l-0578-a2-ops.vercel.app: every request, its status and time, the passed assertions, the summary table and the logged response bodies.](screenshots/SS_46_postman_newman_run.png)
 
-**Tested from another network.** {{OTHER_NETWORK}}
+**Tested from another network.** 
+
+The brief asks for the API to be reachable "from a network other than yours". I could not use a phone hotspot, so I ran the same test script on a machine on a completely different network: a **GitHub-hosted Actions runner**. The workflow `remote_api_test.yml` lives in the throwaway repository `zayn-zeny/23L-0578_ci_toy` and is started manually (`workflow_dispatch`). The API key reaches it as an encrypted repository **secret**, `${{ secrets.REMOTE_API_KEY }}`, and GitHub masks it as `***` in the log.
+
+| | My machine (§7.4) | GitHub-hosted runner |
+|---|---|---|
+| Network | home ISP, Pakistan | **AS8075 Microsoft Corporation**, Des Moines, US |
+| Public IP (masked) | `58.65.x.x` | **`20.186.x.x`** |
+| Host | `ZAYN@ZAYN` (Windows) | `runner@runnervmwuk1x` (Linux) |
+| Result | 6/6 correct, 401/415/422/413 | **6/6 correct, 401/415/422/413** |
+
+The runner received exactly the same confidences (0.5523, 0.7257, 0.8603, 0.1519, 0.0205, 0.0145) with lower latency (0.3–1.0 s, since US→Vercel is closer than Pakistan→Mumbai). The API is therefore public, protected by its key, and deterministic regardless of where the request comes from (run `42452891418`, `logs/53_other_network_runner_test.log`).
+
+![SS_48 — The live API tested from a GitHub-hosted runner on Microsoft's network in the US: different public IP, 6/6 correct, and all four error cases.](screenshots/SS_48_other_network_runner.png)
 
 **Security.** The API requires a shared secret in `X-API-Key`. The key exists only in `.env` locally and as an encrypted Vercel variable, and it travels only over HTTPS. Without it, anyone could use up the free-plan execution quota. No upload is ever written to disk, on either side.
 
@@ -1207,5 +1228,5 @@ The Keras model in the local container and the TFLite model on Vercel agree exac
 | Dockerfile, `.dockerignore`, `docker-compose.yml` | ✅ stack verified healthy on Postgres |
 | Live API URL | ✅ https://23l-0578-a2-ops.vercel.app/predict |
 | Postman test evidence | ✅ collection run with Newman: 5 requests, 10/10 assertions passed (§7.4) |
-| API tested from a different network | {{CHECK_NETWORK}} |
+| API tested from a different network | ✅ GitHub-hosted runner on Microsoft's network (US), 6/6 (§7.4) |
 | Graded commit hash in front matter | filled in at submission |

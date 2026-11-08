@@ -7,7 +7,7 @@ Status key: ✅ evidence exists in the repo · ⏳ needs an action from the stud
 | 1.1 | `report/screenshots/SS_01_env_versions.png`, `requirements.txt` | §1.1 | ✅ |
 | 1.2 | `scripts/audit_dataset.py`, `data/audit_*.csv`, `SS_03_audit_summary.png` | §1.2 | ✅ |
 | 1.3 | `report/figures/sample_grid.png`, `hist_*.png` | §1.3 | ✅ |
-| 1.4 | `data/raw.dvc`, `SS_07_dvc_roundtrip.png`, toy `SS_08_dvc_toy.png` | §1.4 | ✅ (DagsHub repo page screenshot SS_06 ⏳ — needs login) |
+| 1.4 | `data/raw.dvc`, `SS_07_dvc_roundtrip.png`, toy `SS_08_dvc_toy.png` | §1.4 | ✅ incl. DagsHub `SS_06`, `SS_06b` |
 | 2.1–2.6 | `scripts/train.py`, augmented batch, curves, CM/ROC, misclassified grid | §2.1–2.6 | ✅ |
 | 2.7 | `scripts/tune.py`, `SS_15_tuner_trials.png`, toy `SS_16_fashion_tuner.png` | §2.7 | ✅ |
 | 3.1 | `labs/03_local_mlflow.py`, `SS_17*.png` | §3.1 | ✅ |
@@ -25,7 +25,7 @@ Status key: ✅ evidence exists in the repo · ⏳ needs an action from the stud
 | 6.5 | `SS_41a`–`SS_41d`, `logs/32`–`35_*.log` | §6.5 | ✅ |
 | 6.6 apply | `.github/workflows/ci.yml`, green run `SS_42_ci_green.png`, badge in README | §6.6 | ✅ |
 | 6.6 toy | `labs/06_ci_toy/`, repo `zayn-zeny/23L-0578_ci_toy` (private): runs #1 green, #2 red, #3 green, `SS_43` | §6.6 | ✅ (optional: browser screenshots of the Actions tab) |
-| 7 | `vercel_api/`, `scripts/export_tflite.py`, live URL https://23l-0578-a2-ops.vercel.app, `SS_44a`–`SS_45` | §7 | ✅ deployed + tested, Postman collection via Newman `SS_46` (10/10) · ⏳ hotspot test, Vercel dashboard screenshots |
+| 7 | `vercel_api/`, `scripts/export_tflite.py`, live URL https://23l-0578-a2-ops.vercel.app, `SS_44a`–`SS_45` | §7 | ✅ deployed + tested, dashboard `SS_44e`–`g`, Postman via Newman `SS_46` (10/10), other network `SS_48` |
 | 8 | Flask (Compose) → live Vercel API: `SS_49b`, `SS_49c`, `SS_50b`–`SS_50d`, `SS_51b` | §8 | ✅ |
 | Bonus | `report/figures/gradcam_grid.png`, `scripts/gradcam.py` | Bonus | ✅ |
-| Report | `report/23L-0578_VisionGuard.pdf` built by `scripts/build_report.py` | — | ✅ (pending boxes for the ⏳ rows) |
+| Report | `report/23L-0578_VisionGuard.pdf` built by `scripts/build_report.py` | — | ✅ |
