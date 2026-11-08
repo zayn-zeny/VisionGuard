@@ -17,7 +17,7 @@ fontsize: 11pt
 | **GitHub Repository** | https://github.com/zayn-zeny/VisionGuard |
 | **DagsHub Project** | https://dagshub.com/zayn-zeny/VisionGuard (MLflow: https://dagshub.com/zayn-zeny/VisionGuard.mlflow) |
 | **Live API URL** | https://23l-0578-a2-ops.vercel.app/predict (health: https://23l-0578-a2-ops.vercel.app/health) |
-| **Graded Commit Hash** | `598ea41` (code and evidence; the next commit on `main`, tagged `submission`, only writes this hash into the report and rebuilds the PDF) |
+| **Graded Commit Hash** | `598ea41` (code and evidence; the following commits on `main`, ending at tag `submission-final`, only write this hash into the report and rebuilds the PDF) |
 
 ## AI-Assistance Disclosure
 
