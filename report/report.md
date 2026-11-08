@@ -17,7 +17,7 @@ fontsize: 11pt
 | **GitHub Repository** | https://github.com/zayn-zeny/VisionGuard |
 | **DagsHub Project** | https://dagshub.com/zayn-zeny/VisionGuard (MLflow: https://dagshub.com/zayn-zeny/VisionGuard.mlflow) |
 | **Live API URL** | https://23l-0578-a2-ops.vercel.app/predict (health: https://23l-0578-a2-ops.vercel.app/health) |
-| **Graded Commit Hash** | *(filled in at submission — see final commit on `main`)* |
+| **Graded Commit Hash** | `4f8d2ac` (code and evidence; the next commit on `main`, tagged `submission`, only writes this hash into the report and rebuilds the PDF) |
 
 ## AI-Assistance Disclosure
 
@@ -1229,4 +1229,4 @@ The Keras model in the local container and the TFLite model on Vercel agree exac
 | Live API URL | ✅ https://23l-0578-a2-ops.vercel.app/predict |
 | Postman test evidence | ✅ collection run with Newman: 5 requests, 10/10 assertions passed (§7.4) |
 | API tested from a different network | ✅ GitHub-hosted runner on Microsoft's network (US), 6/6 (§7.4) |
-| Graded commit hash in front matter | filled in at submission |
+| Graded commit hash in front matter | ✅ `4f8d2ac` |
