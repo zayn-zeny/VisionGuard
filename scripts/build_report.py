@@ -59,6 +59,8 @@ PENDING_TEXT = {
     "CI_TOY_SCREENSHOTS": "PENDING — screenshots of the red and the green toy CI runs.",
     "DEPLOY_SCREENSHOTS": ("PENDING — Vercel dashboard screenshots: project overview, "
                            "deployment build log, Settings → Environment Variables."),
+    "DAGSHUB_SCREENSHOTS": ("PENDING — DagsHub repository page (Files tab) and the "
+                            "DVC-tracked data/raw folder."),
     "POSTMAN_SCREENSHOTS": "PENDING — Postman screenshots against the live URL.",
     "OTHER_NETWORK": "PENDING — test from a different network (mobile hotspot).",
     "CHECK_API": "⏳ pending deployment",

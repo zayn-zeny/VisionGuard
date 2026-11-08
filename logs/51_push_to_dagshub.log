@@ -1,0 +1,7 @@
+[ZAYN@ZAYN 2026-11-08 10:34:13 23L-0578_A2_Ops]$ git push dagshub main   (token sent as a one-off HTTP header, not stored)
+To https://dagshub.com/zayn-zeny/VisionGuard.git
+ * [new branch]      main -> main
+
+[ZAYN@ZAYN 2026-11-08 10:34:48 23L-0578_A2_Ops]$ git ls-remote dagshub
+b856a45c9902c8dd80ed225a1ec249309d0c5cd8	HEAD
+b856a45c9902c8dd80ed225a1ec249309d0c5cd8	refs/heads/main

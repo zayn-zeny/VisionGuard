@@ -134,7 +134,11 @@ outs:
 
 The MD5 is the hash of the directory's contents manifest, not the files themselves. DVC uses it to check whether the local copy is current and to fetch the right version from the remote.
 
-*(DagsHub repo screenshot: SS_06. The push/pull terminal transcript is saved verbatim as `report/figures/task_1_4_dvc_roundtrip.txt`.)*
+*(The push/pull terminal transcript is saved verbatim as `report/figures/task_1_4_dvc_roundtrip.txt`.)*
+
+**How the data appears on DagsHub.** DagsHub shows DVC data *through* the Git repository: it reads `data/raw.dvc` and resolves the hash against its DVC storage. Its Files view lists `data/raw` with the DVC badge and lets me browse `AiArtData/` and `RealArt/`, even though Git itself only stores the 5-line pointer file.
+
+{{DAGSHUB_SCREENSHOTS}}
 
 ![SS_07 — Task 1.4: `dvc push`, local deletion of `data/raw`, and `dvc pull` restoring all 975 files.](screenshots/SS_07_dvc_roundtrip.png)
 
@@ -418,7 +422,7 @@ The two-run comparison view (`report/screenshots/SS_17b_local_mlflow_compare.png
 
 ## 3.2 — DagsHub Connection
 
-**What I did:** Created the DagsHub project `zayn-zeny/VisionGuard`, connected to the GitHub repository `github.com/zayn-zeny/VisionGuard`. Added the following keys to `.env` (which is listed in `.gitignore`):
+**What I did:** Created the DagsHub project `zayn-zeny/VisionGuard` and connected it to the GitHub repository `github.com/zayn-zeny/VisionGuard` by pushing the same Git history to both, with `origin` pointing at GitHub and `dagshub` pointing at DagsHub, so each commit is identical on both sides. Added the following keys to `.env` (which is listed in `.gitignore`):
 
 ```
 MLFLOW_TRACKING_URI=https://dagshub.com/zayn-zeny/VisionGuard.mlflow
@@ -450,6 +454,16 @@ https://dagshub.com/zayn-zeny/VisionGuard.mlflow/#/experiments/1/runs/6cd7a1426d
 ```
 
 That proves the tracking URI plus token from `.env` work end-to-end for both the real experiments (`VisionGuard`) and a fresh experiment created by the toy script. Full log: `logs/08_lab_dagshub_repeat.log`.
+
+**What went wrong.** When I checked the DagsHub project page before submission, the *Files* tab was empty ("Get started with code"). DVC storage held all 975 images and MLflow held every run, but the code had only ever been pushed to GitHub, so DagsHub had nothing to show them against. The fix was a second remote:
+
+```
+git remote add dagshub https://dagshub.com/zayn-zeny/VisionGuard.git
+git push dagshub main          # token sent as a one-off HTTP header, never stored
+git ls-remote dagshub          # b856a45...  refs/heads/main  (same commit as GitHub)
+```
+
+After the push, DagsHub lists the code, and `data/raw` resolves to the DVC-stored `AiArtData/` and `RealArt/` folders. The MLflow runs, tagged with their Git commit, now point at commits that exist in the same project (`logs/51_push_to_dagshub.log`).
 
 ![SS_19b — The toy run repeated against DagsHub (`toy_dagshub_repeat`).](screenshots/SS_19b_toy_dagshub_run.png)
 

@@ -74,3 +74,14 @@ URL: *(filled in after Task 7 deployment)*
 
 `report/23L-0578_VisionGuard.pdf` — compiled from `report/report.md`.
 
+
+
+## Remotes
+
+The same history is pushed to GitHub (`origin`, CI runs here) and to DagsHub
+(`dagshub`, which shows the code next to its DVC data and MLflow runs):
+
+```bash
+git push origin main
+git push dagshub main
+```
