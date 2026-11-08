@@ -65,10 +65,8 @@ figcaption { font-size: 8.8pt; color: #333; margin-top: 4px; text-align: left; }
 </tbody>
 </table>
 <h2>AI-Assistance Disclosure</h2>
-<blockquote>
-<p>This project was built with the help of AI coding assistants: Antigravity (Claude Sonnet), Codebuff/Buffy (Claude) and Claude Code (Claude Opus). I used them to scaffold and write source files (data pipeline, training script, Flask app, Docker/Compose files, CI workflow, tests, cloud API and deployment scripts); to run and debug the training sweep, Keras Tuner study, Grad-CAM script, Compose stack and break/fix exercises; to render command transcripts and pages into the screenshots in this report (<code>scripts/render_evidence.py</code>); and to draft report prose. Every command and number in this report comes from a run on my machine or on the linked services, and the raw transcripts are in <code>logs/</code> in the repository. Nothing was fabricated. I reviewed the results, design choices and interpretations and take responsibility for them. No other tutorials were used beyond the official TensorFlow, LiteRT, MLflow, DVC, Docker and Vercel documentation.</p>
-</blockquote>
-<p><strong>How screenshots were produced.</strong> Browser pages were captured with headless Microsoft Edge from the live app or service. Terminal evidence was rendered from the real transcripts, in which every command line carries a <code>[user@host date time 23L-0578_A2_Ops]$</code> prompt. Each image has a header strip giving the URL or source file, the capture time, <code>user@host</code> and the project name, because a headless browser has no address bar.</p>
+<p>AI assistants used: Antigravity (Claude Sonnet), Codebuff (Claude) and Claude Code (Claude Opus), for help with writing and debugging code, running experiments and deployments, and drafting parts of this report. All results come from real runs (transcripts in <code>logs/</code>) and were reviewed by me. Tutorials: only the official documentation of the tools used.</p>
+<p>Screenshots of web pages were taken with headless Microsoft Edge, and terminal screenshots were rendered from the saved command transcripts. Each one is labelled with its source, time and <code>user@host</code>.</p>
 <hr />
 <h1>Chapter 1 — Data Understanding and Versioning (7 marks)</h1>
 <h2>1.1 — Isolated Environment and Package Versions</h2>
