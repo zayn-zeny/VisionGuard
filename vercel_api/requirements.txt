@@ -1,0 +1,7 @@
+# Vercel Python runtime dependencies for the TFLite inference API.
+# No TensorFlow: LiteRT (the TFLite interpreter) runs the exported model.
+ai-edge-litert>=1.2,<2
+numpy==1.26.4
+Pillow==10.4.0
+fastapi==0.115.5
+python-multipart==0.0.12

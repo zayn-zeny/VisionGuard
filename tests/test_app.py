@@ -149,3 +149,22 @@ def test_postgres_url_pins_psycopg2_driver():
     assert _normalise_db_url("postgresql://u:p@db:5432/x") == "postgresql+psycopg2://u:p@db:5432/x"
     assert _normalise_db_url("postgres://u:p@db/x") == "postgresql+psycopg2://u:p@db/x"
     assert _normalise_db_url("sqlite:///a.db") == "sqlite:///a.db"
+
+
+def test_remote_payload_preserves_model_input():
+    """Remote mode sends a 224x224 PNG (Vercel body limit ~4.5 MB). The model
+    input built from that PNG must equal the one built from the original."""
+    import io
+    import numpy as np
+    from PIL import Image
+    from app.inference import _preprocess_image, _resized_png
+
+    rng = np.random.default_rng(0)
+    big = Image.fromarray(rng.integers(0, 255, (900, 1300, 3), dtype=np.uint8))
+    buf = io.BytesIO()
+    big.save(buf, format="JPEG", quality=95)
+    original = buf.getvalue()
+
+    payload = _resized_png(original)
+    assert Image.open(io.BytesIO(payload)).size == (224, 224)
+    assert np.array_equal(_preprocess_image(original), _preprocess_image(payload))

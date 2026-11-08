@@ -1,11 +1,11 @@
 {
   "info": {
     "name": "VisionGuard 23L-0578_A2_Ops",
-    "description": "Task 7 Postman tests for the deployed VisionGuard inference API. Set the collection variables base_url (e.g. https://<user>-23l-0578-a2-ops.hf.space) and api_key (same value as REMOTE_API_KEY in .env; do not commit it). For the image requests, pick a file from data/raw in the Body tab.",
+    "description": "Task 7 Postman tests for the deployed VisionGuard inference API. Set the collection variables base_url (e.g. https://<project>.vercel.app) and api_key (same value as REMOTE_API_KEY in .env; do not commit it). For the image requests, pick a file from data/raw in the Body tab.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {"key": "base_url", "value": "https://YOUR-SPACE.hf.space"},
+    {"key": "base_url", "value": "https://YOUR-PROJECT.vercel.app"},
     {"key": "api_key", "value": ""}
   ],
   "item": [

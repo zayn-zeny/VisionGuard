@@ -94,6 +94,22 @@ def _preprocess_image(image_bytes: bytes) -> np.ndarray:
     return np.expand_dims(arr, axis=0)           # (1, H, W, 3)
 
 
+def _resized_png(image_bytes: bytes) -> bytes:
+    """Squash-resize to the model input size and encode as lossless PNG.
+
+    The remote API (Vercel) rejects request bodies above ~4.5 MB, but the
+    model only ever sees a 224x224 RGB image. Doing exactly the same
+    RGB + bilinear resize here and sending it losslessly means the API's own
+    resize is a no-op (same size), so remote predictions are bit-identical
+    to local ones while a 10 MB upload shrinks to ~100 KB on the wire.
+    """
+    img = Image.open(io.BytesIO(image_bytes)).convert("RGB")
+    img = img.resize(IMAGE_SIZE, Image.BILINEAR)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    return buf.getvalue()
+
+
 def _image_meta(image_bytes: bytes) -> dict:
     """Return width, height, sha256 for a raw image byte string."""
     sha = hashlib.sha256(image_bytes).hexdigest()
@@ -158,7 +174,7 @@ def _classify_remote(image_bytes: bytes, threshold: float,
         raise ValueError("REMOTE_API_URL is not set.")
 
     headers = {"X-API-Key": remote_key}
-    files = {"image": ("upload.jpg", io.BytesIO(image_bytes), "image/jpeg")}
+    files = {"image": ("upload.png", io.BytesIO(_resized_png(image_bytes)), "image/png")}
 
     try:
         resp = requests.post(remote_url, headers=headers, files=files, timeout=30)
