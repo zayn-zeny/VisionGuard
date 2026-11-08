@@ -1486,8 +1486,40 @@ COPY --chown=appuser:appgroup models/champion.keras  ./models/champion.keras
 
 <p><strong>Where workflow secrets live and why not in the file:</strong> in the repository under <em>Settings → Secrets and variables → Actions</em>, referenced in YAML as <code>${{ secrets.NAME }}</code>. The values are encrypted at rest, injected only into the runner's environment, and masked as <code>***</code> in logs. A literal in <code>ci.yml</code> would be in Git history forever, visible to anyone who can read or fork the repository, and copied into every clone. Rotating a leaked key would not remove it from old commits. This workflow currently needs no secrets, because tests use SQLite and a stub model.</p>
 <h3>Toy part — red then green</h3>
-<p><code>labs/06_ci_toy/</code> contains a throwaway project: <code>test_toy.py</code> (two tiny tests) and <code>.github/workflows/ci.yml</code>, which runs on every push with a <strong>matrix of Python 3.10 and 3.11</strong>. It is pushed to its own throwaway repository. Breaking <code>add()</code> (<code>return a - b</code>) gives a red run in both matrix legs, and restoring it gives a green run.</p>
-<p><span class="pending">PENDING — screenshots of the red and the green toy CI runs.</span></p>
+<p>The toy project is in <code>labs/06_ci_toy/</code>: <code>test_toy.py</code> (two tiny tests, <code>add</code> and <code>slugify</code>) and <code>.github/workflows/ci.yml</code>, which runs <code>pytest</code> on <strong>every push</strong> with a <strong>matrix of Python 3.10 and 3.11</strong>. I pushed it to a separate throwaway repository, <code>zayn-zeny/23L-0578_ci_toy</code>, so that breaking it on purpose could not touch VisionGuard. The repository is private, and GitHub Actions runs on private repositories too.</p>
+<table>
+<thead>
+<tr>
+<th>Run</th>
+<th>Commit</th>
+<th>Change</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>#1</td>
+<td><code>67da8e2</code></td>
+<td>initial workflow</td>
+<td><strong>green</strong>: <code>test (3.10)</code> ✓, <code>test (3.11)</code> ✓</td>
+</tr>
+<tr>
+<td>#2</td>
+<td><code>cc68e5d</code></td>
+<td><code>add()</code> changed to <code>return a - b</code></td>
+<td><strong>red</strong>: <code>test (3.11)</code> ✗ — <code>assert -1 == 5</code>; <code>test (3.10)</code> <em>cancelled</em></td>
+</tr>
+<tr>
+<td>#3</td>
+<td><code>442cddb</code></td>
+<td><code>add()</code> restored</td>
+<td><strong>green</strong>: both matrix jobs ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>What the red run taught me:</strong> only one matrix leg actually failed. GitHub <em>cancelled</em> the other one, because matrix strategies default to <code>fail-fast: true</code>: once any job fails, the rest are stopped to save runner minutes. That is right for a quick "is it broken" signal. When you need to know <em>which</em> Python versions break, set <code>fail-fast: false</code>. The failing job's log pinpoints the line (<code>test_toy.py:13: AssertionError ... assert -1 == 5</code>), so the red run is diagnosable without running anything locally.</p>
+<figure><img src="screenshots/SS_43_ci_toy_red_green.png"><figcaption><b>Figure 56.</b> SS_43 — Toy CI repository: commit history, the three runs (green → red → green) with per-matrix-job results, and the pytest failure from the red run's log, retrieved through the GitHub API.</figcaption></figure>
+
 <hr />
 <h1>Chapter 7 — API Deployment (15 marks)</h1>
 <p><strong>Pathway: the model API on Vercel, with Flask and the database on localhost.</strong> This is the split Task 7 asks for: "put model on a cloud/vercel and make api calls from flask. Flask (itself) code will be running on localhost."</p>
@@ -1566,7 +1598,7 @@ label flips at threshold 0.4: 0
    vercel env ls        -&gt;  REMOTE_API_KEY  Encrypted  Production
                              THRESHOLD       Encrypted  Production</code></li>
 </ol>
-<figure><img src="screenshots/SS_44a_vercel_setup.png"><figcaption><b>Figure 56.</b> SS_44a — Creating the Vercel project, linking the folder and adding the encrypted environment variables.</figcaption></figure>
+<figure><img src="screenshots/SS_44a_vercel_setup.png"><figcaption><b>Figure 57.</b> SS_44a — Creating the Vercel project, linking the folder and adding the encrypted environment variables.</figcaption></figure>
 
 <ol start="6">
 <li><strong>Deploy to production:</strong> <code>vercel deploy --prod --yes</code>. Vercel uploaded the 8.5 MB bundle, installed the requirements on its own build machine (2 cores / 8 GB), and aliased the deployment to the production domain:
@@ -1574,12 +1606,12 @@ label flips at threshold 0.4: 0
    Aliased     https://23l-0578-a2-ops.vercel.app
    readyState  READY   target production</code></li>
 </ol>
-<figure><img src="screenshots/SS_44b_vercel_deploy.png"><figcaption><b>Figure 57.</b> SS_44b — vercel deploy --prod: upload, build and alias to the production URL.</figcaption></figure>
+<figure><img src="screenshots/SS_44b_vercel_deploy.png"><figcaption><b>Figure 58.</b> SS_44b — vercel deploy --prod: upload, build and alias to the production URL.</figcaption></figure>
 
 <ol start="7">
 <li><strong>Smoke test</strong> in a browser: <code>/health</code> → <code>{"status":"healthy","model_loaded":true,"runtime":"LiteRT (TFLite)","threshold":0.4}</code>. <em>Deployment Protection</em> (Vercel Authentication) applies to the per-deployment preview URLs only. The production alias is public, which is what an API needs; the API key protects it instead.</li>
 </ol>
-<figure><img src="screenshots/SS_44c_vercel_health_live.png"><figcaption><b>Figure 58.</b> SS_44c — The live /health endpoint on the production domain.</figcaption></figure>
+<figure><img src="screenshots/SS_44c_vercel_health_live.png"><figcaption><b>Figure 59.</b> SS_44c — The live /health endpoint on the production domain.</figcaption></figure>
 
 <p><span class="pending">PENDING — Vercel dashboard screenshots: project overview, deployment build log, Settings → Environment Variables.</span></p>
 <h2>7.4 — Testing the live API</h2>
@@ -1599,7 +1631,7 @@ correct: 6/6
 [error] oversized file   -&gt; 413  Request Entity Too Large  FUNCTION_PAYLOAD_TOO_LARGE  (bom1::...)
 </code></pre>
 <p>All six probabilities equal the in-container Keras values in Chapter 5 to four decimals. The oversized request never reached my code: Vercel's edge in <code>bom1</code> (Mumbai, the nearest region) rejected it, which confirms the platform limit I designed around. Round trips take 0.75–2.2 s, compared with 30–100 ms for the same API locally. The difference is network latency to Mumbai plus serverless cold starts, and it is noted as a limitation.</p>
-<figure><img src="screenshots/SS_45_live_api_test.png"><figcaption><b>Figure 59.</b> SS_45 — The scripted test against the live URL: six correct verdicts and the four error cases.</figcaption></figure>
+<figure><img src="screenshots/SS_45_live_api_test.png"><figcaption><b>Figure 60.</b> SS_45 — The scripted test against the live URL: six correct verdicts and the four error cases.</figcaption></figure>
 
 <p><strong>Postman.</strong> <code>vercel_api/VisionGuard.postman_collection.json</code> has five requests with assertions: health; AI image; real image; missing key (expects 401); wrong file type (expects 415). <code>base_url</code> and <code>api_key</code> are collection variables, so the key is not stored in the exported file.</p>
 <p><span class="pending">PENDING — Postman screenshots against the live URL.</span></p>
@@ -1618,11 +1650,11 @@ REMOTE_API_KEY=&lt;same secret as the Space&gt;
 <p>then <code>docker compose up -d web</code> (or <code>python -m flask run</code> locally).</p>
 <h2>8.1 — Local rehearsal</h2>
 <p><strong>Earlier rehearsal of the same integration, with the API on localhost:8000:</strong> three uploads in remote mode were logged with <code>inference_mode = remote</code>. Stopping the API mid-session made the next upload fail cleanly with the 502 page (<code>logs/18_flask_remote.log</code>).</p>
-<figure><img src="screenshots/SS_49_result_remote_mode.png"><figcaption><b>Figure 60.</b> SS_49 — Result page produced in remote mode (API on localhost during rehearsal).</figcaption></figure>
+<figure><img src="screenshots/SS_49_result_remote_mode.png"><figcaption><b>Figure 61.</b> SS_49 — Result page produced in remote mode (API on localhost during rehearsal).</figcaption></figure>
 
-<figure><img src="screenshots/SS_50_history_mixed_modes.png"><figcaption><b>Figure 61.</b> SS_50 — History showing local and remote rows side by side.</figcaption></figure>
+<figure><img src="screenshots/SS_50_history_mixed_modes.png"><figcaption><b>Figure 62.</b> SS_50 — History showing local and remote rows side by side.</figcaption></figure>
 
-<figure><img src="screenshots/SS_51_remote_api_down.png"><figcaption><b>Figure 62.</b> SS_51 — The friendly 502 page when the inference API is unreachable.</figcaption></figure>
+<figure><img src="screenshots/SS_51_remote_api_down.png"><figcaption><b>Figure 63.</b> SS_51 — The friendly 502 page when the inference API is unreachable.</figcaption></figure>
 
 <h2>8.2 — Live integration: Flask on localhost → Vercel API</h2>
 <p><strong>Setup.</strong> The Compose stack from Chapter 6 (Flask + PostgreSQL on my machine) was recreated in remote mode. The URL and key come from <code>.env</code>; nothing in the code changed:</p>
@@ -1726,9 +1758,9 @@ curl -s http://localhost:5000/health
 </tbody>
 </table>
 <p>Six of ten are correct, and each mistake fits the error analysis in §2.6. Van Gogh's <em>Café Terrace</em> is a <strong>real painting</strong> whose smooth, stylised texture the model reads as synthetic. The Midjourney draft board and the Earth-Species scene are AI images in an illustrative style rather than a photoreal one. Every verdict, including the wrong ones, is shown with its confidence and the limitations notice. That is the honest caveat the brief asks the UI to carry.</p>
-<figure><img src="screenshots/SS_49b_remote_result_10MB.png"><figcaption><b>Figure 63.</b> SS_49b — Result page in remote mode for the 10.2 MB upload: verdict from the Vercel API, mode "remote", latency 4.2 s (resize + upload + cold start).</figcaption></figure>
+<figure><img src="screenshots/SS_49b_remote_result_10MB.png"><figcaption><b>Figure 64.</b> SS_49b — Result page in remote mode for the 10.2 MB upload: verdict from the Vercel API, mode "remote", latency 4.2 s (resize + upload + cold start).</figcaption></figure>
 
-<figure><img src="screenshots/SS_49c_remote_result_ai.png"><figcaption><b>Figure 64.</b> SS_49c — Result page in remote mode for the 5.6 MB AI image (a miss: p(AI) = 0.22).</figcaption></figure>
+<figure><img src="screenshots/SS_49c_remote_result_ai.png"><figcaption><b>Figure 65.</b> SS_49c — Result page in remote mode for the 5.6 MB AI image (a miss: p(AI) = 0.22).</figcaption></figure>
 
 <p><strong>Same image, local vs cloud.</strong> Three images that had already been classified locally were sent again through the live API. The database matches them by SHA-256:</p>
 <pre><code> local_id | remote_id | file                               | local_conf | remote_conf | same_label
@@ -1737,20 +1769,20 @@ curl -s http://localhost:5000/health
         1 |        21 | bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg |     0.5523 |      0.5523 | t
 </code></pre>
 <p>The Keras model in the local container and the TFLite model on Vercel agree exactly. The preprocessing contract (training ↔ Flask ↔ cloud) holds end to end.</p>
-<figure><img src="screenshots/SS_50d_local_vs_remote_parity.png"><figcaption><b>Figure 65.</b> SS_50d — Same images, local Keras vs live Vercel TFLite: identical confidences.</figcaption></figure>
+<figure><img src="screenshots/SS_50d_local_vs_remote_parity.png"><figcaption><b>Figure 66.</b> SS_50d — Same images, local Keras vs live Vercel TFLite: identical confidences.</figcaption></figure>
 
 <p><strong>History menu / database log.</strong> The History page shows every request, local and remote, newest first, with timestamp, label, confidence, threshold, model, version and mode. The same rows are in PostgreSQL (<code>logs/48_postgres_trail_remote.log</code>): 8 local and 13 remote predictions.</p>
-<figure><img src="screenshots/SS_50b_history_remote_live.png"><figcaption><b>Figure 66.</b> SS_50b — History page after the live integration: remote rows from the Vercel API above the earlier local rows.</figcaption></figure>
+<figure><img src="screenshots/SS_50b_history_remote_live.png"><figcaption><b>Figure 67.</b> SS_50b — History page after the live integration: remote rows from the Vercel API above the earlier local rows.</figcaption></figure>
 
-<figure><img src="screenshots/SS_50c_postgres_trail_remote.png"><figcaption><b>Figure 67.</b> SS_50c — The PostgreSQL trail: what was decided, when, by which model, in which mode, how confidently, and how long it took.</figcaption></figure>
+<figure><img src="screenshots/SS_50c_postgres_trail_remote.png"><figcaption><b>Figure 68.</b> SS_50c — The PostgreSQL trail: what was decided, when, by which model, in which mode, how confidently, and how long it took.</figcaption></figure>
 
 <p><strong>Failure handling against the live API.</strong> I recreated <code>web</code> with a wrong key (<code>REMOTE_API_KEY=wrong-key-on-purpose</code>). Vercel answered 401, and Flask showed the friendly <strong>502</strong> page naming the cause (<code>Inference error: unauthorized (401)</code>) instead of a stack trace. <strong>No row was written</strong>, because failed predictions must not appear in the audit trail as if they were verdicts. Recreating <code>web</code> with the key from <code>.env</code> restored service (<code>logs/47_remote_wrong_key.log</code>).</p>
-<figure><img src="screenshots/SS_51b_remote_wrong_key_502.png"><figcaption><b>Figure 68.</b> SS_51b — Wrong API key: the live API returns 401 and Flask shows a 502 page; nothing is logged.</figcaption></figure>
+<figure><img src="screenshots/SS_51b_remote_wrong_key_502.png"><figcaption><b>Figure 69.</b> SS_51b — Wrong API key: the live API returns 401 and Flask shows a 502 page; nothing is logged.</figcaption></figure>
 
 <hr />
 <h1>Bonus — Grad-CAM</h1>
 <p><code>scripts/gradcam.py</code> computes Grad-CAM on MobileNetV2's last convolutional layer (<code>Conv_1</code>, 7×7×1280) for the champion model. With Keras 3 the functional sub-model of a nested <code>Sequential</code> cannot be sliced directly, so the gradient model is rebuilt explicitly: input → MobileNetV2 base (exposing <code>Conv_1</code>) → the trained head layers. At the script's fixed 0.5 cut-off the champion had 58 correct AI, 52 correct real and 36 wrong predictions on the 146 test images (one more error than at the deployed 0.40 threshold in §2.6). The grid shows four correct and four wrong cases.</p>
-<figure><img src="figures/gradcam_grid.png"><figcaption><b>Figure 69.</b> SS_54 — Grad-CAM heat maps: top row correct predictions, bottom row wrong ones.</figcaption></figure>
+<figure><img src="figures/gradcam_grid.png"><figcaption><b>Figure 70.</b> SS_54 — Grad-CAM heat maps: top row correct predictions, bottom row wrong ones.</figcaption></figure>
 
 <p><strong>What the model looks at.</strong> In the correct AI cases the heat sits on the <em>subject's rendered texture</em>: the over-detailed fur of the creature, and the ornate, flower-covered elephant. These are the hyper-detailed, slightly plastic surfaces typical of diffusion models. In the correct real cases the activation is weak and diffuse (the crowd photo has almost no hot region at p = 0.02), which suggests "real" is the default when no synthetic texture cue fires. The wrong cases show the same mechanism failing. The AI portrait pair gets attention on skin between the faces but scores only 0.37, because photoreal skin carries no obvious artefact. The pastel garden and the rooster get attention on <em>background</em> flowers rather than the subject. The real fantasy painting (p = 0.78) lights up its saturated, glowing sky — painted smoothness that the model confuses with generation. Grad-CAM agrees with the error analysis in §2.6: the model learned local texture statistics, not semantic cues such as impossible anatomy or inconsistent lighting.</p>
 <hr />

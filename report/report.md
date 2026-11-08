@@ -941,9 +941,17 @@ The image is 183 MB (8.4 %) smaller on disk and 87 MB (17 %) smaller to push and
 
 ### Toy part — red then green
 
-`labs/06_ci_toy/` contains a throwaway project: `test_toy.py` (two tiny tests) and `.github/workflows/ci.yml`, which runs on every push with a **matrix of Python 3.10 and 3.11**. It is pushed to its own throwaway repository. Breaking `add()` (`return a - b`) gives a red run in both matrix legs, and restoring it gives a green run.
+The toy project is in `labs/06_ci_toy/`: `test_toy.py` (two tiny tests, `add` and `slugify`) and `.github/workflows/ci.yml`, which runs `pytest` on **every push** with a **matrix of Python 3.10 and 3.11**. I pushed it to a separate throwaway repository, `zayn-zeny/23L-0578_ci_toy`, so that breaking it on purpose could not touch VisionGuard. The repository is private, and GitHub Actions runs on private repositories too.
 
-{{CI_TOY_SCREENSHOTS}}
+| Run | Commit | Change | Result |
+|-----|--------|--------|--------|
+| #1 | `67da8e2` | initial workflow | **green**: `test (3.10)` ✓, `test (3.11)` ✓ |
+| #2 | `cc68e5d` | `add()` changed to `return a - b` | **red**: `test (3.11)` ✗ — `assert -1 == 5`; `test (3.10)` *cancelled* |
+| #3 | `442cddb` | `add()` restored | **green**: both matrix jobs ✓ |
+
+**What the red run taught me:** only one matrix leg actually failed. GitHub *cancelled* the other one, because matrix strategies default to `fail-fast: true`: once any job fails, the rest are stopped to save runner minutes. That is right for a quick "is it broken" signal. When you need to know *which* Python versions break, set `fail-fast: false`. The failing job's log pinpoints the line (`test_toy.py:13: AssertionError ... assert -1 == 5`), so the red run is diagnosable without running anything locally.
+
+![SS_43 — Toy CI repository: commit history, the three runs (green → red → green) with per-matrix-job results, and the pytest failure from the red run's log, retrieved through the GitHub API.](screenshots/SS_43_ci_toy_red_green.png)
 
 ---
 
