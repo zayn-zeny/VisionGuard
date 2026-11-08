@@ -1074,9 +1074,25 @@ All six probabilities equal the in-container Keras values in Chapter 5 to four d
 
 ![SS_45 — The scripted test against the live URL: six correct verdicts and the four error cases.](screenshots/SS_45_live_api_test.png)
 
-**Postman.** `vercel_api/VisionGuard.postman_collection.json` has five requests with assertions: health; AI image; real image; missing key (expects 401); wrong file type (expects 415). `base_url` and `api_key` are collection variables, so the key is not stored in the exported file.
+**Postman.** `vercel_api/VisionGuard.postman_collection.json` has five requests, each with test assertions: health; AI image (expects `AI-generated`); real image (expects `Real`, confidence below threshold); missing key (expects 401); wrong file type (expects 415). Image paths are stored relative to the repository root. `base_url` and `api_key` are collection variables, so the key is not stored in the exported file.
 
-{{POSTMAN_SCREENSHOTS}}
+**How it was run.** I ran the collection with **Newman**, Postman's official command-line collection runner, which executes the same collection file and the same JavaScript test scripts as the Postman app. `base_url` and `api_key` were supplied through a temporary Postman *environment* file that was deleted after the run. The API key therefore never appears in the collection, the command, or the log (`logs/52_newman_postman_run.log`).
+
+```
+newman run vercel_api/VisionGuard.postman_collection.json -e <environment> --working-dir .
+```
+
+| # | Request | Status | Time | Response | Assertions |
+|---|---------|--------|------|----------|------------|
+| 1 | `GET /health` | 200 OK | 812 ms | `{"status":"healthy","model_loaded":true,"runtime":"LiteRT (TFLite)","threshold":0.4}` | 200 OK ✓, model loaded ✓ |
+| 2 | `POST /predict` (AI landscape) | 200 OK | 1.9 s | `{"label":"AI-generated","confidence":0.8603,"threshold":0.4,...}` | 200 ✓, has label + confidence ✓, label is AI-generated ✓ |
+| 3 | `POST /predict` (real photo) | 200 OK | 1.4 s | `{"label":"Real","confidence":0.0205,"threshold":0.4,...}` | 200 ✓, label is Real ✓, confidence below threshold ✓ |
+| 4 | `POST /predict`, no `X-API-Key` | 401 Unauthorized | 1.2 s | `{"detail":"Invalid or missing API key."}` | 401 ✓ |
+| 5 | `POST /predict`, a `.txt` file | 415 Unsupported Media Type | 383 ms | `{"detail":"Unsupported content type: text/plain"}` | 415 ✓ |
+
+**Result: 5 requests, 10 assertions, 0 failures**, average response time 1.15 s. The two predictions match the local Keras values exactly (0.8603 and 0.0205), and both error paths return the documented status codes.
+
+![SS_46 — The Postman collection run with Newman against https://23l-0578-a2-ops.vercel.app: every request, its status and time, the passed assertions, the summary table and the logged response bodies.](screenshots/SS_46_postman_newman_run.png)
 
 **Tested from another network.** {{OTHER_NETWORK}}
 
@@ -1190,6 +1206,6 @@ The Keras model in the local container and the TFLite model on Vercel agree exac
 | `.env.example` in repo, `.env` git-ignored | ✅ |
 | Dockerfile, `.dockerignore`, `docker-compose.yml` | ✅ stack verified healthy on Postgres |
 | Live API URL | ✅ https://23l-0578-a2-ops.vercel.app/predict |
-| Postman test evidence | {{CHECK_POSTMAN}} |
+| Postman test evidence | ✅ collection run with Newman: 5 requests, 10/10 assertions passed (§7.4) |
 | API tested from a different network | {{CHECK_NETWORK}} |
 | Graded commit hash in front matter | filled in at submission |

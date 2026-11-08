@@ -1641,8 +1641,67 @@ correct: 6/6
 <p>All six probabilities equal the in-container Keras values in Chapter 5 to four decimals. The oversized request never reached my code: Vercel's edge in <code>bom1</code> (Mumbai, the nearest region) rejected it, which confirms the platform limit I designed around. Round trips take 0.75–2.2 s, compared with 30–100 ms for the same API locally. The difference is network latency to Mumbai plus serverless cold starts, and it is noted as a limitation.</p>
 <figure><img src="screenshots/SS_45_live_api_test.png"><figcaption><b>Figure 60.</b> SS_45 — The scripted test against the live URL: six correct verdicts and the four error cases.</figcaption></figure>
 
-<p><strong>Postman.</strong> <code>vercel_api/VisionGuard.postman_collection.json</code> has five requests with assertions: health; AI image; real image; missing key (expects 401); wrong file type (expects 415). <code>base_url</code> and <code>api_key</code> are collection variables, so the key is not stored in the exported file.</p>
-<p><span class="pending">PENDING — Postman screenshots against the live URL.</span></p>
+<p><strong>Postman.</strong> <code>vercel_api/VisionGuard.postman_collection.json</code> has five requests, each with test assertions: health; AI image (expects <code>AI-generated</code>); real image (expects <code>Real</code>, confidence below threshold); missing key (expects 401); wrong file type (expects 415). Image paths are stored relative to the repository root. <code>base_url</code> and <code>api_key</code> are collection variables, so the key is not stored in the exported file.</p>
+<p><strong>How it was run.</strong> I ran the collection with <strong>Newman</strong>, Postman's official command-line collection runner, which executes the same collection file and the same JavaScript test scripts as the Postman app. <code>base_url</code> and <code>api_key</code> were supplied through a temporary Postman <em>environment</em> file that was deleted after the run. The API key therefore never appears in the collection, the command, or the log (<code>logs/52_newman_postman_run.log</code>).</p>
+<pre><code>newman run vercel_api/VisionGuard.postman_collection.json -e &lt;environment&gt; --working-dir .
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Request</th>
+<th>Status</th>
+<th>Time</th>
+<th>Response</th>
+<th>Assertions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>GET /health</code></td>
+<td>200 OK</td>
+<td>812 ms</td>
+<td><code>{"status":"healthy","model_loaded":true,"runtime":"LiteRT (TFLite)","threshold":0.4}</code></td>
+<td>200 OK ✓, model loaded ✓</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>POST /predict</code> (AI landscape)</td>
+<td>200 OK</td>
+<td>1.9 s</td>
+<td><code>{"label":"AI-generated","confidence":0.8603,"threshold":0.4,...}</code></td>
+<td>200 ✓, has label + confidence ✓, label is AI-generated ✓</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>POST /predict</code> (real photo)</td>
+<td>200 OK</td>
+<td>1.4 s</td>
+<td><code>{"label":"Real","confidence":0.0205,"threshold":0.4,...}</code></td>
+<td>200 ✓, label is Real ✓, confidence below threshold ✓</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>POST /predict</code>, no <code>X-API-Key</code></td>
+<td>401 Unauthorized</td>
+<td>1.2 s</td>
+<td><code>{"detail":"Invalid or missing API key."}</code></td>
+<td>401 ✓</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>POST /predict</code>, a <code>.txt</code> file</td>
+<td>415 Unsupported Media Type</td>
+<td>383 ms</td>
+<td><code>{"detail":"Unsupported content type: text/plain"}</code></td>
+<td>415 ✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Result: 5 requests, 10 assertions, 0 failures</strong>, average response time 1.15 s. The two predictions match the local Keras values exactly (0.8603 and 0.0205), and both error paths return the documented status codes.</p>
+<figure><img src="screenshots/SS_46_postman_newman_run.png"><figcaption><b>Figure 61.</b> SS_46 — The Postman collection run with Newman against https://23l-0578-a2-ops.vercel.app: every request, its status and time, the passed assertions, the summary table and the logged response bodies.</figcaption></figure>
+
 <p><strong>Tested from another network.</strong> <span class="pending">PENDING — test from a different network (mobile hotspot).</span></p>
 <p><strong>Security.</strong> The API requires a shared secret in <code>X-API-Key</code>. The key exists only in <code>.env</code> locally and as an encrypted Vercel variable, and it travels only over HTTPS. Without it, anyone could use up the free-plan execution quota. No upload is ever written to disk, on either side.</p>
 <p><strong>Limitations.</strong> Cold starts after idle periods, 0.1–2 s of network latency per call, the 4.5 MB body limit (handled by client-side resizing), and the Hobby plan being meant for non-commercial use. A production system would use a container platform close to its users, with a dedicated model server.</p>
@@ -1658,11 +1717,11 @@ REMOTE_API_KEY=&lt;same secret as the Space&gt;
 <p>then <code>docker compose up -d web</code> (or <code>python -m flask run</code> locally).</p>
 <h2>8.1 — Local rehearsal</h2>
 <p><strong>Earlier rehearsal of the same integration, with the API on localhost:8000:</strong> three uploads in remote mode were logged with <code>inference_mode = remote</code>. Stopping the API mid-session made the next upload fail cleanly with the 502 page (<code>logs/18_flask_remote.log</code>).</p>
-<figure><img src="screenshots/SS_49_result_remote_mode.png"><figcaption><b>Figure 61.</b> SS_49 — Result page produced in remote mode (API on localhost during rehearsal).</figcaption></figure>
+<figure><img src="screenshots/SS_49_result_remote_mode.png"><figcaption><b>Figure 62.</b> SS_49 — Result page produced in remote mode (API on localhost during rehearsal).</figcaption></figure>
 
-<figure><img src="screenshots/SS_50_history_mixed_modes.png"><figcaption><b>Figure 62.</b> SS_50 — History showing local and remote rows side by side.</figcaption></figure>
+<figure><img src="screenshots/SS_50_history_mixed_modes.png"><figcaption><b>Figure 63.</b> SS_50 — History showing local and remote rows side by side.</figcaption></figure>
 
-<figure><img src="screenshots/SS_51_remote_api_down.png"><figcaption><b>Figure 63.</b> SS_51 — The friendly 502 page when the inference API is unreachable.</figcaption></figure>
+<figure><img src="screenshots/SS_51_remote_api_down.png"><figcaption><b>Figure 64.</b> SS_51 — The friendly 502 page when the inference API is unreachable.</figcaption></figure>
 
 <h2>8.2 — Live integration: Flask on localhost → Vercel API</h2>
 <p><strong>Setup.</strong> The Compose stack from Chapter 6 (Flask + PostgreSQL on my machine) was recreated in remote mode. The URL and key come from <code>.env</code>; nothing in the code changed:</p>
@@ -1766,9 +1825,9 @@ curl -s http://localhost:5000/health
 </tbody>
 </table>
 <p>Six of ten are correct, and each mistake fits the error analysis in §2.6. Van Gogh's <em>Café Terrace</em> is a <strong>real painting</strong> whose smooth, stylised texture the model reads as synthetic. The Midjourney draft board and the Earth-Species scene are AI images in an illustrative style rather than a photoreal one. Every verdict, including the wrong ones, is shown with its confidence and the limitations notice. That is the honest caveat the brief asks the UI to carry.</p>
-<figure><img src="screenshots/SS_49b_remote_result_10MB.png"><figcaption><b>Figure 64.</b> SS_49b — Result page in remote mode for the 10.2 MB upload: verdict from the Vercel API, mode "remote", latency 4.2 s (resize + upload + cold start).</figcaption></figure>
+<figure><img src="screenshots/SS_49b_remote_result_10MB.png"><figcaption><b>Figure 65.</b> SS_49b — Result page in remote mode for the 10.2 MB upload: verdict from the Vercel API, mode "remote", latency 4.2 s (resize + upload + cold start).</figcaption></figure>
 
-<figure><img src="screenshots/SS_49c_remote_result_ai.png"><figcaption><b>Figure 65.</b> SS_49c — Result page in remote mode for the 5.6 MB AI image (a miss: p(AI) = 0.22).</figcaption></figure>
+<figure><img src="screenshots/SS_49c_remote_result_ai.png"><figcaption><b>Figure 66.</b> SS_49c — Result page in remote mode for the 5.6 MB AI image (a miss: p(AI) = 0.22).</figcaption></figure>
 
 <p><strong>Same image, local vs cloud.</strong> Three images that had already been classified locally were sent again through the live API. The database matches them by SHA-256:</p>
 <pre><code> local_id | remote_id | file                               | local_conf | remote_conf | same_label
@@ -1777,20 +1836,20 @@ curl -s http://localhost:5000/health
         1 |        21 | bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg |     0.5523 |      0.5523 | t
 </code></pre>
 <p>The Keras model in the local container and the TFLite model on Vercel agree exactly. The preprocessing contract (training ↔ Flask ↔ cloud) holds end to end.</p>
-<figure><img src="screenshots/SS_50d_local_vs_remote_parity.png"><figcaption><b>Figure 66.</b> SS_50d — Same images, local Keras vs live Vercel TFLite: identical confidences.</figcaption></figure>
+<figure><img src="screenshots/SS_50d_local_vs_remote_parity.png"><figcaption><b>Figure 67.</b> SS_50d — Same images, local Keras vs live Vercel TFLite: identical confidences.</figcaption></figure>
 
 <p><strong>History menu / database log.</strong> The History page shows every request, local and remote, newest first, with timestamp, label, confidence, threshold, model, version and mode. The same rows are in PostgreSQL (<code>logs/48_postgres_trail_remote.log</code>): 8 local and 13 remote predictions.</p>
-<figure><img src="screenshots/SS_50b_history_remote_live.png"><figcaption><b>Figure 67.</b> SS_50b — History page after the live integration: remote rows from the Vercel API above the earlier local rows.</figcaption></figure>
+<figure><img src="screenshots/SS_50b_history_remote_live.png"><figcaption><b>Figure 68.</b> SS_50b — History page after the live integration: remote rows from the Vercel API above the earlier local rows.</figcaption></figure>
 
-<figure><img src="screenshots/SS_50c_postgres_trail_remote.png"><figcaption><b>Figure 68.</b> SS_50c — The PostgreSQL trail: what was decided, when, by which model, in which mode, how confidently, and how long it took.</figcaption></figure>
+<figure><img src="screenshots/SS_50c_postgres_trail_remote.png"><figcaption><b>Figure 69.</b> SS_50c — The PostgreSQL trail: what was decided, when, by which model, in which mode, how confidently, and how long it took.</figcaption></figure>
 
 <p><strong>Failure handling against the live API.</strong> I recreated <code>web</code> with a wrong key (<code>REMOTE_API_KEY=wrong-key-on-purpose</code>). Vercel answered 401, and Flask showed the friendly <strong>502</strong> page naming the cause (<code>Inference error: unauthorized (401)</code>) instead of a stack trace. <strong>No row was written</strong>, because failed predictions must not appear in the audit trail as if they were verdicts. Recreating <code>web</code> with the key from <code>.env</code> restored service (<code>logs/47_remote_wrong_key.log</code>).</p>
-<figure><img src="screenshots/SS_51b_remote_wrong_key_502.png"><figcaption><b>Figure 69.</b> SS_51b — Wrong API key: the live API returns 401 and Flask shows a 502 page; nothing is logged.</figcaption></figure>
+<figure><img src="screenshots/SS_51b_remote_wrong_key_502.png"><figcaption><b>Figure 70.</b> SS_51b — Wrong API key: the live API returns 401 and Flask shows a 502 page; nothing is logged.</figcaption></figure>
 
 <hr />
 <h1>Bonus — Grad-CAM</h1>
 <p><code>scripts/gradcam.py</code> computes Grad-CAM on MobileNetV2's last convolutional layer (<code>Conv_1</code>, 7×7×1280) for the champion model. With Keras 3 the functional sub-model of a nested <code>Sequential</code> cannot be sliced directly, so the gradient model is rebuilt explicitly: input → MobileNetV2 base (exposing <code>Conv_1</code>) → the trained head layers. At the script's fixed 0.5 cut-off the champion had 58 correct AI, 52 correct real and 36 wrong predictions on the 146 test images (one more error than at the deployed 0.40 threshold in §2.6). The grid shows four correct and four wrong cases.</p>
-<figure><img src="figures/gradcam_grid.png"><figcaption><b>Figure 70.</b> SS_54 — Grad-CAM heat maps: top row correct predictions, bottom row wrong ones.</figcaption></figure>
+<figure><img src="figures/gradcam_grid.png"><figcaption><b>Figure 71.</b> SS_54 — Grad-CAM heat maps: top row correct predictions, bottom row wrong ones.</figcaption></figure>
 
 <p><strong>What the model looks at.</strong> In the correct AI cases the heat sits on the <em>subject's rendered texture</em>: the over-detailed fur of the creature, and the ornate, flower-covered elephant. These are the hyper-detailed, slightly plastic surfaces typical of diffusion models. In the correct real cases the activation is weak and diffuse (the crowd photo has almost no hot region at p = 0.02), which suggests "real" is the default when no synthetic texture cue fires. The wrong cases show the same mechanism failing. The AI portrait pair gets attention on skin between the faces but scores only 0.37, because photoreal skin carries no obvious artefact. The pastel garden and the rooster get attention on <em>background</em> flowers rather than the subject. The real fantasy painting (p = 0.78) lights up its saturated, glowing sky — painted smoothness that the model confuses with generation. Grad-CAM agrees with the error analysis in §2.6: the model learned local texture statistics, not semantic cues such as impossible anatomy or inconsistent lighting.</p>
 <hr />
@@ -1833,7 +1892,7 @@ curl -s http://localhost:5000/health
 </tr>
 <tr>
 <td>Postman test evidence</td>
-<td>⏳ pending — Postman screenshots</td>
+<td>✅ collection run with Newman: 5 requests, 10/10 assertions passed (§7.4)</td>
 </tr>
 <tr>
 <td>API tested from a different network</td>

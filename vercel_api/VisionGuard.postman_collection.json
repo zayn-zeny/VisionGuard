@@ -1,69 +1,168 @@
 {
   "info": {
     "name": "VisionGuard 23L-0578_A2_Ops",
-    "description": "Task 7 Postman tests for the deployed VisionGuard inference API. Set the collection variables base_url (e.g. https://<project>.vercel.app) and api_key (same value as REMOTE_API_KEY in .env; do not commit it). For the image requests, pick a file from data/raw in the Body tab.",
+    "description": "Task 7 Postman tests for the deployed VisionGuard inference API. Set the collection variables base_url (e.g. https://<project>.vercel.app) and api_key (same value as REMOTE_API_KEY in .env; do not commit it). For the image requests, pick a file from data/raw in the Body tab. File paths are relative to the repository root (Postman working directory / newman --working-dir).",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    {"key": "base_url", "value": "https://YOUR-PROJECT.vercel.app"},
-    {"key": "api_key", "value": ""}
+    {
+      "key": "base_url",
+      "value": "https://YOUR-PROJECT.vercel.app"
+    },
+    {
+      "key": "api_key",
+      "value": ""
+    }
   ],
   "item": [
     {
       "name": "1 Health",
-      "request": {"method": "GET", "url": "{{base_url}}/health"},
-      "event": [{"listen": "test", "script": {"exec": [
-        "pm.test('200 OK', () => pm.response.to.have.status(200));",
-        "pm.test('model loaded', () => pm.expect(pm.response.json().model_loaded).to.be.true);"
-      ]}}]
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('model loaded', () => pm.expect(pm.response.json().model_loaded).to.be.true);"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "2 Predict - AI image",
       "request": {
         "method": "POST",
-        "header": [{"key": "X-API-Key", "value": "{{api_key}}"}],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{api_key}}"
+          }
+        ],
         "url": "{{base_url}}/predict",
-        "body": {"mode": "formdata", "formdata": [{"key": "image", "type": "file", "src": []}]}
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "data/raw/AiArtData/AiArtData/landscape-art-ai-generated-photo2.jpg"
+            }
+          ]
+        }
       },
-      "event": [{"listen": "test", "script": {"exec": [
-        "pm.test('200 OK', () => pm.response.to.have.status(200));",
-        "pm.test('has label + confidence', () => { const j = pm.response.json(); pm.expect(j).to.have.property('label'); pm.expect(j.confidence).to.be.within(0, 1); });"
-      ]}}]
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('has label + confidence', () => { const j = pm.response.json(); pm.expect(j).to.have.property('label'); pm.expect(j.confidence).to.be.within(0, 1); });",
+              "pm.test('label is AI-generated', () => pm.expect(pm.response.json().label).to.eql('AI-generated'));"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "3 Predict - Real image",
       "request": {
         "method": "POST",
-        "header": [{"key": "X-API-Key", "value": "{{api_key}}"}],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{api_key}}"
+          }
+        ],
         "url": "{{base_url}}/predict",
-        "body": {"mode": "formdata", "formdata": [{"key": "image", "type": "file", "src": []}]}
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "data/raw/RealArt/RealArt/33100scr.jpg"
+            }
+          ]
+        }
       },
-      "event": [{"listen": "test", "script": {"exec": [
-        "pm.test('200 OK', () => pm.response.to.have.status(200));"
-      ]}}]
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('200 OK', () => pm.response.to.have.status(200));",
+              "pm.test('label is Real', () => pm.expect(pm.response.json().label).to.eql('Real'));",
+              "pm.test('confidence below threshold', () => { const j = pm.response.json(); pm.expect(j.confidence).to.be.below(j.threshold); });"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "4 Error - missing API key",
       "request": {
         "method": "POST",
         "url": "{{base_url}}/predict",
-        "body": {"mode": "formdata", "formdata": [{"key": "image", "type": "file", "src": []}]}
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "data/raw/RealArt/RealArt/33100scr.jpg"
+            }
+          ]
+        }
       },
-      "event": [{"listen": "test", "script": {"exec": [
-        "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));"
-      ]}}]
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('401 Unauthorized', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "5 Error - wrong file type",
       "request": {
         "method": "POST",
-        "header": [{"key": "X-API-Key", "value": "{{api_key}}"}],
+        "header": [
+          {
+            "key": "X-API-Key",
+            "value": "{{api_key}}"
+          }
+        ],
         "url": "{{base_url}}/predict",
-        "body": {"mode": "formdata", "formdata": [{"key": "image", "type": "file", "src": [], "contentType": "text/plain"}]}
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": "report/assignment_text.txt",
+              "contentType": "text/plain"
+            }
+          ]
+        }
       },
-      "event": [{"listen": "test", "script": {"exec": [
-        "pm.test('415 Unsupported Media Type', () => pm.response.to.have.status(415));"
-      ]}}]
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('415 Unsupported Media Type', () => pm.response.to.have.status(415));"
+            ]
+          }
+        }
+      ]
     }
   ]
 }

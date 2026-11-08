@@ -1,0 +1,57 @@
+[ZAYN@ZAYN 2026-11-08 10:42:33 23L-0578_A2_Ops]$ newman run vercel_api/VisionGuard.postman_collection.json -e <env: base_url=https://23l-0578-a2-ops.vercel.app, api_key=***> --working-dir . --reporters cli,json
+newman
+
+VisionGuard 23L-0578_A2_Ops
+
+Root 1 Health
+  GET https://23l-0578-a2-ops.vercel.app/health [200 OK, 456B, 812ms]
+  Pass  200 OK
+  Pass  model loaded
+
+Root 2 Predict - AI image
+  POST https://23l-0578-a2-ops.vercel.app/predict (node:6816) [DEP0044] DeprecationWarning: The `util.isArray` API is deprecated. Please use `Array.isArray()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[200 OK, 452B, 1.9s]
+  Pass  200 OK
+  Pass  has label + confidence
+  Pass  label is AI-generated
+
+Root 3 Predict - Real image
+  POST https://23l-0578-a2-ops.vercel.app/predict [200 OK, 444B, 1380ms]
+  Pass  200 OK
+  Pass  label is Real
+  Pass  confidence below threshold
+
+Root 4 Error - missing API key
+  POST https://23l-0578-a2-ops.vercel.app/predict [401 Unauthorized, 379B, 1182ms]
+  Pass  401 Unauthorized
+
+Root 5 Error - wrong file type
+  POST https://23l-0578-a2-ops.vercel.app/predict [415 Unsupported Media Type, 398B, 383ms]
+  Pass  415 Unsupported Media Type
+
+----------------------------------------------------------------------
+|                         |            executed |             failed |
+--------------------------+---------------------+---------------------
+|              iterations |                   1 |                  0 |
+--------------------------+---------------------+---------------------
+|                requests |                   5 |                  0 |
+--------------------------+---------------------+---------------------
+|            test-scripts |                   5 |                  0 |
+--------------------------+---------------------+---------------------
+|      prerequest-scripts |                   0 |                  0 |
+--------------------------+---------------------+---------------------
+|              assertions |                  10 |                  0 |
+----------------------------------------------------------------------
+| total run duration: 6.2s                                           |
+----------------------------------------------------------------------
+| total data received: 443B (approx)                                 |
+----------------------------------------------------------------------
+| average response time: 1151ms [min: 383ms, max: 1.9s, s.d.: 543ms] |
+----------------------------------------------------------------------
+[ZAYN@ZAYN 2026-11-08 10:42:56 23L-0578_A2_Ops]$ (response bodies from newman --reporter-json-export)
+1 Health                     HTTP 200 OK                         812 ms  {"status":"healthy","model_loaded":true,"model":"MobileNetV2_VisionGuard","runtime":"LiteRT (TFLite)","threshold":0.4}
+2 Predict - AI image         HTTP 200 OK                        1998 ms  {"label":"AI-generated","confidence":0.8603,"threshold":0.4,"model":"MobileNetV2_VisionGuard","sha256":"a55d019b0027bdfa"}
+3 Predict - Real image       HTTP 200 OK                        1380 ms  {"label":"Real","confidence":0.0205,"threshold":0.4,"model":"MobileNetV2_VisionGuard","sha256":"42a5d0cf6def463a"}
+4 Error - missing API key    HTTP 401 Unauthorized              1182 ms  {"detail":"Invalid or missing API key."}
+5 Error - wrong file type    HTTP 415 Unsupported Media Type     383 ms  {"detail":"Unsupported content type: text/plain"}
