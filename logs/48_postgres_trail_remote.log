@@ -1,0 +1,38 @@
+[ZAYN@ZAYN 2026-11-08 09:35:23 23L-0578_A2_Ops]$ docker compose exec db psql -U visionguard -d visionguard -c "SELECT id, to_char(timestamp_utc,'MM-DD HH24:MI:SS') AS ts_utc, left(filename_sanitized,30) AS file, image_size_bytes AS bytes, label, round(confidence::numeric,4) AS conf, inference_mode AS mode, round(request_latency_ms::numeric,0) AS ms FROM predictions ORDER BY id;"
+ id |     ts_utc     |              file              |  bytes   |    label     |  conf  |  mode  |  ms  
+----+----------------+--------------------------------+----------+--------------+--------+--------+------
+  1 | 11-07 21:27:17 | bDSF6saJUuPLsEu9i3ud--1--gvs7i |    48406 | AI-generated | 0.5523 | local  | 2622
+  2 | 11-07 21:27:18 | 6324662e5ee3110438933c1b_COBE- |   109249 | AI-generated | 0.7257 | local  |  208
+  3 | 11-07 21:27:18 | landscape-art-ai-generated-pho |   476632 | AI-generated | 0.8603 | local  |  302
+  4 | 11-07 21:27:21 | 360_F_380747975_sS1hCVB0qPqFCW |    45534 | Real         | 0.1519 | local  | 3067
+  5 | 11-07 21:27:22 | 33100scr.jpg                   |   253278 | Real         | 0.0205 | local  |  278
+  6 | 11-07 21:27:22 | the-essay_58_resurgence-of-the |   202110 | Real         | 0.0145 | local  |  206
+  7 | 11-07 21:47:09 | landscape-art-ai-generated-pho |   476632 | AI-generated | 0.8603 | local  | 3976
+  8 | 11-07 21:47:39 | 33100scr.jpg                   |   253278 | Real         | 0.0205 | local  |  278
+  9 | 11-08 04:33:16 | cafe-terrace-on-the-place-du-f | 10195352 | AI-generated | 0.6088 | remote | 4247
+ 10 | 11-08 04:33:20 | Earth-Species-project-generati |  5626183 | Real         | 0.2225 | remote | 1219
+ 11 | 11-08 04:33:26 | midjourney-v5-drafts-Artboard- |    39454 | Real         | 0.3671 | remote | 1240
+ 12 | 11-08 04:33:27 | 1000_F_563719058_JXnzcPV4GRpWq |   320027 | AI-generated | 0.9958 | remote | 1087
+ 13 | 11-08 04:33:29 | cafe-11-header.jpg             |   126505 | AI-generated | 0.9885 | remote | 1271
+ 14 | 11-08 04:33:30 | Deepfake-AI-generated-2023.jpg |   163141 | AI-generated | 0.8404 | remote | 1101
+ 15 | 11-08 04:33:31 | 1032249.jpg                    |   645590 | Real         | 0.0022 | remote | 1154
+ 16 | 11-08 04:33:33 | 85220_africa-21787_1920.rev.16 |   102058 | Real         | 0.1314 | remote | 1272
+ 17 | 11-08 04:33:34 | 5c09c4dc82dc441dfb26975fe8dc16 |   102084 | Real         | 0.0025 | remote |  827
+ 18 | 11-08 04:33:35 | 360_F_606797008_rGPPk6bFWDQydn |    73631 | AI-generated | 0.7759 | remote | 1047
+(18 rows)
+
+
+[ZAYN@ZAYN 2026-11-08 09:35:24 23L-0578_A2_Ops]$ docker compose exec db psql -U visionguard -d visionguard -c "SELECT inference_mode, count(*), round(avg(request_latency_ms)::numeric,0) AS avg_ms FROM predictions GROUP BY 1;"
+ inference_mode | count | avg_ms 
+----------------+-------+--------
+ local          |     8 |   1367
+ remote         |    10 |   1446
+(2 rows)
+
+
+[ZAYN@ZAYN 2026-11-08 09:35:24 23L-0578_A2_Ops]$ docker compose exec db psql -U visionguard -d visionguard -c "SELECT l.id AS local_id, r.id AS remote_id, left(l.filename_sanitized,28) AS file, l.confidence AS local_conf, r.confidence AS remote_conf FROM predictions l JOIN predictions r ON l.image_sha256=r.image_sha256 AND l.inference_mode='local' AND r.inference_mode='remote';"
+ local_id | remote_id | file | local_conf | remote_conf 
+----------+-----------+------+------------+-------------
+(0 rows)
+
+

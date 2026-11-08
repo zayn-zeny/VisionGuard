@@ -1,0 +1,25 @@
+[ZAYN@ZAYN 2026-11-08 09:31:37 23L-0578_A2_Ops]$ python scripts/test_remote_api.py
+VisionGuard API test | project 23L-0578_A2_Ops | user ZAYN@ZAYN (Windows)
+time  : 2026-11-08T09:31:38+05:00
+target: https://23l-0578-a2-ops.vercel.app/predict
+client public IP: 58.65.x.x
+GET /health -> 200 {"status":"healthy","model_loaded":true,"model":"MobileNetV2_VisionGuard","runtime":"LiteRT (TFLite)","threshold":0.4}
+
+[AI  ] bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg            -> 200  1015.1 ms {'label': 'AI-generated', 'confidence': 0.5523, 'threshold': 0.4, 'model': 'MobileNetV2_VisionGuard', 'sha256': 'b97f1938ec705979'}
+[AI  ] 6324662e5ee3110438933c1b_COBE-Pink-Elephant-M -> 200  1372.4 ms {'label': 'AI-generated', 'confidence': 0.7257, 'threshold': 0.4, 'model': 'MobileNetV2_VisionGuard', 'sha256': 'bcdcb5d06a47917e'}
+[AI  ] landscape-art-ai-generated-photo2.jpg         -> 200  2211.1 ms {'label': 'AI-generated', 'confidence': 0.8603, 'threshold': 0.4, 'model': 'MobileNetV2_VisionGuard', 'sha256': 'a55d019b0027bdfa'}
+[Real] 360_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rta -> 200   755.7 ms {'label': 'Real', 'confidence': 0.1519, 'threshold': 0.4, 'model': 'MobileNetV2_VisionGuard', 'sha256': '84b628a60c4d6e3f'}
+[Real] 33100scr.jpg                                  -> 200  1681.6 ms {'label': 'Real', 'confidence': 0.0205, 'threshold': 0.4, 'model': 'MobileNetV2_VisionGuard', 'sha256': '42a5d0cf6def463a'}
+[Real] the-essay_58_resurgence-of-the-people_2019-ar -> 200  1670.3 ms {'label': 'Real', 'confidence': 0.0145, 'threshold': 0.4, 'model': 'MobileNetV2_VisionGuard', 'sha256': '6fcf720ab4518533'}
+
+correct: 6/6
+
+[error] missing API key  -> 401   756.7 ms {'detail': 'Invalid or missing API key.'}
+[error] wrong file type  -> 415   457.6 ms {'detail': 'Unsupported content type: text/plain'}
+[error] corrupt image    -> 422   497.1 ms {'detail': 'Cannot decode image: cannot identify image file <_io.BytesIO object at 0x7f9d1d3fdc60>'}
+[error] oversized file   -> 413  2103.8 ms Request Entity Too Large
+
+FUNCTION_PAYLOAD_TOO_LARGE
+
+bom1::grbmn-1794112310022-b31bf4484e38
+

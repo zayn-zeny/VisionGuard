@@ -54,16 +54,16 @@ figcaption { font-size: 8.8pt; color: #333; margin-top: 4px; text-align: left; }
 """
 
 PENDING_TEXT = {
-    "LIVE_API_URL": "PENDING — public API URL is added after the Hugging Face Space is deployed.",
+    "LIVE_API_URL": "PENDING — public API URL.",
     "CI_GREEN_SCREENSHOT": "PENDING — screenshot of the green GitHub Actions run.",
     "CI_TOY_SCREENSHOTS": "PENDING — screenshots of the red and the green toy CI runs.",
-    "DEPLOY_SCREENSHOTS": "PENDING — Space build log and running Space screenshots.",
+    "DEPLOY_SCREENSHOTS": ("PENDING — Vercel dashboard screenshots: project overview, "
+                           "deployment build log, Settings → Environment Variables."),
     "POSTMAN_SCREENSHOTS": "PENDING — Postman screenshots against the live URL.",
     "OTHER_NETWORK": "PENDING — test from a different network (mobile hotspot).",
-    "INTEGRATION_RESULTS": "PENDING — Flask (localhost) calling the live cloud API.",
     "CHECK_API": "⏳ pending deployment",
-    "CHECK_POSTMAN": "⏳ pending deployment",
-    "CHECK_NETWORK": "⏳ pending deployment",
+    "CHECK_POSTMAN": "⏳ pending — Postman screenshots",
+    "CHECK_NETWORK": "⏳ pending — hotspot test",
 }
 
 

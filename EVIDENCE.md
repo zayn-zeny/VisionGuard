@@ -25,7 +25,7 @@ Status key: ✅ evidence exists in the repo · ⏳ needs an action from the stud
 | 6.5 | `SS_41a`–`SS_41d`, `logs/32`–`35_*.log` | §6.5 | ✅ |
 | 6.6 apply | `.github/workflows/ci.yml`, green run `SS_42_ci_green.png`, badge in README | §6.6 | ✅ |
 | 6.6 toy | `labs/06_ci_toy/` (matrix 3.10/3.11) | §6.6 | ⏳ needs a throwaway GitHub repo + red/green runs |
-| 7 | `cloud_api/`, `scripts/deploy_hf_space.py`, `scripts/test_remote_api.py`, Postman collection | §7 | ⏳ needs HF_TOKEN → deploy, Postman screenshots, other-network test |
-| 8 | remote-mode rehearsal `SS_49`–`SS_51` | §8 | ⏳ re-run against the live cloud URL |
+| 7 | `vercel_api/`, `scripts/export_tflite.py`, live URL https://23l-0578-a2-ops.vercel.app, `SS_44a`–`SS_45` | §7 | ✅ deployed + tested · ⏳ Postman screenshots, hotspot test, Vercel dashboard screenshots |
+| 8 | Flask (Compose) → live Vercel API: `SS_49b`, `SS_49c`, `SS_50b`–`SS_50d`, `SS_51b` | §8 | ✅ |
 | Bonus | `report/figures/gradcam_grid.png`, `scripts/gradcam.py` | Bonus | ✅ |
 | Report | `report/23L-0578_VisionGuard.pdf` built by `scripts/build_report.py` | — | ✅ (pending boxes for the ⏳ rows) |

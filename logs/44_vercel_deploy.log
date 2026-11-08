@@ -1,0 +1,47 @@
+[ZAYN@ZAYN 2026-11-08 09:30:15 23L-0578_A2_Ops/vercel_api]$ vercel deploy --prod --yes --token ***
+<claude-code-hint v="1" type="plugin" value="vercel@claude-plugins-official" />
+Vercel CLI 65.2.0 (Node.js 22.14.0)
+  Inspect         https://vercel.com/zayns-projects-68a4bbc5/23l-0578-a2-ops/27EswDfLdHL2YEyzYDSR2JRkgj2L
+  Production      https://23l-0578-a2-qhyuyckgz-zayns-projects-68a4bbc5.vercel.app
+▲ Aliased         https://23l-0578-a2-ops.vercel.app
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_27EswDfLdHL2YEyzYDSR2JRkgj2L",
+    "url": "https://23l-0578-a2-qhyuyckgz-zayns-projects-68a4bbc5.vercel.app",
+    "productionUrl": "https://23l-0578-a2-ops.vercel.app",
+    "inspectorUrl": "https://vercel.com/zayns-projects-68a4bbc5/23l-0578-a2-ops/27EswDfLdHL2YEyzYDSR2JRkgj2L",
+    "readyState": "READY",
+    "target": "production",
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_27EswDfLdHL2YEyzYDSR2JRkgj2L",
+    "buildMachine": {
+      "cores": 2,
+      "memory": 8192,
+      "machine": "basic",
+      "selectionType": "fixed",
+      "selectionSource": "plan-default"
+    },
+    "deploymentProtection": [
+      "vercel_authentication"
+    ]
+  },
+  "message": "Deployment 23l-0578-a2-qhyuyckgz-zayns-projects-68a4bbc5.vercel.app ready. Production URL: https://23l-0578-a2-ops.vercel.app",
+  "next": [
+    {
+      "command": "vercel git connect",
+      "when": "Automatically deploy changes on every push"
+    },
+    {
+      "command": "vercel curl https://23l-0578-a2-ops.vercel.app",
+      "when": "Verify deployment, including when Deployment Protection is enabled"
+    },
+    {
+      "command": "vercel inspect 23l-0578-a2-qhyuyckgz-zayns-projects-68a4bbc5.vercel.app",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod",
+      "when": "Promote to production"
+    }
+  ]
+}

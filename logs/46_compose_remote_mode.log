@@ -1,0 +1,18 @@
+[ZAYN@ZAYN 2026-11-08 09:32:01 23L-0578_A2_Ops]$ INFERENCE_MODE=remote docker compose up -d web
+time="2026-11-08T09:32:02+05:00" level=warning msg="volume \"23l0578_visionguard_pgdata\" already exists but was created for project \"a2\" (expected \"23l0578_a2_ops\"). Use `external: true` to use an existing volume"
+ Container 23l0578_a2_ops-db-1 Running 
+ Container 23l0578_a2_ops-web-1 Recreate 
+ Container 23l0578_a2_ops-web-1 Recreated 
+ Container 23l0578_a2_ops-db-1 Waiting 
+ Container 23l0578_a2_ops-db-1 Healthy 
+ Container 23l0578_a2_ops-web-1 Starting 
+ Container 23l0578_a2_ops-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 09:32:47 23L-0578_A2_Ops]$ docker compose ps
+NAME                   IMAGE                    COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+23l0578_a2_ops-db-1    postgres:16-alpine       "docker-entrypoint.s…"   db        7 hours ago      Up 7 hours (healthy)      5432/tcp
+23l0578_a2_ops-web-1   visionguard-web:latest   "gunicorn --bind 0.0…"   web       45 seconds ago   Up 40 seconds (healthy)   0.0.0.0:5000->5000/tcp, [::]:5000->5000/tcp
+
+[ZAYN@ZAYN 2026-11-08 09:32:47 23L-0578_A2_Ops]$ curl -s http://localhost:5000/health
+{"db":"ok","debug":false,"inference_mode":"remote","model_name":"MobileNetV2_VisionGuard","model_version":"champion","prediction_count":8,"status":"healthy"}
+

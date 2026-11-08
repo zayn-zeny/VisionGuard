@@ -1,0 +1,31 @@
+[ZAYN@ZAYN 2026-11-08 09:28:56 23L-0578_A2_Ops/vercel_api]$ vercel project add 23l-0578-a2-ops --token ***
+Vercel CLI 39.4.2
+> Success! Project 23l-0578-a2-ops added (zayns-projects-68a4bbc5) [804ms]
+
+[ZAYN@ZAYN 2026-11-08 09:29:02 23L-0578_A2_Ops/vercel_api]$ vercel link --yes --project 23l-0578-a2-ops --token ***
+Vercel CLI 39.4.2
+Loading scopes…
+Searching for existing projects…
+Linked to zayns-projects-68a4bbc5/23l-0578-a2-ops (created .vercel and added it to .gitignore)
+
+[ZAYN@ZAYN 2026-11-08 09:29:16 23L-0578_A2_Ops/vercel_api]$ printf <value from .env> | vercel env add REMOTE_API_KEY production --sensitive --token ***
+Vercel CLI 39.4.2
+Retrieving project…
+Saving
+Added Environment Variable REMOTE_API_KEY to Project 23l-0578-a2-ops [382ms]
+
+[ZAYN@ZAYN 2026-11-08 09:29:21 23L-0578_A2_Ops/vercel_api]$ printf 0.4 | vercel env add THRESHOLD production --token ***
+Vercel CLI 39.4.2
+Retrieving project…
+Saving
+Added Environment Variable THRESHOLD to Project 23l-0578-a2-ops [368ms]
+
+[ZAYN@ZAYN 2026-11-08 09:29:26 23L-0578_A2_Ops/vercel_api]$ vercel env ls --token ***
+Vercel CLI 39.4.2
+Retrieving project…
+> Environment Variables found for zayns-projects-68a4bbc5/23l-0578-a2-ops [362ms]
+
+ name               value               environments        created    
+ THRESHOLD          Encrypted           Production          5s ago     
+ REMOTE_API_KEY     Encrypted           Production          10s ago    
+

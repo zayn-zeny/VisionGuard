@@ -16,12 +16,12 @@ fontsize: 11pt
 | **Section** | 7A |
 | **GitHub Repository** | https://github.com/zayn-zeny/VisionGuard |
 | **DagsHub Project** | https://dagshub.com/zayn-zeny/VisionGuard (MLflow: https://dagshub.com/zayn-zeny/VisionGuard.mlflow) |
-| **Live API URL** | {{LIVE_API_URL}} |
+| **Live API URL** | https://23l-0578-a2-ops.vercel.app/predict (health: https://23l-0578-a2-ops.vercel.app/health) |
 | **Graded Commit Hash** | *(filled in at submission — see final commit on `main`)* |
 
 ## AI-Assistance Disclosure
 
-> This project was built with the help of AI coding assistants: Antigravity (Claude Sonnet), Codebuff/Buffy (Claude) and Claude Code (Claude Opus). I used them to scaffold and write source files (data pipeline, training script, Flask app, Docker/Compose files, CI workflow, tests, cloud API and deployment scripts); to run and debug the training sweep, Keras Tuner study, Grad-CAM script, Compose stack and break/fix exercises; to render command transcripts and pages into the screenshots in this report (`scripts/render_evidence.py`); and to draft report prose. Every command and number in this report comes from a run on my machine or on the linked services, and the raw transcripts are in `logs/` in the repository. Nothing was fabricated. I reviewed the results, design choices and interpretations and take responsibility for them. No other tutorials were used beyond the official TensorFlow, MLflow, DVC, Docker and Hugging Face documentation.
+> This project was built with the help of AI coding assistants: Antigravity (Claude Sonnet), Codebuff/Buffy (Claude) and Claude Code (Claude Opus). I used them to scaffold and write source files (data pipeline, training script, Flask app, Docker/Compose files, CI workflow, tests, cloud API and deployment scripts); to run and debug the training sweep, Keras Tuner study, Grad-CAM script, Compose stack and break/fix exercises; to render command transcripts and pages into the screenshots in this report (`scripts/render_evidence.py`); and to draft report prose. Every command and number in this report comes from a run on my machine or on the linked services, and the raw transcripts are in `logs/` in the repository. Nothing was fabricated. I reviewed the results, design choices and interpretations and take responsibility for them. No other tutorials were used beyond the official TensorFlow, LiteRT, MLflow, DVC, Docker and Vercel documentation.
 
 **How screenshots were produced.** Browser pages were captured with headless Microsoft Edge from the live app or service. Terminal evidence was rendered from the real transcripts, in which every command line carries a `[user@host date time 23L-0578_A2_Ops]$` prompt. Each image has a header strip giving the URL or source file, the capture time, `user@host` and the project name, because a headless browser has no address bar.
 
@@ -949,69 +949,118 @@ The image is 183 MB (8.4 %) smaller on disk and 87 MB (17 %) smaller to push and
 
 # Chapter 7 — API Deployment (15 marks)
 
-**Pathway chosen: C, "any other cloud" — Hugging Face Spaces (Docker SDK).** The model API runs in the cloud; the Flask UI and the database stay on localhost, as the brief specifies for Tasks 7–8.
+**Pathway: the model API on Vercel, with Flask and the database on localhost.** This is the split Task 7 asks for: "put model on a cloud/vercel and make api calls from flask. Flask (itself) code will be running on localhost."
 
-**Why this platform.** Research before choosing:
+**API URL: `https://23l-0578-a2-ops.vercel.app/predict`** (health check: `https://23l-0578-a2-ops.vercel.app/health`)
 
-| Option | What I found | Verdict |
+## 7.1 — Choosing the platform (what I researched first)
+
+| Option | What I found | Outcome |
 |--------|--------------|---------|
-| Vercel (pathway B) | Serverless function bundle limit around 250 MB unzipped, no persistent disk | TensorFlow (≈1.4 GB installed) cannot run there at all; Vercel could only host the UI. |
-| Render free web service | 512 MB RAM, sleeps after 15 min idle | TF + MobileNetV2 needs ~700–900 MB resident, so a real risk of out-of-memory kills. |
-| Google Cloud Run / AWS / Azure | Free tiers exist but need a billing card | Not available to me. |
-| Oracle Always Free (pathway A) | Arm VMs with generous RAM, but capacity is often unavailable and idle instances get reclaimed | Highest setup cost. |
-| **Hugging Face Spaces (Docker)** | Free CPU Space with 2 vCPU / 16 GB RAM, builds any Dockerfile, public HTTPS URL, secrets store | Fits TensorFlow comfortably. Same Docker skills as Task 6. |
+| Hugging Face Spaces (Docker) | My first plan. After creating the account I found Docker Spaces now need a paid plan; free accounts only get Gradio Spaces on ZeroGPU. | Dropped: no credits on a free account. |
+| Azure for Students | Free with no card, but needs an eligible student account. | Dropped: my account was not eligible. |
+| AWS EC2 / Google Cloud Run / Oracle VM | Run full TensorFlow comfortably, but all need a credit card at sign-up. | Not available to me. |
+| Render / Koyeb free | 512 MB RAM; TensorFlow + MobileNetV2 needs about 700–900 MB. | Would only work with a smaller runtime. |
+| **Vercel (Hobby)** | Free, GitHub sign-up, no card. Python serverless functions. **~250 MB function size limit, ~4.5 MB request body limit, no persistent disk.** | **Chosen**, after shrinking the model runtime (below). |
 
-Free Spaces sleep after about 48 hours without traffic, and the first request then waits for a cold start. That is acceptable for a demo and is noted as a limitation.
+**The size problem and how I solved it.** Full TensorFlow is about 1.4 GB installed, which can never fit a 250 MB function. The model itself does not need TensorFlow to *run*, though. `scripts/export_tflite.py` converts the champion Keras model to a **float32 TFLite** flatbuffer, and the API runs it with **LiteRT** (`ai-edge-litert`, the stand-alone TFLite interpreter, a few MB). I did not quantise, so the arithmetic stays the same, and I measured that rather than assuming it:
 
-**Mapping the Compose elements to the platform:** the `web` image becomes the Space's Docker build. `.env` secrets become **Space secrets** (`REMOTE_API_KEY`) and variables (`THRESHOLD`). Port 7860 is published by the platform as HTTPS 443 on `*.hf.space`. The Compose health check becomes Docker `HEALTHCHECK` plus the Space's runtime status. The database stays local with the Flask app, as the brief places it.
+```
+keras  : 19.3 MB
+tflite : 8.9 MB
+test images compared : 146
+max |p_keras - p_tflite| : 2.77e-06
+mean |p_keras - p_tflite|: 4.26e-07
+label flips at threshold 0.4: 0
+```
 
-**What is deployed** (`cloud_api/`):
+Over the entire test split the largest probability difference is 0.0000028, and **not a single label changes** (`logs/40_export_tflite.log`). The deployed bundle is the 8.9 MB model plus NumPy, Pillow, FastAPI and LiteRT.
 
-- `main.py` — a FastAPI service. The model loads **once** in the lifespan hook. `POST /predict` checks the `X-API-Key` header (401), size (413), content type (415) and decodability (422), then runs the same preprocessing as training (`PIL` RGB → 224×224 bilinear → `mobilenet_v2.preprocess_input`). It returns `{label, confidence, threshold, model, sha256}`. `GET /health` reports whether the model loaded.
-- `Dockerfile` — `python:3.11-slim`, non-root UID 1000 (Spaces runs containers as UID 1000), dependencies before source, `HEALTHCHECK`, and the champion model **built into the image**, so the API never calls DagsHub at request time.
-- `requirements.txt` — pinned to the **training** versions (`tensorflow-cpu==2.17.0`, `keras==3.15.1`, `numpy==1.26.4`, `Pillow==10.4.0`), so the cloud path reproduces local probabilities exactly. My first draft pinned TF 2.21/NumPy 2.0, which would have loaded the Keras file with a different runtime than it was trained with; I caught that before deploying.
+**The request-size problem.** Vercel rejects bodies above about 4.5 MB before the function even runs, but users may upload up to 10 MB. The model only ever sees a 224×224 RGB image, so in remote mode Flask performs the *same* RGB + bilinear squash-resize and sends the result as a **lossless PNG** (about 100 KB). The API's own resize is then a no-op (same size in, same size out), so the model input is bit-identical to the local path. The unit test `test_remote_payload_preserves_model_input` asserts exactly that. Without this step, the 10.2 MB test upload is refused by Vercel's edge with `413 FUNCTION_PAYLOAD_TOO_LARGE` (SS_45).
 
-**Step-by-step deployment:**
+**Mapping my Compose stack to Vercel:** the `web` image's inference code becomes one Python function, `vercel_api/api/index.py`. The model is bundled into the function (`includeFiles: model/**`), never fetched from DagsHub at request time. `.env` secrets become **encrypted Vercel environment variables** (`REMOTE_API_KEY`, `THRESHOLD`). The health check becomes `GET /health`. HTTPS and the public hostname come from Vercel. The database stays with Flask on localhost (Chapters 5 and 8). Vercel has no persistent disk, which is one more reason the database could not live there.
 
-1. Create a free Hugging Face account and a *write* access token (Settings → Access Tokens).
-2. Put the token into the git-ignored `.env` as `HF_TOKEN`, and choose a long random `REMOTE_API_KEY`. Neither value appears in any committed file.
-3. Run `python scripts/deploy_hf_space.py`. The script:
-   - creates the public Docker Space `<user>/23L-0578_A2_Ops`;
-   - stores `REMOTE_API_KEY` as a Space **secret** and `THRESHOLD=0.4` as a variable;
-   - uploads `Dockerfile`, `main.py`, `requirements.txt`, a Space `README.md` (front-matter `sdk: docker`, `app_port: 7860`) and `models/champion.keras` (stored with Git LFS by the Hub).
-4. Hugging Face builds the image and starts the container. The Space page shows *Building* and then *Running*, and the build log shows the same `pip install` and `COPY` steps as Task 6.
-5. Check `GET https://<space-host>/health` until it returns `model_loaded: true`.
-6. Run `python scripts/test_remote_api.py` and the Postman collection `cloud_api/VisionGuard.postman_collection.json` against the URL.
+## 7.2 — What is deployed
+
+`vercel_api/` contains:
+
+- `api/index.py` — FastAPI app. The interpreter is created **once per warm instance** at import time, never per request.
+  - `POST /predict` checks the `X-API-Key` header (**401**), the size (**413**), the content type (**415**) and that the bytes decode as an image (**422**). It then runs the training preprocessing (RGB → 224×224 bilinear → `x/127.5 − 1`, which is what `mobilenet_v2.preprocess_input` computes) and returns `{label, confidence, threshold, model, sha256}`.
+  - `GET /health` reports that the model is loaded and which runtime is in use.
+- `model/champion.tflite` — the exported champion (registry version 2).
+- `requirements.txt` — `ai-edge-litert`, `numpy==1.26.4`, `Pillow==10.4.0`, `fastapi`, `python-multipart`.
+- `vercel.json` — routes every path to the function, bundles the model and allows 30 s per request.
+- `VisionGuard.postman_collection.json` — the Postman tests (7.4).
+
+## 7.3 — Step-by-step deployment
+
+1. **Account.** Signed up at vercel.com with *Continue with GitHub* (Hobby plan, no card).
+2. **Token.** Created a personal access token at *Account Settings → Tokens* and saved it in the git-ignored `.env` as `VERCEL_TOKEN`. It is never typed on the command line in clear text, and the transcripts show it as `***`.
+3. **Install the CLI on demand.** `npx vercel@65.2.0` (pinned). My first attempt with v39 was refused by Vercel's API: *"This endpoint requires version 47.2.2 or later"*, so I moved to a current release.
+4. **Create and link the project** from inside `vercel_api/`:
+   ```
+   vercel project add 23l-0578-a2-ops
+   vercel link --yes --project 23l-0578-a2-ops
+   ```
+   `link` writes `.vercel/project.json` (project and team IDs) and git-ignores it.
+5. **Secrets.** The API key is piped in from `.env`, so it never appears on screen or in a log:
+   ```
+   printf <value from .env> | vercel env add REMOTE_API_KEY production --sensitive
+   printf 0.4 | vercel env add THRESHOLD production
+   vercel env ls        ->  REMOTE_API_KEY  Encrypted  Production
+                             THRESHOLD       Encrypted  Production
+   ```
+
+![SS_44a — Creating the Vercel project, linking the folder and adding the encrypted environment variables.](screenshots/SS_44a_vercel_setup.png)
+
+6. **Deploy to production:** `vercel deploy --prod --yes`. Vercel uploaded the 8.5 MB bundle, installed the requirements on its own build machine (2 cores / 8 GB), and aliased the deployment to the production domain:
+   ```
+   Production  https://23l-0578-a2-qhyuyckgz-zayns-projects-68a4bbc5.vercel.app
+   Aliased     https://23l-0578-a2-ops.vercel.app
+   readyState  READY   target production
+   ```
+
+![SS_44b — vercel deploy --prod: upload, build and alias to the production URL.](screenshots/SS_44b_vercel_deploy.png)
+
+7. **Smoke test** in a browser: `/health` → `{"status":"healthy","model_loaded":true,"runtime":"LiteRT (TFLite)","threshold":0.4}`. *Deployment Protection* (Vercel Authentication) applies to the per-deployment preview URLs only. The production alias is public, which is what an API needs; the API key protects it instead.
+
+![SS_44c — The live /health endpoint on the production domain.](screenshots/SS_44c_vercel_health_live.png)
 
 {{DEPLOY_SCREENSHOTS}}
 
-**API URL:** {{LIVE_API_URL}}
+## 7.4 — Testing the live API
 
-**Pre-deployment verification (local, same code and model):** before uploading, I ran the API under uvicorn and pointed the test script at it (`scripts/test_remote_api.py`):
+**Scripted test** (`scripts/test_remote_api.py`, transcript `logs/45_live_api_test.log`), run from my machine against the production URL:
 
 ```
-[AI  ] bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg            -> 200   301.6 ms label AI-generated  confidence 0.5523
-[AI  ] 6324662e5ee3110438933c1b_COBE-Pink-Elephant-M -> 200   251.8 ms label AI-generated  confidence 0.7257
-[AI  ] landscape-art-ai-generated-photo2.jpg         -> 200   458.9 ms label AI-generated  confidence 0.8603
-[Real] 360_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rta -> 200   250.4 ms label Real          confidence 0.1519
-[Real] 33100scr.jpg                                  -> 200   445.2 ms label Real          confidence 0.0205
-[Real] the-essay_58_resurgence-of-the-people_2019-ar -> 200   255.0 ms label Real          confidence 0.0145
+target: https://23l-0578-a2-ops.vercel.app/predict
+GET /health -> 200 {"status":"healthy","model_loaded":true,"runtime":"LiteRT (TFLite)","threshold":0.4}
+[AI  ] bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg            -> 200  1015 ms  AI-generated  0.5523
+[AI  ] 6324662e5ee3110438933c1b_COBE-Pink-Elephant-M -> 200  1372 ms  AI-generated  0.7257
+[AI  ] landscape-art-ai-generated-photo2.jpg         -> 200  2211 ms  AI-generated  0.8603
+[Real] 360_F_380747975_sS1hCVB0qPqFCWBMZ3qJ5xTqH6rta -> 200   756 ms  Real          0.1519
+[Real] 33100scr.jpg                                  -> 200  1682 ms  Real          0.0205
+[Real] the-essay_58_resurgence-of-the-people_2019-ar -> 200  1670 ms  Real          0.0145
 correct: 6/6
 [error] missing API key  -> 401  {'detail': 'Invalid or missing API key.'}
 [error] wrong file type  -> 415  {'detail': 'Unsupported content type: text/plain'}
 [error] corrupt image    -> 422  {'detail': 'Cannot decode image: cannot identify image file ...'}
-[error] oversized file   -> 413  {'detail': 'File exceeds 10 MB limit.'}
+[error] oversized file   -> 413  Request Entity Too Large  FUNCTION_PAYLOAD_TOO_LARGE  (bom1::...)
 ```
 
-The six confidences are identical to the Postgres rows in Chapter 5, so the cloud code path and the in-container Flask path give the same answer for the same bytes.
+All six probabilities equal the in-container Keras values in Chapter 5 to four decimals. The oversized request never reached my code: Vercel's edge in `bom1` (Mumbai, the nearest region) rejected it, which confirms the platform limit I designed around. Round trips take 0.75–2.2 s, compared with 30–100 ms for the same API locally. The difference is network latency to Mumbai plus serverless cold starts, and it is noted as a limitation.
 
-**Postman tests.** The collection has five requests with built-in assertions: health, AI image, real image, missing key (expects 401) and wrong type (expects 415). `base_url` and `api_key` are collection variables, so the key is never saved in the exported file.
+![SS_45 — The scripted test against the live URL: six correct verdicts and the four error cases.](screenshots/SS_45_live_api_test.png)
+
+**Postman.** `vercel_api/VisionGuard.postman_collection.json` has five requests with assertions: health; AI image; real image; missing key (expects 401); wrong file type (expects 415). `base_url` and `api_key` are collection variables, so the key is not stored in the exported file.
 
 {{POSTMAN_SCREENSHOTS}}
 
 **Tested from another network.** {{OTHER_NETWORK}}
 
-**Security notes.** The model API is protected by a shared secret header. The comparison is done server-side, and the key lives only in `.env` locally and in the Space secret store remotely. The key travels only over HTTPS. An open API would let anyone burn the free CPU quota. Uploads are never written to disk on either side.
+**Security.** The API requires a shared secret in `X-API-Key`. The key exists only in `.env` locally and as an encrypted Vercel variable, and it travels only over HTTPS. Without it, anyone could use up the free-plan execution quota. No upload is ever written to disk, on either side.
+
+**Limitations.** Cold starts after idle periods, 0.1–2 s of network latency per call, the 4.5 MB body limit (handled by client-side resizing), and the Hobby plan being meant for non-commercial use. A production system would use a container platform close to its users, with a dedicated model server.
 
 ---
 
@@ -1025,13 +1074,15 @@ Failures are never logged as predictions. A timeout, a connection error, an API 
 
 ```
 INFERENCE_MODE=remote
-REMOTE_API_URL=https://<space-host>/predict
+REMOTE_API_URL=https://23l-0578-a2-ops.vercel.app/predict
 REMOTE_API_KEY=<same secret as the Space>
 ```
 
 then `docker compose up -d web` (or `python -m flask run` locally).
 
-**Earlier local rehearsal of the same integration (API on localhost:8000):** three uploads in remote mode were logged with `inference_mode = remote`. Stopping the API mid-session made the next upload fail cleanly with the 502 page (`logs/18_flask_remote.log`).
+## 8.1 — Local rehearsal
+
+**Earlier rehearsal of the same integration, with the API on localhost:8000:** three uploads in remote mode were logged with `inference_mode = remote`. Stopping the API mid-session made the next upload fail cleanly with the 502 page (`logs/18_flask_remote.log`).
 
 ![SS_49 — Result page produced in remote mode (API on localhost during rehearsal).](screenshots/SS_49_result_remote_mode.png)
 
@@ -1039,7 +1090,60 @@ then `docker compose up -d web` (or `python -m flask run` locally).
 
 ![SS_51 — The friendly 502 page when the inference API is unreachable.](screenshots/SS_51_remote_api_down.png)
 
-{{INTEGRATION_RESULTS}}
+## 8.2 — Live integration: Flask on localhost → Vercel API
+
+**Setup.** The Compose stack from Chapter 6 (Flask + PostgreSQL on my machine) was recreated in remote mode. The URL and key come from `.env`; nothing in the code changed:
+
+```
+INFERENCE_MODE=remote docker compose up -d web
+curl -s http://localhost:5000/health
+{"db":"ok","debug":false,"inference_mode":"remote", ... ,"status":"healthy"}
+```
+
+**Multiple inputs.** I uploaded ten images through the web form: eight from the sealed test split, plus two deliberately large files (a 10.2 MB, 3870×5082 px painting and a 5.6 MB AI image). Both large files are over Vercel's 4.5 MB body limit, so they only worked because Flask sends the 224×224 PNG.
+
+| Row | File | Size | True | Verdict (p(AI)) | Correct? |
+|-----|------|------|------|-----------------|----------|
+| 9 | cafe-terrace-on-the-place-du-f.jpg | 10.2 MB | Real (painting) | AI-generated (0.6088) | ✗ |
+| 10 | Earth-Species-project-generative-ai… | 5.6 MB | AI | Real (0.2225) | ✗ |
+| 11 | midjourney-v5-drafts-Artboard-4… | 39 KB | AI | Real (0.3671) | ✗ |
+| 12 | 1000_F_563719058… | 320 KB | AI | AI-generated (0.9958) | ✓ |
+| 13 | cafe-11-header.jpg | 127 KB | AI | AI-generated (0.9885) | ✓ |
+| 14 | Deepfake-AI-generated-2023.jpg | 163 KB | AI | AI-generated (0.8404) | ✓ |
+| 15 | 1032249.jpg | 646 KB | Real | Real (0.0022) | ✓ |
+| 16 | 85220_africa-21787… | 102 KB | Real | Real (0.1314) | ✓ |
+| 17 | 5c09c4dc82dc… | 102 KB | Real | Real (0.0025) | ✓ |
+| 18 | 360_F_606797008… | 74 KB | Real | AI-generated (0.7759) | ✗ |
+
+Six of ten are correct, and each mistake fits the error analysis in §2.6. Van Gogh's *Café Terrace* is a **real painting** whose smooth, stylised texture the model reads as synthetic. The Midjourney draft board and the Earth-Species scene are AI images in an illustrative style rather than a photoreal one. Every verdict, including the wrong ones, is shown with its confidence and the limitations notice. That is the honest caveat the brief asks the UI to carry.
+
+![SS_49b — Result page in remote mode for the 10.2 MB upload: verdict from the Vercel API, mode "remote", latency 4.2 s (resize + upload + cold start).](screenshots/SS_49b_remote_result_10MB.png)
+
+![SS_49c — Result page in remote mode for the 5.6 MB AI image (a miss: p(AI) = 0.22).](screenshots/SS_49c_remote_result_ai.png)
+
+**Same image, local vs cloud.** Three images that had already been classified locally were sent again through the live API. The database matches them by SHA-256:
+
+```
+ local_id | remote_id | file                               | local_conf | remote_conf | same_label
+        5 |        20 | 33100scr.jpg                       |     0.0205 |      0.0205 | t
+        3 |        19 | landscape-art-ai-generated-photo2. |     0.8603 |      0.8603 | t
+        1 |        21 | bDSF6saJUuPLsEu9i3ud--1--gvs7i.jpg |     0.5523 |      0.5523 | t
+```
+
+The Keras model in the local container and the TFLite model on Vercel agree exactly. The preprocessing contract (training ↔ Flask ↔ cloud) holds end to end.
+
+![SS_50d — Same images, local Keras vs live Vercel TFLite: identical confidences.](screenshots/SS_50d_local_vs_remote_parity.png)
+
+**History menu / database log.** The History page shows every request, local and remote, newest first, with timestamp, label, confidence, threshold, model, version and mode. The same rows are in PostgreSQL (`logs/48_postgres_trail_remote.log`): 8 local and 13 remote predictions.
+
+![SS_50b — History page after the live integration: remote rows from the Vercel API above the earlier local rows.](screenshots/SS_50b_history_remote_live.png)
+
+![SS_50c — The PostgreSQL trail: what was decided, when, by which model, in which mode, how confidently, and how long it took.](screenshots/SS_50c_postgres_trail_remote.png)
+
+**Failure handling against the live API.** I recreated `web` with a wrong key (`REMOTE_API_KEY=wrong-key-on-purpose`). Vercel answered 401, and Flask showed the friendly **502** page naming the cause (`Inference error: unauthorized (401)`) instead of a stack trace. **No row was written**, because failed predictions must not appear in the audit trail as if they were verdicts. Recreating `web` with the key from `.env` restored service (`logs/47_remote_wrong_key.log`).
+
+![SS_51b — Wrong API key: the live API returns 401 and Flask shows a 502 page; nothing is logged.](screenshots/SS_51b_remote_wrong_key_502.png)
+
 
 ---
 
@@ -1063,7 +1167,7 @@ then `docker compose up -d web` (or `python -m flask run` locally).
 | CI badge in README | ✅ |
 | `.env.example` in repo, `.env` git-ignored | ✅ |
 | Dockerfile, `.dockerignore`, `docker-compose.yml` | ✅ stack verified healthy on Postgres |
-| Live API URL | {{CHECK_API}} |
+| Live API URL | ✅ https://23l-0578-a2-ops.vercel.app/predict |
 | Postman test evidence | {{CHECK_POSTMAN}} |
 | API tested from a different network | {{CHECK_NETWORK}} |
 | Graded commit hash in front matter | filled in at submission |

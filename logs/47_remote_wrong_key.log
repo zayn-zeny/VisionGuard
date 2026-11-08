@@ -1,0 +1,28 @@
+# Failure case: web given a wrong API key for the live Vercel API
+[ZAYN@ZAYN 2026-11-08 09:33:43 23L-0578_A2_Ops]$ INFERENCE_MODE=remote REMOTE_API_KEY=wrong-key-on-purpose docker compose up -d web
+time="2026-11-08T09:33:43+05:00" level=warning msg="volume \"23l0578_visionguard_pgdata\" already exists but was created for project \"a2\" (expected \"23l0578_a2_ops\"). Use `external: true` to use an existing volume"
+ Container 23l0578_a2_ops-db-1 Running 
+ Container 23l0578_a2_ops-web-1 Recreate 
+ Container 23l0578_a2_ops-web-1 Recreated 
+ Container 23l0578_a2_ops-db-1 Waiting 
+ Container 23l0578_a2_ops-db-1 Healthy 
+ Container 23l0578_a2_ops-web-1 Starting 
+ Container 23l0578_a2_ops-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 09:34:29 23L-0578_A2_Ops]$ docker compose logs web --tail 5 | grep -E 'POST /predict'
+web-1  | 172.18.0.1 - - [08/Nov/2026:04:34:28 +0000] "POST /predict HTTP/1.1" 502 965 "-" "python-requests/2.32.3"
+
+# Fix: recreate web with the key from .env
+[ZAYN@ZAYN 2026-11-08 09:34:30 23L-0578_A2_Ops]$ INFERENCE_MODE=remote docker compose up -d web
+time="2026-11-08T09:34:30+05:00" level=warning msg="volume \"23l0578_visionguard_pgdata\" already exists but was created for project \"a2\" (expected \"23l0578_a2_ops\"). Use `external: true` to use an existing volume"
+ Container 23l0578_a2_ops-db-1 Running 
+ Container 23l0578_a2_ops-web-1 Recreate 
+ Container 23l0578_a2_ops-web-1 Recreated 
+ Container 23l0578_a2_ops-db-1 Waiting 
+ Container 23l0578_a2_ops-db-1 Healthy 
+ Container 23l0578_a2_ops-web-1 Starting 
+ Container 23l0578_a2_ops-web-1 Started 
+
+[ZAYN@ZAYN 2026-11-08 09:35:12 23L-0578_A2_Ops]$ curl -s http://localhost:5000/health
+{"db":"ok","debug":false,"inference_mode":"remote","model_name":"MobileNetV2_VisionGuard","model_version":"champion","prediction_count":18,"status":"healthy"}
+
